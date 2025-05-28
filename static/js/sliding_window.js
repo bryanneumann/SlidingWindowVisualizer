@@ -121,7 +121,9 @@ class SlidingWindowVisualizer {
         const input = document.getElementById('inputArray').value.trim();
         this.algorithm = document.getElementById('algorithm').value;
         this.windowType = document.getElementById('windowType').value;
-        this.windowSize = parseInt(document.getElementById('windowSize').value) || 1;
+        this.windowSize = parseInt(document.getElementById('windowSize').value) || 3;
+        
+        console.log('Window size:', this.windowSize, 'Window type:', this.windowType);
 
         try {
             // Validate input
@@ -212,6 +214,8 @@ class SlidingWindowVisualizer {
         const windowStart = this.currentStep;
         const windowEnd = windowStart + this.windowSize - 1;
 
+        console.log(`Step ${this.currentStep}: Window from ${windowStart} to ${windowEnd} (size: ${this.windowSize})`);
+
         // Clear all previous window styling
         document.querySelectorAll('.array-element').forEach(el => {
             el.classList.remove('in-window', 'window-start', 'window-end');
@@ -221,6 +225,7 @@ class SlidingWindowVisualizer {
         for (let i = windowStart; i <= windowEnd && i < this.elements.length; i++) {
             const element = document.querySelector(`[data-index="${i}"]`);
             if (element) {
+                console.log(`Highlighting element at index ${i}`);
                 element.classList.add('in-window');
                 if (i === windowStart) element.classList.add('window-start');
                 if (i === windowEnd) element.classList.add('window-end');
