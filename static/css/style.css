@@ -152,14 +152,15 @@
     top: 0;
     left: 0;
     height: 70px;
-    background: rgba(255, 193, 7, 0.2);
+    background: rgba(255, 193, 7, 0.3);
     border: 3px solid var(--bs-warning);
     border-radius: 12px;
     transition: all 0.5s ease-in-out;
     pointer-events: none;
-    z-index: 5;
+    z-index: 10;
     display: none;
     box-shadow: 0 0 20px rgba(255, 193, 7, 0.5);
+    width: 0;
 }
 
 /* Sliding window connection line */
