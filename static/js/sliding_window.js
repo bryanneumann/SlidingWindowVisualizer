@@ -217,7 +217,7 @@ class SlidingWindowVisualizer {
         const windowStart = this.currentStep;
         const windowEnd = windowStart + this.windowSize - 1;
 
-        // Highlight window elements
+        // Highlight window elements all at once for clearer sliding motion
         for (let i = windowStart; i <= windowEnd && i < this.elements.length; i++) {
             const element = document.querySelector(`[data-index="${i}"]`);
             if (element) {
@@ -225,10 +225,8 @@ class SlidingWindowVisualizer {
                 if (i === windowStart) element.classList.add('window-start');
                 if (i === windowEnd) element.classList.add('window-end');
                 
-                // Add animation
-                setTimeout(() => {
-                    element.classList.add('step-animation');
-                }, i * 100);
+                // Add animation immediately - no stagger
+                element.classList.add('step-animation');
             }
         }
 
