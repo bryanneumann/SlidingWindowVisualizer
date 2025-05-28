@@ -20,9 +20,9 @@ class SlidingWindowVisualizer {
     }
 
     initializeEventListeners() {
-        // Setup visualization
-        document.getElementById('setupVisualization').addEventListener('click', () => {
-            this.setupVisualization();
+        // Start visualization demo
+        document.getElementById('startVisualization').addEventListener('click', () => {
+            this.startDemo();
         });
 
 
@@ -47,10 +47,7 @@ class SlidingWindowVisualizer {
             this.animationSpeed = 2000 - (speed * 300); // 1700ms to 500ms
         });
 
-        // Load example
-        document.getElementById('loadExample').addEventListener('click', () => {
-            this.loadRandomExample();
-        });
+
 
         // Show code modal
         document.getElementById('showCodeBtn').addEventListener('click', () => {
@@ -499,16 +496,39 @@ class SlidingWindowVisualizer {
         this.validateInput();
     }
 
-    loadRandomExample() {
-        const examples = [
-            { array: "3, 5, 2, 8, 1, 7, 4", algorithm: "max", windowSize: 3, type: "fixed" },
-            { array: "1, 4, 2, 7, 3, 6, 5", algorithm: "sum", windowSize: 2, type: "fixed" },
-            { array: "10, 5, 15, 20, 8, 12", algorithm: "avg", windowSize: 3, type: "fixed" },
-            { array: "2, 4, 6, 8, 10", algorithm: "min", windowSize: 2, type: "fixed" }
-        ];
-
-        const randomExample = examples[Math.floor(Math.random() * examples.length)];
-        this.loadExample(randomExample);
+    startDemo() {
+        // Use current input if valid, otherwise load a smart example
+        const input = document.getElementById('inputArray').value.trim();
+        
+        if (input && this.validateInput()) {
+            // Use the current input
+            this.setupVisualization();
+        } else {
+            // Load a smart example based on current settings
+            const algorithm = document.getElementById('algorithm').value;
+            const windowType = document.getElementById('windowType').value;
+            
+            const smartExamples = {
+                'fixed': {
+                    'sum': { array: "2, 1, 3, 9, 4, 1, 7", windowSize: 3 },
+                    'max': { array: "1, 3, 2, 5, 8, 3, 6, 7", windowSize: 3 },
+                    'min': { array: "8, 2, 6, 1, 9, 4, 3", windowSize: 3 },
+                    'avg': { array: "10, 20, 30, 40, 50, 60", windowSize: 4 }
+                },
+                'variable': {
+                    'sum': { array: "1, 2, 3, 4, 5", windowSize: 1 },
+                    'max': { array: "2, 1, 4, 3, 6, 5", windowSize: 1 },
+                    'min': { array: "5, 3, 7, 2, 8, 1", windowSize: 1 },
+                    'avg': { array: "1, 3, 2, 5, 4, 6", windowSize: 1 }
+                }
+            };
+            
+            const example = smartExamples[windowType][algorithm];
+            document.getElementById('inputArray').value = example.array;
+            document.getElementById('windowSize').value = example.windowSize;
+            
+            this.setupVisualization();
+        }
     }
 
     showCodeModal() {
