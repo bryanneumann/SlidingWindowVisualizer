@@ -8,7 +8,7 @@
     justify-content: center;
     border: 3px solid var(--bs-border-color);
     border-radius: 12px;
-    background: linear-gradient(135deg, var(--bs-body-bg) 0%, var(--bs-secondary-bg) 100%);
+    background: var(--bs-body-bg);
     color: var(--bs-body-color);
     font-weight: bold;
     font-size: 1.5rem;
