@@ -20,56 +20,25 @@ class SlidingWindowVisualizer {
     }
 
     initializeEventListeners() {
-        // Auto-setup visualization when input changes
-        document.getElementById('inputArray').addEventListener('blur', () => {
-            if (this.validateInput()) {
-                this.setupVisualization();
-            }
-        });
-        
-        document.getElementById('algorithm').addEventListener('change', () => {
-            if (this.elements.length > 0) {
-                this.setupVisualization();
-            }
-        });
-        
-        document.getElementById('windowType').addEventListener('change', () => {
-            if (this.elements.length > 0) {
-                this.setupVisualization();
-            }
-        });
-        
-        document.getElementById('windowSize').addEventListener('change', () => {
-            if (this.elements.length > 0) {
-                this.setupVisualization();
-            }
+        // Setup visualization
+        document.getElementById('setupVisualization').addEventListener('click', () => {
+            this.setupVisualization();
         });
 
 
 
-        // Algorithm change - now includes auto-setup
+        // Window type change
+        document.getElementById('windowType').addEventListener('change', (e) => {
+            this.windowType = e.target.value;
+            this.toggleWindowSizeInput();
+        });
+
+        // Algorithm change
         document.getElementById('algorithm').addEventListener('change', (e) => {
             this.algorithm = e.target.value;
             if (this.elements.length > 0) {
-                this.setupVisualization();
+                this.updateVisualization();
             }
-        });
-
-        // Control buttons
-        document.getElementById('playPause').addEventListener('click', () => {
-            this.togglePlayPause();
-        });
-
-        document.getElementById('stepForward').addEventListener('click', () => {
-            this.stepForward();
-        });
-
-        document.getElementById('stepBackward').addEventListener('click', () => {
-            this.stepBackward();
-        });
-
-        document.getElementById('reset').addEventListener('click', () => {
-            this.reset();
         });
 
         // Speed control
