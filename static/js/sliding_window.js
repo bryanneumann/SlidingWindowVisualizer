@@ -307,7 +307,7 @@ class SlidingWindowVisualizer {
         const calculationEl = document.getElementById('calculation');
 
         currentWindowEl.innerHTML = `
-            <strong>Window:</strong> [${window.join(', ')}]<br>
+            <strong>Window:</strong> <span class="window-values">[${window.join(', ')}]</span><br>
             <strong>Result:</strong> <span class="result-value">${result}</span>
         `;
 
