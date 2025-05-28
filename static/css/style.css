@@ -219,9 +219,14 @@
     display: inline-block;
     font-size: 1.5rem;
     font-weight: bold;
-    color: var(--bs-success);
+    color: var(--bs-warning);
+    background: var(--bs-dark);
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 2px solid var(--bs-warning);
     animation: resultPop 0.5s ease-out;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
 }
 
 @keyframes resultPop {
