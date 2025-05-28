@@ -559,7 +559,7 @@ class SlidingWindowVisualizer {
         modal.show();
         
         // Update algorithm info and generate code immediately
-        this.updateAlgorithmInfo();
+        this.updateTechniqueInfo();
         this.generateCode();
     }
 
