@@ -93,6 +93,10 @@
                             Visualization
                         </h5>
                         <div class="d-flex gap-2 align-items-center">
+                            <button class="btn btn-outline-primary btn-sm" id="showCodeBtn">
+                                <i class="bi bi-code-slash"></i>
+                                Show Code
+                            </button>
                             <label for="speedControl" class="form-label mb-0 me-2">Speed:</label>
                             <input type="range" class="form-range" id="speedControl" min="1" max="5" value="3" style="width: 100px;">
                         </div>
@@ -194,6 +198,74 @@
                                 </ul>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Code Generation Modal -->
+        <div class="modal fade" id="codeModal" tabindex="-1" aria-labelledby="codeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="codeModalLabel">
+                            <i class="bi bi-code-slash"></i>
+                            Algorithm Implementation
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="codeLanguage" class="form-label">Programming Language</label>
+                                <select class="form-select" id="codeLanguage">
+                                    <option value="python" selected>Python</option>
+                                    <option value="javascript" disabled>JavaScript (Coming Soon)</option>
+                                    <option value="java" disabled>Java (Coming Soon)</option>
+                                    <option value="cpp" disabled>C++ (Coming Soon)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex gap-2 align-items-end h-100">
+                                    <button class="btn btn-primary" id="generateCodeBtn">
+                                        <i class="bi bi-gear"></i>
+                                        Generate Code
+                                    </button>
+                                    <button class="btn btn-outline-secondary" id="copyCodeBtn" disabled>
+                                        <i class="bi bi-clipboard"></i>
+                                        Copy Code
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <h6>Algorithm Details:</h6>
+                            <div id="algorithmInfo" class="alert alert-info">
+                                Select an algorithm configuration and click "Generate Code" to see the implementation.
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <h6>Code Implementation:</h6>
+                            <div class="code-container">
+                                <pre><code id="generatedCode" class="language-python">// Algorithm code will appear here...</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <h6>Time & Space Complexity:</h6>
+                            <div id="complexityInfo" class="alert alert-secondary">
+                                Complexity analysis will be shown after code generation.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a href="#" class="btn btn-outline-primary" id="downloadCodeBtn" disabled>
+                            <i class="bi bi-download"></i>
+                            Download Code
+                        </a>
                     </div>
                 </div>
             </div>

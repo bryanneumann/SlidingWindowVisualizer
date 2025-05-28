@@ -67,6 +67,26 @@ class SlidingWindowVisualizer {
             this.loadRandomExample();
         });
 
+        // Show code modal
+        document.getElementById('showCodeBtn').addEventListener('click', () => {
+            this.showCodeModal();
+        });
+
+        // Generate code
+        document.getElementById('generateCodeBtn').addEventListener('click', () => {
+            this.generateCode();
+        });
+
+        // Copy code
+        document.getElementById('copyCodeBtn').addEventListener('click', () => {
+            this.copyCodeToClipboard();
+        });
+
+        // Download code
+        document.getElementById('downloadCodeBtn').addEventListener('click', () => {
+            this.downloadCode();
+        });
+
         // Input validation
         document.getElementById('inputArray').addEventListener('input', () => {
             this.validateInput();
@@ -485,6 +505,175 @@ class SlidingWindowVisualizer {
 
         const randomExample = examples[Math.floor(Math.random() * examples.length)];
         this.loadExample(randomExample);
+    }
+
+    showCodeModal() {
+        // Show the code generation modal
+        const modal = new bootstrap.Modal(document.getElementById('codeModal'));
+        modal.show();
+        
+        // Update algorithm info based on current settings
+        this.updateAlgorithmInfo();
+    }
+
+    updateAlgorithmInfo() {
+        const algorithm = this.algorithm || document.getElementById('algorithm').value;
+        const windowType = this.windowType || document.getElementById('windowType').value;
+        const windowSize = this.windowSize || parseInt(document.getElementById('windowSize').value);
+        
+        const algorithmInfo = document.getElementById('algorithmInfo');
+        
+        const descriptions = {
+            'fixed': {
+                'sum': `Fixed window sliding technique to find maximum sum of subarray of size ${windowSize}. Time complexity: O(n), Space complexity: O(1).`,
+                'max': `Fixed window with deque optimization to find maximum element in each window of size ${windowSize}. Time complexity: O(n), Space complexity: O(k).`,
+                'min': `Fixed window with deque optimization to find minimum element in each window of size ${windowSize}. Time complexity: O(n), Space complexity: O(k).`,
+                'avg': `Fixed window technique to calculate moving average with window size ${windowSize}. Time complexity: O(n), Space complexity: O(1).`
+            },
+            'variable': {
+                'sum': 'Variable window technique to find subarray with target sum. Time complexity: O(n), Space complexity: O(1).',
+                'max': 'Variable window technique to find longest subarray satisfying a condition. Time complexity: O(n²), Space complexity: O(1).',
+                'min': 'Variable window technique for minimum window substring problem. Time complexity: O(n + m), Space complexity: O(n + m).',
+                'avg': 'Variable window technique to find longest subarray with average above threshold. Time complexity: O(n²), Space complexity: O(1).'
+            }
+        };
+        
+        const description = descriptions[windowType]?.[algorithm] || 'Algorithm description not available.';
+        algorithmInfo.innerHTML = `<strong>${windowType.charAt(0).toUpperCase() + windowType.slice(1)} Window - ${algorithm.toUpperCase()}:</strong> ${description}`;
+    }
+
+    async generateCode() {
+        const generateBtn = document.getElementById('generateCodeBtn');
+        const copyBtn = document.getElementById('copyCodeBtn');
+        const downloadBtn = document.getElementById('downloadCodeBtn');
+        const codeElement = document.getElementById('generatedCode');
+        const complexityElement = document.getElementById('complexityInfo');
+        
+        // Disable buttons and show loading
+        generateBtn.disabled = true;
+        generateBtn.innerHTML = '<span class="loading-spinner"></span> Generating...';
+        
+        try {
+            const algorithm = document.getElementById('algorithm').value;
+            const windowType = document.getElementById('windowType').value;
+            const windowSize = parseInt(document.getElementById('windowSize').value);
+            const language = document.getElementById('codeLanguage').value;
+            
+            const response = await fetch('/api/generate_code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    algorithm: algorithm,
+                    window_type: windowType,
+                    window_size: windowSize,
+                    language: language
+                })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                // Display the generated code
+                codeElement.textContent = result.code;
+                
+                // Update complexity information
+                const complexityInfo = this.getComplexityInfo(algorithm, windowType);
+                complexityElement.innerHTML = complexityInfo;
+                
+                // Enable copy and download buttons
+                copyBtn.disabled = false;
+                downloadBtn.disabled = false;
+                
+                // Store the code for copy/download operations
+                this.generatedCode = result.code;
+                this.codeLanguage = language;
+                this.algorithmName = `${windowType}_window_${algorithm}`;
+                
+            } else {
+                this.showError(result.error || 'Failed to generate code');
+                codeElement.textContent = '// Error generating code. Please try again.';
+            }
+            
+        } catch (error) {
+            console.error('Error generating code:', error);
+            this.showError('Failed to generate code');
+            codeElement.textContent = '// Error generating code. Please try again.';
+        } finally {
+            // Re-enable generate button
+            generateBtn.disabled = false;
+            generateBtn.innerHTML = '<i class="bi bi-gear"></i> Generate Code';
+        }
+    }
+
+    getComplexityInfo(algorithm, windowType) {
+        const complexityMap = {
+            'fixed': {
+                'sum': 'Time: O(n) - Single pass through array | Space: O(1) - Constant extra space',
+                'max': 'Time: O(n) - Amortized linear with deque | Space: O(k) - Deque size bounded by window',
+                'min': 'Time: O(n) - Amortized linear with deque | Space: O(k) - Deque size bounded by window',
+                'avg': 'Time: O(n) - Single pass through array | Space: O(1) - Constant extra space'
+            },
+            'variable': {
+                'sum': 'Time: O(n) - Two pointers technique | Space: O(1) - Constant extra space',
+                'max': 'Time: O(n²) - Nested loops for all subarrays | Space: O(1) - Constant extra space',
+                'min': 'Time: O(n + m) - Linear in string lengths | Space: O(n + m) - Hash maps for character counts',
+                'avg': 'Time: O(n²) - Nested loops for all subarrays | Space: O(1) - Constant extra space'
+            }
+        };
+        
+        return complexityMap[windowType]?.[algorithm] || 'Complexity information not available.';
+    }
+
+    async copyCodeToClipboard() {
+        if (!this.generatedCode) {
+            this.showError('No code to copy');
+            return;
+        }
+        
+        try {
+            await navigator.clipboard.writeText(this.generatedCode);
+            
+            // Show temporary success message
+            const copyBtn = document.getElementById('copyCodeBtn');
+            const originalText = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<i class="bi bi-check"></i> Copied!';
+            copyBtn.classList.remove('btn-outline-secondary');
+            copyBtn.classList.add('btn-success');
+            
+            setTimeout(() => {
+                copyBtn.innerHTML = originalText;
+                copyBtn.classList.remove('btn-success');
+                copyBtn.classList.add('btn-outline-secondary');
+            }, 2000);
+            
+        } catch (error) {
+            console.error('Failed to copy to clipboard:', error);
+            this.showError('Failed to copy code to clipboard');
+        }
+    }
+
+    downloadCode() {
+        if (!this.generatedCode) {
+            this.showError('No code to download');
+            return;
+        }
+        
+        const extension = this.codeLanguage === 'python' ? 'py' : 'txt';
+        const filename = `${this.algorithmName}.${extension}`;
+        
+        const blob = new Blob([this.generatedCode], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        
+        const downloadLink = document.getElementById('downloadCodeBtn');
+        downloadLink.href = url;
+        downloadLink.download = filename;
+        
+        // Clean up the URL after download
+        setTimeout(() => {
+            URL.revokeObjectURL(url);
+        }, 1000);
     }
 }
 

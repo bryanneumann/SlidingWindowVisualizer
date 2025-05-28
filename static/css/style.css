@@ -150,3 +150,97 @@
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+
+/* Code container styles */
+.code-container {
+    background-color: var(--bs-gray-900);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--bs-border-color);
+}
+
+.code-container pre {
+    margin: 0;
+    padding: 1.5rem;
+    background-color: var(--bs-gray-900);
+    color: var(--bs-light);
+    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.code-container code {
+    background: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Syntax highlighting for Python */
+.language-python .keyword {
+    color: #569cd6;
+    font-weight: bold;
+}
+
+.language-python .string {
+    color: #ce9178;
+}
+
+.language-python .comment {
+    color: #6a9955;
+    font-style: italic;
+}
+
+.language-python .function {
+    color: #dcdcaa;
+}
+
+.language-python .number {
+    color: #b5cea8;
+}
+
+/* Modal improvements */
+.modal-xl .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+/* Code generation button states */
+#generateCodeBtn:disabled {
+    opacity: 0.6;
+}
+
+#copyCodeBtn:disabled,
+#downloadCodeBtn:disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Algorithm info styling */
+#algorithmInfo {
+    font-size: 0.95rem;
+}
+
+#complexityInfo {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+/* Responsive code modal */
+@media (max-width: 768px) {
+    .modal-xl {
+        margin: 0.5rem;
+    }
+    
+    .modal-xl .modal-dialog {
+        max-width: none;
+    }
+    
+    .code-container pre {
+        font-size: 0.8rem;
+        padding: 1rem;
+    }
+}
