@@ -156,6 +156,11 @@ class SlidingWindowVisualizer {
             // Show visualization section
             document.getElementById('visualizationSection').style.display = 'block';
             
+            // Auto-start the animation
+            setTimeout(() => {
+                this.play();
+            }, 500);
+            
         } catch (error) {
             console.error('Error setting up visualization:', error);
             this.showError('Failed to setup visualization');
