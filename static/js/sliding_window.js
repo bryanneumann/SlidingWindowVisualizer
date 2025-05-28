@@ -234,11 +234,9 @@ class SlidingWindowVisualizer {
             element.classList.add('in-window');
             if (isStart) {
                 element.classList.add('window-start');
-                console.log('Added window-start to element', index);
             }
             if (isEnd) {
                 element.classList.add('window-end');
-                console.log('Added window-end to element', index);
             }
         });
 
