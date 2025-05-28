@@ -21,17 +21,12 @@
 }
 
 .array-element.in-window {
-    background: #007bff !important;
+    background-color: red !important;
     color: white !important;
-    border: 4px solid #ffc107 !important;
-    box-shadow: 0 0 15px rgba(255, 193, 7, 0.7) !important;
-    position: relative;
-    z-index: 5;
-    font-weight: bold !important;
-    font-size: 1.5rem !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    border: 5px solid lime !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 999 !important;
 }
 
 @keyframes windowPulseStrong {
