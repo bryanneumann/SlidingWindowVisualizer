@@ -232,8 +232,14 @@ class SlidingWindowVisualizer {
         // Highlight all elements in the window at once
         elementsToHighlight.forEach(({element, index, isStart, isEnd}) => {
             element.classList.add('in-window');
-            if (isStart) element.classList.add('window-start');
-            if (isEnd) element.classList.add('window-end');
+            if (isStart) {
+                element.classList.add('window-start');
+                console.log('Added window-start to element', index);
+            }
+            if (isEnd) {
+                element.classList.add('window-end');
+                console.log('Added window-end to element', index);
+            }
         });
 
 
