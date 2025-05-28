@@ -11,7 +11,8 @@
     background: linear-gradient(135deg, var(--bs-body-bg) 0%, var(--bs-secondary-bg) 100%);
     color: var(--bs-body-color);
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -219,6 +220,7 @@
     display: inline-block;
     font-size: 1.5rem;
     font-weight: bold;
+    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
     color: var(--bs-warning);
     background: var(--bs-dark);
     padding: 4px 8px;
