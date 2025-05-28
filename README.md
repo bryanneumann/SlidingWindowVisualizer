@@ -1,6 +1,10 @@
 # Sliding Window Technique Visualizer
 
+**Made with AI**
+
 An interactive web application that demonstrates sliding window techniques for both fixed and variable size windows. Built with Flask and vanilla JavaScript to provide educational visualizations of this important programming technique.
+
+Deployed to https://replit.com/@bryanneumann/SlidingWindowVisualizer
 
 ## Features
 
@@ -80,5 +84,3 @@ Perfect for:
 - Visual learning of programming concepts
 
 ---
-
-Built with ❤️ for the programming education community
