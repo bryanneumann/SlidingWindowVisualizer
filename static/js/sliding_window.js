@@ -13,7 +13,7 @@ class SlidingWindowVisualizer {
         this.playInterval = null;
         this.algorithm = 'sum';
         this.windowType = 'fixed';
-        this.animationSpeed = 1000; // milliseconds
+        this.animationSpeed = 1500; // milliseconds
         
         this.initializeEventListeners();
         this.loadExamples();
@@ -122,8 +122,6 @@ class SlidingWindowVisualizer {
         this.algorithm = document.getElementById('algorithm').value;
         this.windowType = document.getElementById('windowType').value;
         this.windowSize = parseInt(document.getElementById('windowSize').value) || 3;
-        
-        console.log('Window size:', this.windowSize, 'Window type:', this.windowType);
 
         try {
             // Validate input
@@ -214,23 +212,29 @@ class SlidingWindowVisualizer {
         const windowStart = this.currentStep;
         const windowEnd = windowStart + this.windowSize - 1;
 
-        console.log(`Step ${this.currentStep}: Window from ${windowStart} to ${windowEnd} (size: ${this.windowSize})`);
-
         // Clear all previous window styling
         document.querySelectorAll('.array-element').forEach(el => {
             el.classList.remove('in-window', 'window-start', 'window-end');
         });
 
+        // Wait a brief moment to ensure DOM updates
+        await new Promise(resolve => setTimeout(resolve, 50));
+
         // Apply window styling to current window position
+        const elementsToHighlight = [];
         for (let i = windowStart; i <= windowEnd && i < this.elements.length; i++) {
             const element = document.querySelector(`[data-index="${i}"]`);
             if (element) {
-                console.log(`Highlighting element at index ${i}`);
-                element.classList.add('in-window');
-                if (i === windowStart) element.classList.add('window-start');
-                if (i === windowEnd) element.classList.add('window-end');
+                elementsToHighlight.push({element, index: i, isStart: i === windowStart, isEnd: i === windowEnd});
             }
         }
+
+        // Highlight all elements in the window at once
+        elementsToHighlight.forEach(({element, index, isStart, isEnd}) => {
+            element.classList.add('in-window');
+            if (isStart) element.classList.add('window-start');
+            if (isEnd) element.classList.add('window-end');
+        });
 
 
 
