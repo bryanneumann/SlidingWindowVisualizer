@@ -96,23 +96,23 @@ class SlidingWindowVisualizer {
 
     validateInput() {
         const input = document.getElementById('inputArray').value.trim();
-        const setupBtn = document.getElementById('setupVisualization');
+        const setupBtn = document.getElementById('startVisualization');
         
         if (!input) {
-            setupBtn.disabled = true;
+            if (setupBtn) setupBtn.disabled = true;
             return false;
         }
 
         try {
             const elements = input.split(',').map(x => parseInt(x.trim())).filter(x => !isNaN(x));
             if (elements.length === 0) {
-                setupBtn.disabled = true;
+                if (setupBtn) setupBtn.disabled = true;
                 return false;
             }
-            setupBtn.disabled = false;
+            if (setupBtn) setupBtn.disabled = false;
             return true;
         } catch (error) {
-            setupBtn.disabled = true;
+            if (setupBtn) setupBtn.disabled = true;
             return false;
         }
     }
@@ -338,16 +338,18 @@ class SlidingWindowVisualizer {
         const stepForwardBtn = document.getElementById('stepForward');
         const playPauseBtn = document.getElementById('playPause');
 
-        stepBackBtn.disabled = this.currentStep <= 0;
-        stepForwardBtn.disabled = this.currentStep >= this.maxSteps - 1;
+        if (stepBackBtn) stepBackBtn.disabled = this.currentStep <= 0;
+        if (stepForwardBtn) stepForwardBtn.disabled = this.currentStep >= this.maxSteps - 1;
 
         // Update play/pause button
-        if (this.isPlaying) {
-            playPauseBtn.innerHTML = '<i class="bi bi-pause"></i> Pause';
-            playPauseBtn.className = 'btn btn-warning';
-        } else {
-            playPauseBtn.innerHTML = '<i class="bi bi-play"></i> Play';
-            playPauseBtn.className = 'btn btn-success';
+        if (playPauseBtn) {
+            if (this.isPlaying) {
+                playPauseBtn.innerHTML = '<i class="bi bi-pause"></i> Pause';
+                playPauseBtn.className = 'btn btn-warning';
+            } else {
+                playPauseBtn.innerHTML = '<i class="bi bi-play"></i> Play';
+                playPauseBtn.className = 'btn btn-success';
+            }
         }
     }
 
@@ -609,8 +611,8 @@ class SlidingWindowVisualizer {
                 complexityElement.innerHTML = complexityInfo;
                 
                 // Enable copy and download buttons
-                copyBtn.disabled = false;
-                downloadBtn.disabled = false;
+                if (copyBtn) copyBtn.disabled = false;
+                if (downloadBtn) downloadBtn.disabled = false;
                 
                 // Store the code for copy/download operations
                 this.generatedCode = result.code;
