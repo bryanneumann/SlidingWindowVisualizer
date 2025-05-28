@@ -22,20 +22,32 @@
 .array-element.in-window {
     background: linear-gradient(135deg, var(--bs-primary) 0%, var(--bs-info) 100%);
     color: var(--bs-white);
-    border-color: var(--bs-primary);
-    transform: translateY(-5px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(13, 110, 253, 0.4);
-    animation: windowPulse 1.5s ease-in-out infinite alternate;
+    border-color: var(--bs-warning);
+    border-width: 4px;
+    transform: translateY(-8px) scale(1.15);
+    box-shadow: 0 12px 35px rgba(13, 110, 253, 0.6);
+    animation: windowHighlight 2s ease-in-out infinite alternate;
+    position: relative;
+    z-index: 10;
 }
 
-@keyframes windowPulse {
-    0% { box-shadow: 0 8px 25px rgba(13, 110, 253, 0.4); }
-    100% { box-shadow: 0 8px 25px rgba(13, 110, 253, 0.7); }
+@keyframes windowHighlight {
+    0% { 
+        box-shadow: 0 12px 35px rgba(13, 110, 253, 0.6), 0 0 20px rgba(255, 193, 7, 0.8);
+        border-color: var(--bs-warning);
+        transform: translateY(-8px) scale(1.15);
+    }
+    100% { 
+        box-shadow: 0 16px 45px rgba(13, 110, 253, 0.9), 0 0 30px rgba(255, 193, 7, 1);
+        border-color: var(--bs-danger);
+        transform: translateY(-12px) scale(1.2);
+    }
 }
 
 .array-element.window-start {
-    border-left: 5px solid var(--bs-warning);
+    border-left: 8px solid var(--bs-warning);
     position: relative;
+    animation: windowStartPulse 1s ease-in-out infinite alternate;
 }
 
 .array-element.window-start::before {
@@ -54,8 +66,9 @@
 }
 
 .array-element.window-end {
-    border-right: 5px solid var(--bs-danger);
+    border-right: 8px solid var(--bs-danger);
     position: relative;
+    animation: windowEndPulse 1s ease-in-out infinite alternate;
 }
 
 .array-element.window-end::after {
@@ -77,6 +90,16 @@
     0% { transform: translateX(-50%) scale(0); opacity: 0; }
     50% { transform: translateX(-50%) scale(1.2); opacity: 1; }
     100% { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+
+@keyframes windowStartPulse {
+    0% { border-left-color: var(--bs-warning); }
+    100% { border-left-color: var(--bs-success); }
+}
+
+@keyframes windowEndPulse {
+    0% { border-right-color: var(--bs-danger); }
+    100% { border-right-color: var(--bs-warning); }
 }
 
 .array-element .index {
