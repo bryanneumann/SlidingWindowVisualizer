@@ -72,11 +72,6 @@ class SlidingWindowVisualizer {
             this.showCodeModal();
         });
 
-        // Generate code
-        document.getElementById('generateCodeBtn').addEventListener('click', () => {
-            this.generateCode();
-        });
-
         // Language change - auto-generate code
         document.getElementById('codeLanguage').addEventListener('change', () => {
             this.generateCode();
@@ -549,15 +544,10 @@ class SlidingWindowVisualizer {
     }
 
     async generateCode() {
-        const generateBtn = document.getElementById('generateCodeBtn');
         const copyBtn = document.getElementById('copyCodeBtn');
         const downloadBtn = document.getElementById('downloadCodeBtn');
         const codeElement = document.getElementById('generatedCode');
         const complexityElement = document.getElementById('complexityInfo');
-        
-        // Disable buttons and show loading
-        generateBtn.disabled = true;
-        generateBtn.innerHTML = '<span class="loading-spinner"></span> Generating...';
         
         try {
             const algorithm = document.getElementById('algorithm').value;
@@ -606,10 +596,6 @@ class SlidingWindowVisualizer {
             console.error('Error generating code:', error);
             this.showError('Failed to generate code');
             codeElement.textContent = '// Error generating code. Please try again.';
-        } finally {
-            // Re-enable generate button
-            generateBtn.disabled = false;
-            generateBtn.innerHTML = '<i class="bi bi-gear"></i> Generate Code';
         }
     }
 
