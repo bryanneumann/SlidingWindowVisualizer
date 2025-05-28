@@ -221,11 +221,11 @@
     font-size: 1.5rem;
     font-weight: bold;
     font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
-    color: var(--bs-success);
+    color: var(--bs-danger);
     background: var(--bs-light);
     padding: 2px 6px;
     border-radius: 4px;
-    border: 1px solid var(--bs-success);
+    border: 1px solid var(--bs-danger);
     animation: resultPop 0.5s ease-out;
 }
 
