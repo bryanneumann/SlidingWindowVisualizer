@@ -20,21 +20,27 @@ class SlidingWindowVisualizer {
     }
 
     initializeEventListeners() {
+        // Helper function to safely add event listeners
+        const safeAddEventListener = (id, event, handler) => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.addEventListener(event, handler);
+            }
+        };
+
         // Start visualization demo
-        document.getElementById('startVisualization').addEventListener('click', () => {
+        safeAddEventListener('startVisualization', 'click', () => {
             this.startDemo();
         });
 
-
-
         // Window type change
-        document.getElementById('windowType').addEventListener('change', (e) => {
+        safeAddEventListener('windowType', 'change', (e) => {
             this.windowType = e.target.value;
             this.toggleWindowSizeInput();
         });
 
         // Algorithm change
-        document.getElementById('algorithm').addEventListener('change', (e) => {
+        safeAddEventListener('algorithm', 'change', (e) => {
             this.algorithm = e.target.value;
             if (this.elements.length > 0) {
                 this.updateVisualization();
@@ -42,7 +48,7 @@ class SlidingWindowVisualizer {
         });
 
         // Speed control
-        document.getElementById('speedControl').addEventListener('input', (e) => {
+        safeAddEventListener('speedControl', 'input', (e) => {
             const speed = parseInt(e.target.value);
             this.animationSpeed = 2000 - (speed * 300); // 1700ms to 500ms
         });
@@ -50,31 +56,31 @@ class SlidingWindowVisualizer {
 
 
         // Show code modal
-        document.getElementById('showCodeBtn').addEventListener('click', () => {
+        safeAddEventListener('showCodeBtn', 'click', () => {
             this.showCodeModal();
         });
 
         // Language change - auto-generate code
-        document.getElementById('codeLanguage').addEventListener('change', () => {
+        safeAddEventListener('codeLanguage', 'change', () => {
             this.generateCode();
         });
 
         // Copy code
-        document.getElementById('copyCodeBtn').addEventListener('click', () => {
+        safeAddEventListener('copyCodeBtn', 'click', () => {
             this.copyCodeToClipboard();
         });
 
         // Download code
-        document.getElementById('downloadCodeBtn').addEventListener('click', () => {
+        safeAddEventListener('downloadCodeBtn', 'click', () => {
             this.downloadCode();
         });
 
         // Input validation
-        document.getElementById('inputArray').addEventListener('input', () => {
+        safeAddEventListener('inputArray', 'input', () => {
             this.validateInput();
         });
 
-        document.getElementById('windowSize').addEventListener('input', () => {
+        safeAddEventListener('windowSize', 'input', () => {
             this.windowSize = parseInt(document.getElementById('windowSize').value) || 1;
         });
     }
