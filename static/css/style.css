@@ -44,63 +44,7 @@
     }
 }
 
-.array-element.window-start {
-    border-left: 8px solid var(--bs-warning);
-    position: relative;
-    animation: windowStartPulse 1s ease-in-out infinite alternate;
-}
-
-.array-element.window-start::before {
-    content: "START";
-    position: absolute;
-    top: -25px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--bs-warning);
-    color: var(--bs-dark);
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: bold;
-    animation: bounceIn 0.6s ease-out;
-}
-
-.array-element.window-end {
-    border-right: 8px solid var(--bs-danger);
-    position: relative;
-    animation: windowEndPulse 1s ease-in-out infinite alternate;
-}
-
-.array-element.window-end::after {
-    content: "END";
-    position: absolute;
-    top: -25px;
-    right: 50%;
-    transform: translateX(50%);
-    background: var(--bs-danger);
-    color: var(--bs-white);
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: bold;
-    animation: bounceIn 0.6s ease-out;
-}
-
-@keyframes bounceIn {
-    0% { transform: translateX(-50%) scale(0); opacity: 0; }
-    50% { transform: translateX(-50%) scale(1.2); opacity: 1; }
-    100% { transform: translateX(-50%) scale(1); opacity: 1; }
-}
-
-@keyframes windowStartPulse {
-    0% { border-left-color: var(--bs-warning); }
-    100% { border-left-color: var(--bs-success); }
-}
-
-@keyframes windowEndPulse {
-    0% { border-right-color: var(--bs-danger); }
-    100% { border-right-color: var(--bs-warning); }
-}
+/* Clean window highlighting without conflicts */
 
 .array-element .index {
     position: absolute;
