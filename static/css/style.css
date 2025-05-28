@@ -6,21 +6,29 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #6c757d;
-    border-radius: 8px;
-    background: #ffffff;
-    color: #000000;
+    border: 3px solid var(--bs-border-color);
+    border-radius: 12px;
+    background: var(--bs-body-bg);
+    background-image: none !important;
+    background-gradient: none !important;
+    color: var(--bs-body-color);
     font-weight: bold;
     font-size: 1.5rem;
-    font-family: 'Courier New', monospace;
+    font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
     transition: all 0.3s ease;
-    margin: 2px;
+    position: relative;
+    cursor: pointer;
+    box-sizing: border-box;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .array-element.in-window {
     background: #007bff !important;
     color: white !important;
-    border: 2px solid #ffc107 !important;
+    border: 3px solid #ffc107 !important;
+    box-shadow: 0 0 12px rgba(255, 193, 7, 0.6) !important;
+    position: relative;
+    z-index: 5;
 }
 
 @keyframes windowPulseStrong {
