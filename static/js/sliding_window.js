@@ -227,8 +227,7 @@ class SlidingWindowVisualizer {
             }
         }
 
-        // Update sliding window overlay position
-        this.updateSlidingWindowOverlay(windowStart, this.windowSize);
+
 
         // Calculate and display result
         try {
@@ -260,25 +259,7 @@ class SlidingWindowVisualizer {
         }
     }
 
-    updateSlidingWindowOverlay(windowStart, windowSize) {
-        const overlay = document.getElementById('slidingWindowOverlay');
-        const firstElement = document.querySelector(`[data-index="${windowStart}"]`);
-        
-        if (overlay && firstElement) {
-            // Show the overlay
-            overlay.style.display = 'block';
-            
-            // Calculate position and size
-            const elementWidth = firstElement.offsetWidth;
-            const elementGap = 8; // gap-2 = 8px
-            const totalWidth = (elementWidth * windowSize) + (elementGap * (windowSize - 1));
-            const leftPosition = windowStart * (elementWidth + elementGap);
-            
-            // Position the overlay
-            overlay.style.left = `${leftPosition}px`;
-            overlay.style.width = `${totalWidth}px`;
-        }
-    }
+
 
     async updateVariableWindow() {
         // Variable window implementation - for now, we'll use a simple expanding window
