@@ -1,5 +1,13 @@
 /* Custom styles for sliding window visualizer */
 
+/* Force flat styling to eliminate gradient lines */
+.array-element,
+.array-element * {
+    background-image: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+}
+
 .array-element {
     width: 70px;
     height: 70px;
@@ -7,7 +15,7 @@
     align-items: center;
     justify-content: center;
     border: 3px solid var(--bs-border-color);
-    border-radius: 12px;
+    border-radius: 0px;
     background: var(--bs-body-bg) !important;
     background-image: none !important;
     background-gradient: none !important;
