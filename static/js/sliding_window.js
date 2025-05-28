@@ -660,7 +660,14 @@ class SlidingWindowVisualizer {
             return;
         }
         
-        const extension = this.codeLanguage === 'python' ? 'py' : 'txt';
+        const extensions = {
+            'python': 'py',
+            'java': 'java',
+            'javascript': 'js',
+            'cpp': 'cpp'
+        };
+        
+        const extension = extensions[this.codeLanguage] || 'txt';
         const filename = `${this.algorithmName}.${extension}`;
         
         const blob = new Blob([this.generatedCode], { type: 'text/plain' });

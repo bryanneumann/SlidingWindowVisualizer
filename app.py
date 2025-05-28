@@ -104,6 +104,931 @@ def generate_code():
         language = data.get('language', 'python')
         
         code_templates = {
+            'java': {
+                'fixed': {
+                    'sum': f'''import java.util.*;
+
+public class SlidingWindowSum {{
+    public static int maxSumSubarray(int[] arr, int k) {{
+        if (arr.length < k) {{
+            return -1;
+        }}
+        
+        // Calculate sum of first window
+        int windowSum = 0;
+        for (int i = 0; i < k; i++) {{
+            windowSum += arr[i];
+        }}
+        int maxSum = windowSum;
+        
+        // Slide the window
+        for (int i = k; i < arr.length; i++) {{
+            // Remove first element of previous window and add current element
+            windowSum = windowSum - arr[i - k] + arr[i];
+            maxSum = Math.max(maxSum, windowSum);
+        }}
+        
+        return maxSum;
+    }}
+    
+    public static void main(String[] args) {{
+        int[] arr = {{1, 2, 3, 4, 5, 6, 7, 8}};
+        int result = maxSumSubarray(arr, {window_size});
+        System.out.println("Maximum sum of subarray of size {window_size}: " + result);
+    }}
+}}''',
+                    
+                    'max': f'''import java.util.*;
+
+public class SlidingWindowMaximum {{
+    public static List<Integer> maxInWindows(int[] arr, int k) {{
+        if (arr.length < k) {{
+            return new ArrayList<>();
+        }}
+        
+        Deque<Integer> deque = new ArrayDeque<>();
+        List<Integer> result = new ArrayList<>();
+        
+        for (int i = 0; i < arr.length; i++) {{
+            // Remove elements outside current window
+            while (!deque.isEmpty() && deque.peekFirst() <= i - k) {{
+                deque.pollFirst();
+            }}
+            
+            // Remove smaller elements from rear
+            while (!deque.isEmpty() && arr[deque.peekLast()] <= arr[i]) {{
+                deque.pollLast();
+            }}
+            
+            deque.offerLast(i);
+            
+            // Add maximum of current window to result
+            if (i >= k - 1) {{
+                result.add(arr[deque.peekFirst()]);
+            }}
+        }}
+        
+        return result;
+    }}
+    
+    public static void main(String[] args) {{
+        int[] arr = {{1, 2, 3, 4, 5, 6, 7, 8}};
+        List<Integer> result = maxInWindows(arr, {window_size});
+        System.out.println("Maximum in each window of size {window_size}: " + result);
+    }}
+}}''',
+                    
+                    'min': f'''import java.util.*;
+
+public class SlidingWindowMinimum {{
+    public static List<Integer> minInWindows(int[] arr, int k) {{
+        if (arr.length < k) {{
+            return new ArrayList<>();
+        }}
+        
+        Deque<Integer> deque = new ArrayDeque<>();
+        List<Integer> result = new ArrayList<>();
+        
+        for (int i = 0; i < arr.length; i++) {{
+            // Remove elements outside current window
+            while (!deque.isEmpty() && deque.peekFirst() <= i - k) {{
+                deque.pollFirst();
+            }}
+            
+            // Remove larger elements from rear
+            while (!deque.isEmpty() && arr[deque.peekLast()] >= arr[i]) {{
+                deque.pollLast();
+            }}
+            
+            deque.offerLast(i);
+            
+            // Add minimum of current window to result
+            if (i >= k - 1) {{
+                result.add(arr[deque.peekFirst()]);
+            }}
+        }}
+        
+        return result;
+    }}
+    
+    public static void main(String[] args) {{
+        int[] arr = {{1, 2, 3, 4, 5, 6, 7, 8}};
+        List<Integer> result = minInWindows(arr, {window_size});
+        System.out.println("Minimum in each window of size {window_size}: " + result);
+    }}
+}}''',
+                    
+                    'avg': f'''import java.util.*;
+
+public class SlidingWindowAverage {{
+    public static List<Double> averageInWindows(int[] arr, int k) {{
+        if (arr.length < k) {{
+            return new ArrayList<>();
+        }}
+        
+        List<Double> result = new ArrayList<>();
+        double windowSum = 0;
+        
+        // Calculate sum of first window
+        for (int i = 0; i < k; i++) {{
+            windowSum += arr[i];
+        }}
+        result.add(windowSum / k);
+        
+        // Slide the window
+        for (int i = k; i < arr.length; i++) {{
+            windowSum = windowSum - arr[i - k] + arr[i];
+            result.add(windowSum / k);
+        }}
+        
+        return result;
+    }}
+    
+    public static void main(String[] args) {{
+        int[] arr = {{1, 2, 3, 4, 5, 6, 7, 8}};
+        List<Double> result = averageInWindows(arr, {window_size});
+        System.out.println("Average of each window of size {window_size}: " + result);
+    }}
+}}'''
+                },
+                'variable': {
+                    'sum': '''import java.util.*;
+
+public class VariableWindowSum {
+    public static int[] subarrayWithSum(int[] arr, int target) {
+        int left = 0;
+        int currentSum = 0;
+        
+        for (int right = 0; right < arr.length; right++) {
+            currentSum += arr[right];
+            
+            // Shrink window while sum is greater than target
+            while (currentSum > target && left <= right) {
+                currentSum -= arr[left];
+                left++;
+            }
+            
+            // Check if we found the target sum
+            if (currentSum == target) {
+                return Arrays.copyOfRange(arr, left, right + 1);
+            }
+        }
+        
+        return new int[0]; // No subarray found
+    }
+    
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 4, 5, 6, 7, 8};
+        int target = 15;
+        int[] result = subarrayWithSum(arr, target);
+        System.out.println("Subarray with sum " + target + ": " + Arrays.toString(result));
+    }
+}''',
+                    
+                    'max': '''import java.util.*;
+
+public class VariableWindowMax {
+    public static int[] longestSubarrayWithCondition(int[] arr, int maxSum) {
+        int left = 0;
+        int maxLength = 0;
+        int bestStart = 0, bestEnd = -1;
+        
+        for (int right = 0; right < arr.length; right++) {
+            int currentSum = 0;
+            for (int i = left; i <= right; i++) {
+                currentSum += arr[i];
+            }
+            
+            // Shrink window while sum exceeds maxSum
+            while (currentSum > maxSum && left <= right) {
+                left++;
+                if (left <= right) {
+                    currentSum = 0;
+                    for (int i = left; i <= right; i++) {
+                        currentSum += arr[i];
+                    }
+                }
+            }
+            
+            // Update maximum length if current window is valid
+            int currentLength = right - left + 1;
+            if (currentLength > maxLength) {
+                maxLength = currentLength;
+                bestStart = left;
+                bestEnd = right;
+            }
+        }
+        
+        return bestEnd >= bestStart ? Arrays.copyOfRange(arr, bestStart, bestEnd + 1) : new int[0];
+    }
+    
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 4, 5, 6, 7, 8};
+        int maxSum = 10;
+        int[] result = longestSubarrayWithCondition(arr, maxSum);
+        System.out.println("Longest subarray with sum <= " + maxSum + ": " + Arrays.toString(result));
+    }
+}''',
+                    
+                    'min': '''import java.util.*;
+
+public class MinimumWindowSubstring {
+    public static String minWindow(String s, String t) {
+        if (s.length() < t.length()) {
+            return "";
+        }
+        
+        Map<Character, Integer> targetCount = new HashMap<>();
+        for (char c : t.toCharArray()) {
+            targetCount.put(c, targetCount.getOrDefault(c, 0) + 1);
+        }
+        
+        int required = targetCount.size();
+        int left = 0, right = 0;
+        int formed = 0;
+        Map<Character, Integer> windowCounts = new HashMap<>();
+        
+        int minLen = Integer.MAX_VALUE;
+        int minLeft = 0;
+        
+        while (right < s.length()) {
+            char character = s.charAt(right);
+            windowCounts.put(character, windowCounts.getOrDefault(character, 0) + 1);
+            
+            if (targetCount.containsKey(character) && 
+                windowCounts.get(character).intValue() == targetCount.get(character).intValue()) {
+                formed++;
+            }
+            
+            while (left <= right && formed == required) {
+                if (right - left + 1 < minLen) {
+                    minLen = right - left + 1;
+                    minLeft = left;
+                }
+                
+                char leftChar = s.charAt(left);
+                windowCounts.put(leftChar, windowCounts.get(leftChar) - 1);
+                if (targetCount.containsKey(leftChar) && 
+                    windowCounts.get(leftChar) < targetCount.get(leftChar)) {
+                    formed--;
+                }
+                
+                left++;
+            }
+            
+            right++;
+        }
+        
+        return minLen == Integer.MAX_VALUE ? "" : s.substring(minLeft, minLeft + minLen);
+    }
+    
+    public static void main(String[] args) {
+        String s = "ADOBECODEBANC";
+        String t = "ABC";
+        String result = minWindow(s, t);
+        System.out.println("Minimum window substring: " + result);
+    }
+}''',
+                    
+                    'avg': '''import java.util.*;
+
+public class VariableWindowAverage {
+    public static int[] longestSubarrayWithAvg(int[] arr, double threshold) {
+        int maxLength = 0;
+        int bestStart = 0, bestEnd = -1;
+        
+        for (int start = 0; start < arr.length; start++) {
+            int currentSum = 0;
+            for (int end = start; end < arr.length; end++) {
+                currentSum += arr[end];
+                int currentLength = end - start + 1;
+                double currentAvg = (double) currentSum / currentLength;
+                
+                if (currentAvg >= threshold && currentLength > maxLength) {
+                    maxLength = currentLength;
+                    bestStart = start;
+                    bestEnd = end;
+                }
+            }
+        }
+        
+        return bestEnd >= bestStart ? Arrays.copyOfRange(arr, bestStart, bestEnd + 1) : new int[0];
+    }
+    
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 4, 5, 6, 7, 8};
+        double threshold = 4.5;
+        int[] result = longestSubarrayWithAvg(arr, threshold);
+        System.out.println("Longest subarray with avg >= " + threshold + ": " + Arrays.toString(result));
+    }
+}'''
+                }
+            },
+            'javascript': {
+                'fixed': {
+                    'sum': f'''function slidingWindowSum(arr, k = {window_size}) {{
+    if (arr.length < k) {{
+        return null;
+    }}
+    
+    // Calculate sum of first window
+    let windowSum = 0;
+    for (let i = 0; i < k; i++) {{
+        windowSum += arr[i];
+    }}
+    let maxSum = windowSum;
+    
+    // Slide the window
+    for (let i = k; i < arr.length; i++) {{
+        // Remove first element of previous window and add current element
+        windowSum = windowSum - arr[i - k] + arr[i];
+        maxSum = Math.max(maxSum, windowSum);
+    }}
+    
+    return maxSum;
+}}
+
+// Example usage:
+const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+const result = slidingWindowSum(arr, {window_size});
+console.log(`Maximum sum of subarray of size {window_size}: ${{result}}`);''',
+                    
+                    'max': f'''function slidingWindowMaximum(arr, k = {window_size}) {{
+    if (arr.length < k) {{
+        return [];
+    }}
+    
+    const deque = [];
+    const result = [];
+    
+    for (let i = 0; i < arr.length; i++) {{
+        // Remove elements outside current window
+        while (deque.length > 0 && deque[0] <= i - k) {{
+            deque.shift();
+        }}
+        
+        // Remove smaller elements from rear
+        while (deque.length > 0 && arr[deque[deque.length - 1]] <= arr[i]) {{
+            deque.pop();
+        }}
+        
+        deque.push(i);
+        
+        // Add maximum of current window to result
+        if (i >= k - 1) {{
+            result.push(arr[deque[0]]);
+        }}
+    }}
+    
+    return result;
+}}
+
+// Example usage:
+const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+const result = slidingWindowMaximum(arr, {window_size});
+console.log(`Maximum in each window of size {window_size}: ${{result}}`);''',
+                    
+                    'min': f'''function slidingWindowMinimum(arr, k = {window_size}) {{
+    if (arr.length < k) {{
+        return [];
+    }}
+    
+    const deque = [];
+    const result = [];
+    
+    for (let i = 0; i < arr.length; i++) {{
+        // Remove elements outside current window
+        while (deque.length > 0 && deque[0] <= i - k) {{
+            deque.shift();
+        }}
+        
+        // Remove larger elements from rear
+        while (deque.length > 0 && arr[deque[deque.length - 1]] >= arr[i]) {{
+            deque.pop();
+        }}
+        
+        deque.push(i);
+        
+        // Add minimum of current window to result
+        if (i >= k - 1) {{
+            result.push(arr[deque[0]]);
+        }}
+    }}
+    
+    return result;
+}}
+
+// Example usage:
+const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+const result = slidingWindowMinimum(arr, {window_size});
+console.log(`Minimum in each window of size {window_size}: ${{result}}`);''',
+                    
+                    'avg': f'''function slidingWindowAverage(arr, k = {window_size}) {{
+    if (arr.length < k) {{
+        return [];
+    }}
+    
+    const result = [];
+    let windowSum = 0;
+    
+    // Calculate sum of first window
+    for (let i = 0; i < k; i++) {{
+        windowSum += arr[i];
+    }}
+    result.push(windowSum / k);
+    
+    // Slide the window
+    for (let i = k; i < arr.length; i++) {{
+        windowSum = windowSum - arr[i - k] + arr[i];
+        result.push(windowSum / k);
+    }}
+    
+    return result;
+}}
+
+// Example usage:
+const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+const result = slidingWindowAverage(arr, {window_size});
+console.log(`Average of each window of size {window_size}: ${{result}}`);'''
+                },
+                'variable': {
+                    'sum': '''function variableWindowSum(arr, target) {
+    let left = 0;
+    let currentSum = 0;
+    
+    for (let right = 0; right < arr.length; right++) {
+        currentSum += arr[right];
+        
+        // Shrink window while sum is greater than target
+        while (currentSum > target && left <= right) {
+            currentSum -= arr[left];
+            left++;
+        }
+        
+        // Check if we found the target sum
+        if (currentSum === target) {
+            return arr.slice(left, right + 1);
+        }
+    }
+    
+    return null; // No subarray found
+}
+
+// Example usage:
+const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+const target = 15;
+const result = variableWindowSum(arr, target);
+console.log(`Subarray with sum ${target}: ${result}`);''',
+                    
+                    'max': '''function longestSubarrayWithCondition(arr, maxSum) {
+    let left = 0;
+    let maxLength = 0;
+    let bestWindow = [];
+    
+    for (let right = 0; right < arr.length; right++) {
+        let currentSum = arr.slice(left, right + 1).reduce((a, b) => a + b, 0);
+        
+        // Shrink window while sum exceeds maxSum
+        while (currentSum > maxSum && left <= right) {
+            left++;
+            if (left <= right) {
+                currentSum = arr.slice(left, right + 1).reduce((a, b) => a + b, 0);
+            }
+        }
+        
+        // Update maximum length if current window is valid
+        const currentLength = right - left + 1;
+        if (currentLength > maxLength) {
+            maxLength = currentLength;
+            bestWindow = arr.slice(left, right + 1);
+        }
+    }
+    
+    return bestWindow;
+}
+
+// Example usage:
+const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+const maxSum = 10;
+const result = longestSubarrayWithCondition(arr, maxSum);
+console.log(`Longest subarray with sum <= ${maxSum}: ${result}`);''',
+                    
+                    'min': '''function minimumWindowSubstring(s, t) {
+    if (s.length < t.length) {
+        return "";
+    }
+    
+    const targetCount = {};
+    for (const char of t) {
+        targetCount[char] = (targetCount[char] || 0) + 1;
+    }
+    
+    const required = Object.keys(targetCount).length;
+    let left = 0, right = 0;
+    let formed = 0;
+    const windowCounts = {};
+    
+    let minLen = Infinity;
+    let minLeft = 0;
+    
+    while (right < s.length) {
+        const character = s[right];
+        windowCounts[character] = (windowCounts[character] || 0) + 1;
+        
+        if (targetCount[character] && windowCounts[character] === targetCount[character]) {
+            formed++;
+        }
+        
+        while (left <= right && formed === required) {
+            if (right - left + 1 < minLen) {
+                minLen = right - left + 1;
+                minLeft = left;
+            }
+            
+            const leftChar = s[left];
+            windowCounts[leftChar]--;
+            if (targetCount[leftChar] && windowCounts[leftChar] < targetCount[leftChar]) {
+                formed--;
+            }
+            
+            left++;
+        }
+        
+        right++;
+    }
+    
+    return minLen === Infinity ? "" : s.substring(minLeft, minLeft + minLen);
+}
+
+// Example usage:
+const s = "ADOBECODEBANC";
+const t = "ABC";
+const result = minimumWindowSubstring(s, t);
+console.log(`Minimum window substring: ${result}`);''',
+                    
+                    'avg': '''function variableWindowAverageThreshold(arr, threshold) {
+    let maxLength = 0;
+    let bestWindow = [];
+    
+    for (let start = 0; start < arr.length; start++) {
+        let currentSum = 0;
+        for (let end = start; end < arr.length; end++) {
+            currentSum += arr[end];
+            const currentLength = end - start + 1;
+            const currentAvg = currentSum / currentLength;
+            
+            if (currentAvg >= threshold && currentLength > maxLength) {
+                maxLength = currentLength;
+                bestWindow = arr.slice(start, end + 1);
+            }
+        }
+    }
+    
+    return bestWindow;
+}
+
+// Example usage:
+const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+const threshold = 4.5;
+const result = variableWindowAverageThreshold(arr, threshold);
+console.log(`Longest subarray with avg >= ${threshold}: ${result}`);'''
+                }
+            },
+            'cpp': {
+                'fixed': {
+                    'sum': f'''#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int slidingWindowSum(vector<int>& arr, int k = {window_size}) {{
+    if (arr.size() < k) {{
+        return -1;
+    }}
+    
+    // Calculate sum of first window
+    int windowSum = 0;
+    for (int i = 0; i < k; i++) {{
+        windowSum += arr[i];
+    }}
+    int maxSum = windowSum;
+    
+    // Slide the window
+    for (int i = k; i < arr.size(); i++) {{
+        // Remove first element of previous window and add current element
+        windowSum = windowSum - arr[i - k] + arr[i];
+        maxSum = max(maxSum, windowSum);
+    }}
+    
+    return maxSum;
+}}
+
+int main() {{
+    vector<int> arr = {{1, 2, 3, 4, 5, 6, 7, 8}};
+    int result = slidingWindowSum(arr, {window_size});
+    cout << "Maximum sum of subarray of size {window_size}: " << result << endl;
+    return 0;
+}}''',
+                    
+                    'max': f'''#include <iostream>
+#include <vector>
+#include <deque>
+using namespace std;
+
+vector<int> slidingWindowMaximum(vector<int>& arr, int k = {window_size}) {{
+    if (arr.size() < k) {{
+        return {{}};
+    }}
+    
+    deque<int> dq;
+    vector<int> result;
+    
+    for (int i = 0; i < arr.size(); i++) {{
+        // Remove elements outside current window
+        while (!dq.empty() && dq.front() <= i - k) {{
+            dq.pop_front();
+        }}
+        
+        // Remove smaller elements from rear
+        while (!dq.empty() && arr[dq.back()] <= arr[i]) {{
+            dq.pop_back();
+        }}
+        
+        dq.push_back(i);
+        
+        // Add maximum of current window to result
+        if (i >= k - 1) {{
+            result.push_back(arr[dq.front()]);
+        }}
+    }}
+    
+    return result;
+}}
+
+int main() {{
+    vector<int> arr = {{1, 2, 3, 4, 5, 6, 7, 8}};
+    vector<int> result = slidingWindowMaximum(arr, {window_size});
+    cout << "Maximum in each window of size {window_size}: ";
+    for (int x : result) cout << x << " ";
+    cout << endl;
+    return 0;
+}}''',
+                    
+                    'min': f'''#include <iostream>
+#include <vector>
+#include <deque>
+using namespace std;
+
+vector<int> slidingWindowMinimum(vector<int>& arr, int k = {window_size}) {{
+    if (arr.size() < k) {{
+        return {{}};
+    }}
+    
+    deque<int> dq;
+    vector<int> result;
+    
+    for (int i = 0; i < arr.size(); i++) {{
+        // Remove elements outside current window
+        while (!dq.empty() && dq.front() <= i - k) {{
+            dq.pop_front();
+        }}
+        
+        // Remove larger elements from rear
+        while (!dq.empty() && arr[dq.back()] >= arr[i]) {{
+            dq.pop_back();
+        }}
+        
+        dq.push_back(i);
+        
+        // Add minimum of current window to result
+        if (i >= k - 1) {{
+            result.push_back(arr[dq.front()]);
+        }}
+    }}
+    
+    return result;
+}}
+
+int main() {{
+    vector<int> arr = {{1, 2, 3, 4, 5, 6, 7, 8}};
+    vector<int> result = slidingWindowMinimum(arr, {window_size});
+    cout << "Minimum in each window of size {window_size}: ";
+    for (int x : result) cout << x << " ";
+    cout << endl;
+    return 0;
+}}''',
+                    
+                    'avg': f'''#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<double> slidingWindowAverage(vector<int>& arr, int k = {window_size}) {{
+    if (arr.size() < k) {{
+        return {{}};
+    }}
+    
+    vector<double> result;
+    double windowSum = 0;
+    
+    // Calculate sum of first window
+    for (int i = 0; i < k; i++) {{
+        windowSum += arr[i];
+    }}
+    result.push_back(windowSum / k);
+    
+    // Slide the window
+    for (int i = k; i < arr.size(); i++) {{
+        windowSum = windowSum - arr[i - k] + arr[i];
+        result.push_back(windowSum / k);
+    }}
+    
+    return result;
+}}
+
+int main() {{
+    vector<int> arr = {{1, 2, 3, 4, 5, 6, 7, 8}};
+    vector<double> result = slidingWindowAverage(arr, {window_size});
+    cout << "Average of each window of size {window_size}: ";
+    for (double x : result) cout << x << " ";
+    cout << endl;
+    return 0;
+}}'''
+                },
+                'variable': {
+                    'sum': '''#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> variableWindowSum(vector<int>& arr, int target) {
+    int left = 0;
+    int currentSum = 0;
+    
+    for (int right = 0; right < arr.size(); right++) {
+        currentSum += arr[right];
+        
+        // Shrink window while sum is greater than target
+        while (currentSum > target && left <= right) {
+            currentSum -= arr[left];
+            left++;
+        }
+        
+        // Check if we found the target sum
+        if (currentSum == target) {
+            return vector<int>(arr.begin() + left, arr.begin() + right + 1);
+        }
+    }
+    
+    return {}; // No subarray found
+}
+
+int main() {
+    vector<int> arr = {1, 2, 3, 4, 5, 6, 7, 8};
+    int target = 15;
+    vector<int> result = variableWindowSum(arr, target);
+    cout << "Subarray with sum " << target << ": ";
+    for (int x : result) cout << x << " ";
+    cout << endl;
+    return 0;
+}''',
+                    
+                    'max': '''#include <iostream>
+#include <vector>
+#include <numeric>
+using namespace std;
+
+vector<int> longestSubarrayWithCondition(vector<int>& arr, int maxSum) {
+    int left = 0;
+    int maxLength = 0;
+    vector<int> bestWindow;
+    
+    for (int right = 0; right < arr.size(); right++) {
+        int currentSum = accumulate(arr.begin() + left, arr.begin() + right + 1, 0);
+        
+        // Shrink window while sum exceeds maxSum
+        while (currentSum > maxSum && left <= right) {
+            left++;
+            if (left <= right) {
+                currentSum = accumulate(arr.begin() + left, arr.begin() + right + 1, 0);
+            }
+        }
+        
+        // Update maximum length if current window is valid
+        int currentLength = right - left + 1;
+        if (currentLength > maxLength) {
+            maxLength = currentLength;
+            bestWindow = vector<int>(arr.begin() + left, arr.begin() + right + 1);
+        }
+    }
+    
+    return bestWindow;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 3, 4, 5, 6, 7, 8};
+    int maxSum = 10;
+    vector<int> result = longestSubarrayWithCondition(arr, maxSum);
+    cout << "Longest subarray with sum <= " << maxSum << ": ";
+    for (int x : result) cout << x << " ";
+    cout << endl;
+    return 0;
+}''',
+                    
+                    'min': '''#include <iostream>
+#include <string>
+#include <unordered_map>
+using namespace std;
+
+string minimumWindowSubstring(string s, string t) {
+    if (s.length() < t.length()) {
+        return "";
+    }
+    
+    unordered_map<char, int> targetCount;
+    for (char c : t) {
+        targetCount[c]++;
+    }
+    
+    int required = targetCount.size();
+    int left = 0, right = 0;
+    int formed = 0;
+    unordered_map<char, int> windowCounts;
+    
+    int minLen = INT_MAX;
+    int minLeft = 0;
+    
+    while (right < s.length()) {
+        char character = s[right];
+        windowCounts[character]++;
+        
+        if (targetCount.count(character) && windowCounts[character] == targetCount[character]) {
+            formed++;
+        }
+        
+        while (left <= right && formed == required) {
+            if (right - left + 1 < minLen) {
+                minLen = right - left + 1;
+                minLeft = left;
+            }
+            
+            char leftChar = s[left];
+            windowCounts[leftChar]--;
+            if (targetCount.count(leftChar) && windowCounts[leftChar] < targetCount[leftChar]) {
+                formed--;
+            }
+            
+            left++;
+        }
+        
+        right++;
+    }
+    
+    return minLen == INT_MAX ? "" : s.substr(minLeft, minLen);
+}
+
+int main() {
+    string s = "ADOBECODEBANC";
+    string t = "ABC";
+    string result = minimumWindowSubstring(s, t);
+    cout << "Minimum window substring: " << result << endl;
+    return 0;
+}''',
+                    
+                    'avg': '''#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> variableWindowAverageThreshold(vector<int>& arr, double threshold) {
+    int maxLength = 0;
+    vector<int> bestWindow;
+    
+    for (int start = 0; start < arr.size(); start++) {
+        int currentSum = 0;
+        for (int end = start; end < arr.size(); end++) {
+            currentSum += arr[end];
+            int currentLength = end - start + 1;
+            double currentAvg = (double)currentSum / currentLength;
+            
+            if (currentAvg >= threshold && currentLength > maxLength) {
+                maxLength = currentLength;
+                bestWindow = vector<int>(arr.begin() + start, arr.begin() + end + 1);
+            }
+        }
+    }
+    
+    return bestWindow;
+}
+
+int main() {
+    vector<int> arr = {1, 2, 3, 4, 5, 6, 7, 8};
+    double threshold = 4.5;
+    vector<int> result = variableWindowAverageThreshold(arr, threshold);
+    cout << "Longest subarray with avg >= " << threshold << ": ";
+    for (int x : result) cout << x << " ";
+    cout << endl;
+    return 0;
+}'''
+                }
+            },
             'python': {
                 'fixed': {
                     'sum': f'''def sliding_window_sum(arr, k={window_size}):
