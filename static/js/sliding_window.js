@@ -20,22 +20,38 @@ class SlidingWindowVisualizer {
     }
 
     initializeEventListeners() {
-        // Setup visualization
-        document.getElementById('setupVisualization').addEventListener('click', () => {
-            this.setupVisualization();
+        // Auto-setup visualization when input changes
+        document.getElementById('inputArray').addEventListener('blur', () => {
+            if (this.validateInput()) {
+                this.setupVisualization();
+            }
+        });
+        
+        document.getElementById('algorithm').addEventListener('change', () => {
+            if (this.elements.length > 0) {
+                this.setupVisualization();
+            }
+        });
+        
+        document.getElementById('windowType').addEventListener('change', () => {
+            if (this.elements.length > 0) {
+                this.setupVisualization();
+            }
+        });
+        
+        document.getElementById('windowSize').addEventListener('change', () => {
+            if (this.elements.length > 0) {
+                this.setupVisualization();
+            }
         });
 
-        // Window type change
-        document.getElementById('windowType').addEventListener('change', (e) => {
-            this.windowType = e.target.value;
-            this.toggleWindowSizeInput();
-        });
 
-        // Algorithm change
+
+        // Algorithm change - now includes auto-setup
         document.getElementById('algorithm').addEventListener('change', (e) => {
             this.algorithm = e.target.value;
             if (this.elements.length > 0) {
-                this.updateVisualization();
+                this.setupVisualization();
             }
         });
 
