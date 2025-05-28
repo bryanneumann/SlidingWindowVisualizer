@@ -194,11 +194,6 @@ class SlidingWindowVisualizer {
     }
 
     async updateVisualization() {
-        // Clear all highlighting
-        document.querySelectorAll('.array-element').forEach(el => {
-            el.classList.remove('in-window', 'window-start', 'window-end', 'step-animation');
-        });
-
         if (this.windowType === 'fixed') {
             await this.updateFixedWindow();
         } else {
@@ -217,18 +212,23 @@ class SlidingWindowVisualizer {
         const windowStart = this.currentStep;
         const windowEnd = windowStart + this.windowSize - 1;
 
-        // Highlight window elements all at once for clearer sliding motion
+        // Clear all previous window styling
+        document.querySelectorAll('.array-element').forEach(el => {
+            el.classList.remove('in-window', 'window-start', 'window-end');
+        });
+
+        // Apply window styling to current window position
         for (let i = windowStart; i <= windowEnd && i < this.elements.length; i++) {
             const element = document.querySelector(`[data-index="${i}"]`);
             if (element) {
                 element.classList.add('in-window');
                 if (i === windowStart) element.classList.add('window-start');
                 if (i === windowEnd) element.classList.add('window-end');
-                
-                // Add animation immediately - no stagger
-                element.classList.add('step-animation');
             }
         }
+
+        // Update sliding window overlay position
+        this.updateSlidingWindowOverlay(windowStart, this.windowSize);
 
         // Calculate and display result
         try {
@@ -257,6 +257,26 @@ class SlidingWindowVisualizer {
         } catch (error) {
             console.error('Error calculating step:', error);
             this.showError('Failed to calculate step result');
+        }
+    }
+
+    updateSlidingWindowOverlay(windowStart, windowSize) {
+        const overlay = document.getElementById('slidingWindowOverlay');
+        const firstElement = document.querySelector(`[data-index="${windowStart}"]`);
+        
+        if (overlay && firstElement) {
+            // Show the overlay
+            overlay.style.display = 'block';
+            
+            // Calculate position and size
+            const elementWidth = firstElement.offsetWidth;
+            const elementGap = 8; // gap-2 = 8px
+            const totalWidth = (elementWidth * windowSize) + (elementGap * (windowSize - 1));
+            const leftPosition = windowStart * (elementWidth + elementGap);
+            
+            // Position the overlay
+            overlay.style.left = `${leftPosition}px`;
+            overlay.style.width = `${totalWidth}px`;
         }
     }
 
