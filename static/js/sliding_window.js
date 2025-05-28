@@ -1,5 +1,5 @@
 /**
- * Sliding Window Algorithm Visualizer
+ * Sliding Window Technique Visualizer
  * Interactive demonstration of sliding window techniques
  */
 
@@ -563,7 +563,7 @@ class SlidingWindowVisualizer {
         this.generateCode();
     }
 
-    updateAlgorithmInfo() {
+    updateTechniqueInfo() {
         const algorithm = this.algorithm || document.getElementById('algorithm').value;
         const windowType = this.windowType || document.getElementById('windowType').value;
         const windowSize = this.windowSize || parseInt(document.getElementById('windowSize').value);
