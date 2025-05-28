@@ -188,8 +188,14 @@ class SlidingWindowVisualizer {
                 ${element}
                 <div class="index">${index}</div>
                 <div class="window-indicator"></div>
+                <div class="window-connection"></div>
             `;
             elementDiv.setAttribute('data-index', index);
+            
+            // Add staggered animation delay for initial render
+            elementDiv.style.animationDelay = `${index * 0.1}s`;
+            elementDiv.classList.add('element-fade-in');
+            
             container.appendChild(elementDiv);
         });
     }
@@ -309,12 +315,20 @@ class SlidingWindowVisualizer {
 
         currentWindowEl.innerHTML = `
             <strong>Window:</strong> [${window.join(', ')}]<br>
-            <strong>Result:</strong> ${result}
+            <strong>Result:</strong> <span class="result-value">${result}</span>
         `;
 
         calculationEl.innerHTML = `
             <div class="calculation-step">${description}</div>
         `;
+
+        // Add a subtle celebration effect for results
+        const resultElement = currentWindowEl.querySelector('.result-value');
+        if (resultElement) {
+            resultElement.addEventListener('animationend', () => {
+                resultElement.style.animation = '';
+            });
+        }
     }
 
     updateProgress() {
