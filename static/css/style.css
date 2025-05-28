@@ -21,12 +21,13 @@
 }
 
 .array-element.in-window {
-    background: var(--bs-primary) !important;
-    color: var(--bs-white) !important;
-    border: 3px solid var(--bs-warning) !important;
+    background: #0d6efd !important;
+    color: #ffffff !important;
+    border: 3px solid #ffc107 !important;
     box-shadow: 0 0 20px rgba(255, 193, 7, 0.8) !important;
     position: relative;
     z-index: 5;
+    font-weight: bold !important;
 }
 
 @keyframes windowPulseStrong {
