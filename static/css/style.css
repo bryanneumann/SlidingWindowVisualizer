@@ -8,9 +8,16 @@
     justify-content: center;
     border: 3px solid var(--bs-border-color);
     border-radius: 12px;
-    background: var(--bs-body-bg);
+    background: var(--bs-body-bg) !important;
     background-image: none !important;
     background-gradient: none !important;
+    background-attachment: initial !important;
+    background-blend-mode: initial !important;
+    background-clip: initial !important;
+    background-origin: initial !important;
+    background-position: initial !important;
+    background-repeat: initial !important;
+    background-size: initial !important;
     color: var(--bs-body-color);
     font-weight: bold;
     font-size: 1.5rem;
@@ -24,11 +31,22 @@
 
 .array-element.in-window {
     background: #007bff !important;
+    background-image: none !important;
     color: white !important;
     border: 3px solid #ffc107 !important;
     box-shadow: 0 0 12px rgba(255, 193, 7, 0.6) !important;
     position: relative;
     z-index: 5;
+}
+
+.array-element::before,
+.array-element::after {
+    display: none !important;
+}
+
+.array-element.in-window::before,
+.array-element.in-window::after {
+    display: none !important;
 }
 
 @keyframes windowPulseStrong {
