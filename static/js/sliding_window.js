@@ -77,6 +77,11 @@ class SlidingWindowVisualizer {
             this.generateCode();
         });
 
+        // Language change - auto-generate code
+        document.getElementById('codeLanguage').addEventListener('change', () => {
+            this.generateCode();
+        });
+
         // Copy code
         document.getElementById('copyCodeBtn').addEventListener('click', () => {
             this.copyCodeToClipboard();
@@ -512,8 +517,9 @@ class SlidingWindowVisualizer {
         const modal = new bootstrap.Modal(document.getElementById('codeModal'));
         modal.show();
         
-        // Update algorithm info based on current settings
+        // Update algorithm info and generate code immediately
         this.updateAlgorithmInfo();
+        this.generateCode();
     }
 
     updateAlgorithmInfo() {
