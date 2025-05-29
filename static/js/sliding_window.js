@@ -142,11 +142,21 @@ class SlidingWindowVisualizer {
         }
 
         try {
-            const elements = input.split(',').map(x => parseInt(x.trim())).filter(x => !isNaN(x));
-            if (elements.length === 0) {
-                if (setupBtn) setupBtn.disabled = true;
-                return false;
+            if (this.algorithm === 'longest_substring') {
+                // For string input, just check if it's not empty
+                if (input.length === 0) {
+                    if (setupBtn) setupBtn.disabled = true;
+                    return false;
+                }
+            } else {
+                // For array input, validate numbers
+                const elements = input.split(',').map(x => parseInt(x.trim())).filter(x => !isNaN(x));
+                if (elements.length === 0) {
+                    if (setupBtn) setupBtn.disabled = true;
+                    return false;
+                }
             }
+            
             if (setupBtn) setupBtn.disabled = false;
             return true;
         } catch (error) {
@@ -162,6 +172,9 @@ class SlidingWindowVisualizer {
         this.windowSize = parseInt(document.getElementById('windowSize').value) || 3;
 
         try {
+            // Determine input type based on algorithm
+            const inputType = this.algorithm === 'longest_substring' ? 'string' : 'array';
+            
             // Validate input
             const response = await fetch('/api/validate_input', {
                 method: 'POST',
@@ -170,7 +183,7 @@ class SlidingWindowVisualizer {
                 },
                 body: JSON.stringify({
                     input: input,
-                    type: 'array'
+                    type: inputType
                 })
             });
 
