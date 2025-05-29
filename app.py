@@ -53,8 +53,8 @@ def calculate_step():
     try:
         data = request.get_json()
         elements = data.get('elements', [])
-        window_start = data.get('window_start', 0)
-        window_size = data.get('window_size', 1)
+        window_start = int(data.get('window_start', 0))
+        window_size = int(data.get('window_size', 1))
         algorithm = data.get('algorithm', 'sum')
         
         # Validate inputs
