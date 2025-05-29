@@ -96,6 +96,26 @@ def calculate_step():
                         duplicates.append(char)
                     seen.add(char)
                 description = f"Window '{window_str}' has repeating characters: {', '.join(set(duplicates))}"
+        elif algorithm == 'permutation_in_string':
+            # For permutation in string, check if current window is a permutation of the pattern
+            window_str = ''.join(window)
+            pattern = data.get('pattern', '')
+            
+            if len(window_str) == len(pattern):
+                # Check if window is a permutation of pattern
+                from collections import Counter
+                window_count = Counter(window_str)
+                pattern_count = Counter(pattern)
+                
+                if window_count == pattern_count:
+                    result = 1  # Found permutation
+                    description = f"Window '{window_str}' is a permutation of pattern '{pattern}' ✓"
+                else:
+                    result = 0  # Not a permutation
+                    description = f"Window '{window_str}' is not a permutation of pattern '{pattern}'"
+            else:
+                result = 0
+                description = f"Window '{window_str}' (length {len(window_str)}) doesn't match pattern length {len(pattern)}"
         else:
             return jsonify({'error': 'Unknown algorithm'})
         

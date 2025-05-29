@@ -100,9 +100,11 @@ class SlidingWindowVisualizer {
         const inputLabel = document.getElementById('inputLabel');
         const inputArray = document.getElementById('inputArray');
         const windowType = document.getElementById('windowType');
+        const patternContainer = document.getElementById('patternContainer');
+        const windowSizeContainer = document.getElementById('windowSizeContainer');
         
         if (this.algorithm === 'longest_substring') {
-            // Switch to string mode
+            // Switch to string mode for longest substring
             if (inputLabel) {
                 inputLabel.textContent = 'Input String';
             }
@@ -114,6 +116,28 @@ class SlidingWindowVisualizer {
                 windowType.value = 'variable';
                 this.windowType = 'variable';
                 this.toggleWindowSizeInput();
+            }
+            if (patternContainer) {
+                patternContainer.style.display = 'none';
+            }
+        } else if (this.algorithm === 'permutation_in_string') {
+            // Switch to string mode with pattern for permutation
+            if (inputLabel) {
+                inputLabel.textContent = 'Main String';
+            }
+            if (inputArray) {
+                inputArray.placeholder = 'eidbaooo';
+                inputArray.value = 'eidbaooo';
+            }
+            if (windowType) {
+                windowType.value = 'fixed';
+                this.windowType = 'fixed';
+            }
+            if (patternContainer) {
+                patternContainer.style.display = 'block';
+            }
+            if (windowSizeContainer) {
+                windowSizeContainer.style.display = 'none';
             }
         } else {
             // Switch to array mode
@@ -129,6 +153,9 @@ class SlidingWindowVisualizer {
                 this.windowType = 'fixed';
                 this.toggleWindowSizeInput();
             }
+            if (patternContainer) {
+                patternContainer.style.display = 'none';
+            }
         }
     }
 
@@ -142,7 +169,7 @@ class SlidingWindowVisualizer {
         }
 
         try {
-            if (this.algorithm === 'longest_substring') {
+            if (this.algorithm === 'longest_substring' || this.algorithm === 'permutation_in_string') {
                 // For string input, just check if it's not empty
                 if (input.length === 0) {
                     if (setupBtn) setupBtn.disabled = true;
@@ -173,7 +200,13 @@ class SlidingWindowVisualizer {
 
         try {
             // Determine input type based on algorithm
-            const inputType = this.algorithm === 'longest_substring' ? 'string' : 'array';
+            const inputType = (this.algorithm === 'longest_substring' || this.algorithm === 'permutation_in_string') ? 'string' : 'array';
+            
+            // For permutation in string, set window size to pattern length
+            if (this.algorithm === 'permutation_in_string') {
+                const pattern = document.getElementById('patternInput').value.trim();
+                this.windowSize = pattern.length;
+            }
             
             // Validate input
             const response = await fetch('/api/validate_input', {
@@ -295,17 +328,25 @@ class SlidingWindowVisualizer {
 
         // Calculate and display result
         try {
+            const requestBody = {
+                elements: this.elements,
+                window_start: windowStart,
+                window_size: this.windowSize,
+                algorithm: this.algorithm
+            };
+            
+            // Add pattern for permutation in string algorithm
+            if (this.algorithm === 'permutation_in_string') {
+                const pattern = document.getElementById('patternInput').value.trim();
+                requestBody.pattern = pattern;
+            }
+            
             const response = await fetch('/api/calculate_step', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    elements: this.elements,
-                    window_start: windowStart,
-                    window_size: this.windowSize,
-                    algorithm: this.algorithm
-                })
+                body: JSON.stringify(requestBody)
             });
 
             const result = await response.json();
@@ -695,14 +736,16 @@ class SlidingWindowVisualizer {
                 'max': `Fixed window with deque optimization to find maximum element in each window of size ${windowSize}. Time complexity: O(n), Space complexity: O(k).`,
                 'min': `Fixed window with deque optimization to find minimum element in each window of size ${windowSize}. Time complexity: O(n), Space complexity: O(k).`,
                 'avg': `Fixed window technique to calculate moving average with window size ${windowSize}. Time complexity: O(n), Space complexity: O(1).`,
-                'longest_substring': 'This problem uses variable window - switching to variable mode automatically.'
+                'longest_substring': 'This problem uses variable window - switching to variable mode automatically.',
+                'permutation_in_string': 'Fixed window technique to find if any permutation of pattern exists as substring. Uses sliding window with character frequency matching. Time complexity: O(n), Space complexity: O(m) where m is pattern length.'
             },
             'variable': {
                 'sum': 'Variable window technique to find subarray with target sum. Time complexity: O(n), Space complexity: O(1).',
                 'max': 'Variable window technique to find longest subarray satisfying a condition. Time complexity: O(n²), Space complexity: O(1).',
                 'min': 'Variable window technique for minimum window substring problem. Time complexity: O(n + m), Space complexity: O(n + m).',
                 'avg': 'Variable window technique to find longest subarray with average above threshold. Time complexity: O(n²), Space complexity: O(1).',
-                'longest_substring': 'Variable window technique to find longest substring without repeating characters using sliding window with hash map. Time complexity: O(n), Space complexity: O(min(m,n)) where m is charset size.'
+                'longest_substring': 'Variable window technique to find longest substring without repeating characters using sliding window with hash map. Time complexity: O(n), Space complexity: O(min(m,n)) where m is charset size.',
+                'permutation_in_string': 'Fixed window technique to find if any permutation of pattern exists as substring. Uses sliding window with character frequency matching. Time complexity: O(n), Space complexity: O(m) where m is pattern length.'
             }
         };
         
