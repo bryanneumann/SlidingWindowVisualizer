@@ -357,6 +357,67 @@ class SlidingWindowVisualizer {
         this.displayWindowInfo(window, result, description);
     }
 
+    async updateLongestSubstringWindow() {
+        // Initialize sliding window state for longest substring
+        if (!this.longestSubstringState) {
+            this.longestSubstringState = {
+                left: 0,
+                right: 0,
+                charMap: new Map(),
+                maxLength: 0,
+                maxStart: 0,
+                maxEnd: 0
+            };
+        }
+
+        const state = this.longestSubstringState;
+        
+        // Clear all previous styling
+        document.querySelectorAll('.array-element').forEach(el => {
+            el.classList.remove('in-window', 'window-start', 'window-end');
+        });
+
+        // Advance the algorithm one step
+        if (state.right < this.elements.length) {
+            const rightChar = this.elements[state.right];
+            
+            // If character already exists in window, move left pointer
+            if (state.charMap.has(rightChar) && state.charMap.get(rightChar) >= state.left) {
+                state.left = state.charMap.get(rightChar) + 1;
+            }
+            
+            // Add current character to map
+            state.charMap.set(rightChar, state.right);
+            
+            // Update max length if current window is longer
+            const currentLength = state.right - state.left + 1;
+            if (currentLength > state.maxLength) {
+                state.maxLength = currentLength;
+                state.maxStart = state.left;
+                state.maxEnd = state.right;
+            }
+            
+            // Highlight current window
+            for (let i = state.left; i <= state.right; i++) {
+                const element = document.querySelector(`[data-index="${i}"]`);
+                if (element) {
+                    element.classList.add('in-window');
+                    if (i === state.left) element.classList.add('window-start');
+                    if (i === state.right) element.classList.add('window-end');
+                }
+            }
+            
+            // Show current window and max found so far
+            const currentWindow = this.elements.slice(state.left, state.right + 1).join('');
+            const maxWindow = this.elements.slice(state.maxStart, state.maxEnd + 1).join('');
+            const description = `Current window: "${currentWindow}" (length: ${currentLength})\nLongest so far: "${maxWindow}" (length: ${state.maxLength})`;
+            
+            this.displayWindowInfo(this.elements.slice(state.left, state.right + 1), state.maxLength, description);
+            
+            state.right++;
+        }
+    }
+
     displayWindowInfo(window, result, description) {
         const currentWindowEl = document.getElementById('currentWindow');
         const calculationEl = document.getElementById('calculation');
@@ -459,6 +520,10 @@ class SlidingWindowVisualizer {
     reset() {
         this.pause();
         this.currentStep = 0;
+        // Reset longest substring state for new visualizations
+        if (this.longestSubstringState) {
+            this.longestSubstringState = null;
+        }
         this.updateVisualization();
     }
 
@@ -616,13 +681,15 @@ class SlidingWindowVisualizer {
                 'sum': `Fixed window sliding technique to find maximum sum of subarray of size ${windowSize}. Time complexity: O(n), Space complexity: O(1).`,
                 'max': `Fixed window with deque optimization to find maximum element in each window of size ${windowSize}. Time complexity: O(n), Space complexity: O(k).`,
                 'min': `Fixed window with deque optimization to find minimum element in each window of size ${windowSize}. Time complexity: O(n), Space complexity: O(k).`,
-                'avg': `Fixed window technique to calculate moving average with window size ${windowSize}. Time complexity: O(n), Space complexity: O(1).`
+                'avg': `Fixed window technique to calculate moving average with window size ${windowSize}. Time complexity: O(n), Space complexity: O(1).`,
+                'longest_substring': 'This problem uses variable window - switching to variable mode automatically.'
             },
             'variable': {
                 'sum': 'Variable window technique to find subarray with target sum. Time complexity: O(n), Space complexity: O(1).',
                 'max': 'Variable window technique to find longest subarray satisfying a condition. Time complexity: O(n²), Space complexity: O(1).',
                 'min': 'Variable window technique for minimum window substring problem. Time complexity: O(n + m), Space complexity: O(n + m).',
-                'avg': 'Variable window technique to find longest subarray with average above threshold. Time complexity: O(n²), Space complexity: O(1).'
+                'avg': 'Variable window technique to find longest subarray with average above threshold. Time complexity: O(n²), Space complexity: O(1).',
+                'longest_substring': 'Variable window technique to find longest substring without repeating characters using sliding window with hash map. Time complexity: O(n), Space complexity: O(min(m,n)) where m is charset size.'
             }
         };
         
