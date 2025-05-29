@@ -14,6 +14,7 @@ class SlidingWindowVisualizer {
         this.algorithm = 'sum';
         this.windowType = 'fixed';
         this.animationSpeed = 1500; // milliseconds
+        this.windowResults = []; // Track all window results for summary
         
         this.initializeEventListeners();
         this.loadExamples();
@@ -240,6 +241,9 @@ class SlidingWindowVisualizer {
             this.renderVisualization();
             this.updateVisualization();
             
+            // Clear previous results summary
+            this.clearResultsSummary();
+            
             // Show visualization section
             document.getElementById('visualizationSection').style.display = 'block';
             
@@ -358,6 +362,9 @@ class SlidingWindowVisualizer {
 
             this.displayWindowInfo(result.window, result.result, result.description);
             
+            // Add to results summary
+            this.addToResultsSummary(windowStart, result.window, result.result, result.description);
+            
         } catch (error) {
             console.error('Error calculating step:', error);
             this.showError('Failed to calculate step result');
@@ -472,6 +479,89 @@ class SlidingWindowVisualizer {
         }
     }
 
+    addToResultsSummary(windowStart, window, result, description) {
+        const windowEnd = windowStart + window.length - 1;
+        const windowContent = window.join ? window.join('') : window.toString();
+        const step = this.currentStep + 1;
+        
+        // Determine status based on algorithm
+        let status = '';
+        let statusClass = '';
+        
+        if (this.algorithm === 'permutation_in_string') {
+            if (result === 1) {
+                status = '✓ Match Found';
+                statusClass = 'text-success';
+            } else {
+                status = '✗ No Match';
+                statusClass = 'text-muted';
+            }
+        } else if (this.algorithm === 'longest_substring') {
+            if (result > 0) {
+                status = '✓ Valid';
+                statusClass = 'text-success';
+            } else {
+                status = '✗ Repeating';
+                statusClass = 'text-warning';
+            }
+        } else {
+            status = `Result: ${result}`;
+            statusClass = 'text-info';
+        }
+        
+        this.windowResults.push({
+            step,
+            position: `[${windowStart}:${windowEnd}]`,
+            content: windowContent,
+            result,
+            status,
+            statusClass
+        });
+        
+        this.updateResultsSummaryTable();
+    }
+
+    updateResultsSummaryTable() {
+        const summaryTable = document.getElementById('resultsSummary');
+        const tableBody = document.getElementById('summaryTableBody');
+        
+        if (!summaryTable || !tableBody) return;
+        
+        // Show the table if we have results
+        if (this.windowResults.length > 0) {
+            summaryTable.style.display = 'block';
+        }
+        
+        // Clear existing rows
+        tableBody.innerHTML = '';
+        
+        // Add rows for each result
+        this.windowResults.forEach(result => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${result.step}</td>
+                <td><code>${result.position}</code></td>
+                <td><code>${result.content}</code></td>
+                <td>${result.result}</td>
+                <td class="${result.statusClass}">${result.status}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    clearResultsSummary() {
+        this.windowResults = [];
+        const summaryTable = document.getElementById('resultsSummary');
+        const tableBody = document.getElementById('summaryTableBody');
+        
+        if (summaryTable) {
+            summaryTable.style.display = 'none';
+        }
+        if (tableBody) {
+            tableBody.innerHTML = '';
+        }
+    }
+
     displayWindowInfo(window, result, description) {
         const currentWindowEl = document.getElementById('currentWindow');
         const calculationEl = document.getElementById('calculation');
@@ -578,6 +668,8 @@ class SlidingWindowVisualizer {
         if (this.longestSubstringState) {
             this.longestSubstringState = null;
         }
+        // Clear results summary
+        this.clearResultsSummary();
         this.updateVisualization();
     }
 
