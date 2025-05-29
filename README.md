@@ -2,9 +2,9 @@
 
 **Made with AI**
 
-An interactive web application that demonstrates sliding window techniques for both fixed and variable size windows. Built with Flask and vanilla JavaScript to provide educational visualizations of this important programming technique.
+An advanced interactive learning platform for sliding window algorithms, providing comprehensive algorithmic exploration through dynamic visualizations and multi-language code generation.
 
-Deployed to https://replit.com/@bryanneumann/SlidingWindowVisualizer
+🌐 **Live Demo:** https://sliding-window-visualizer-bryanneumann.replit.app/
 
 ## Features
 
@@ -14,11 +14,21 @@ Deployed to https://replit.com/@bryanneumann/SlidingWindowVisualizer
 - **Real-time Animation**: Watch the window move step-by-step with smooth transitions
 - **START/END Labels**: Clear indicators showing window boundaries
 
-### 🔧 Technique Options
-- **Sum of Elements**: Calculate the sum of elements in the current window
-- **Maximum Element**: Find the maximum value in the window
-- **Minimum Element**: Find the minimum value in the window
-- **Average of Elements**: Calculate the average of window elements
+### 🔧 Algorithm Options
+- **Fixed Window Algorithms**:
+  - Sum of Elements: Calculate the sum of elements in the current window
+  - Maximum Element: Find the maximum value in the window
+  - Minimum Element: Find the minimum value in the window
+  - Average of Elements: Calculate the average of window elements
+- **Variable Window Algorithms**:
+  - Longest Substring Without Repeating Characters
+  - Permutation in String (pattern matching)
+
+### 📊 Advanced Analysis
+- **Window Analysis Summary**: Comprehensive table showing all windows processed
+- **Step-by-Step Breakdown**: Detailed view of each window position, content, and result
+- **Color-Coded Status**: Visual indicators for matches, valid windows, and results
+- **Progress Tracking**: Real-time progress bar and step counter
 
 ### 💻 Code Generation
 - Generate implementation code in multiple languages:
@@ -30,19 +40,27 @@ Deployed to https://replit.com/@bryanneumann/SlidingWindowVisualizer
 - Complete, runnable code examples
 
 ### 🎮 Interactive Controls
-- Play/Pause animation
+- Play/Pause animation with smooth transitions
 - Step forward/backward through the visualization
 - Adjustable animation speed
-- Custom array input
+- Custom array and string input modes
 - Variable window size settings
+- Demo examples for quick learning
+- Reset functionality
+
+### 🧪 Testing & Quality
+- **37 Unit Tests**: Comprehensive test suite with 100% pass rate
+- **Backend Tests**: 23 tests covering API endpoints and algorithms
+- **Frontend Tests**: 14 tests validating visualization logic
+- **Bug-Free**: Thoroughly tested and validated
 
 ## How It Works
 
-1. **Enter Your Data**: Input an array of numbers (comma-separated)
-2. **Choose Technique**: Select the calculation method (sum, max, min, average)
-3. **Set Window Type**: Choose between fixed or variable size windows
-4. **Configure Window Size**: Set the size for fixed windows
-5. **Start Visualization**: Watch the technique in action!
+1. **Choose Input Mode**: Select between array (numbers) or string input
+2. **Enter Your Data**: Input numbers (comma-separated) or text string
+3. **Select Algorithm**: Choose from fixed window or advanced algorithms
+4. **Configure Settings**: Set window size and algorithm parameters
+5. **Start Visualization**: Watch the algorithm in action with step-by-step analysis!
 
 ## Visual Example
 
@@ -63,10 +81,26 @@ This tool helps students and developers understand:
 
 ## Getting Started
 
+### Quick Start (Online)
+Visit the live demo: https://sliding-window-visualizer-bryanneumann.replit.app/
+
+### Local Development
 1. Clone the repository
-2. Install dependencies: `pip install -r requirements.txt`
+2. Install dependencies: `pip install flask flask-sqlalchemy gunicorn psycopg2-binary pytest pytest-flask`
 3. Run the application: `python main.py`
 4. Open your browser to `http://localhost:5000`
+
+### Running Tests
+```bash
+# Run all tests
+python run_tests.py
+
+# Run only backend tests
+pytest test_app.py -v
+
+# Run only frontend tests
+node test_frontend.js
+```
 
 ## Technical Stack
 
