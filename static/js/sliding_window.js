@@ -42,6 +42,8 @@ class SlidingWindowVisualizer {
         // Algorithm change
         safeAddEventListener('algorithm', 'change', (e) => {
             this.algorithm = e.target.value;
+            this.updateTechniqueInfo();
+            this.updateInputMode();
             if (this.elements.length > 0) {
                 this.updateVisualization();
             }
@@ -91,6 +93,42 @@ class SlidingWindowVisualizer {
             container.style.display = 'none';
         } else {
             container.style.display = 'block';
+        }
+    }
+
+    updateInputMode() {
+        const inputLabel = document.getElementById('inputLabel');
+        const inputArray = document.getElementById('inputArray');
+        const windowType = document.getElementById('windowType');
+        
+        if (this.algorithm === 'longest_substring') {
+            // Switch to string mode
+            if (inputLabel) {
+                inputLabel.textContent = 'Input String';
+            }
+            if (inputArray) {
+                inputArray.placeholder = 'abcabcbb';
+                inputArray.value = 'abcabcbb';
+            }
+            if (windowType) {
+                windowType.value = 'variable';
+                this.windowType = 'variable';
+                this.toggleWindowSizeInput();
+            }
+        } else {
+            // Switch to array mode
+            if (inputLabel) {
+                inputLabel.textContent = 'Input Array (comma-separated numbers)';
+            }
+            if (inputArray) {
+                inputArray.placeholder = '1, 2, 3, 4, 5, 6, 7, 8';
+                inputArray.value = '1, 2, 3, 4, 5, 6, 7, 8';
+            }
+            if (windowType) {
+                windowType.value = 'fixed';
+                this.windowType = 'fixed';
+                this.toggleWindowSizeInput();
+            }
         }
     }
 
@@ -275,6 +313,11 @@ class SlidingWindowVisualizer {
 
 
     async updateVariableWindow() {
+        if (this.algorithm === 'longest_substring') {
+            await this.updateLongestSubstringWindow();
+            return;
+        }
+        
         // Variable window implementation - for now, we'll use a simple expanding window
         const windowEnd = this.currentStep;
         

@@ -80,6 +80,22 @@ def calculate_step():
         elif algorithm == 'avg':
             result = sum(window) / len(window)
             description = f"Average of window: ({' + '.join(map(str, window))}) / {len(window)} = {result:.2f}"
+        elif algorithm == 'longest_substring':
+            # For longest substring, we need to track the current window and check for duplicates
+            window_str = ''.join(window)
+            unique_chars = set(window)
+            if len(unique_chars) == len(window):
+                result = len(window)
+                description = f"Window '{window_str}' has no repeating characters. Length: {result}"
+            else:
+                result = 0
+                duplicates = []
+                seen = set()
+                for char in window:
+                    if char in seen:
+                        duplicates.append(char)
+                    seen.add(char)
+                description = f"Window '{window_str}' has repeating characters: {', '.join(set(duplicates))}"
         else:
             return jsonify({'error': 'Unknown algorithm'})
         
