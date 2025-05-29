@@ -265,12 +265,25 @@ class SlidingWindowVisualizer {
         this.elements.forEach((element, index) => {
             const elementDiv = document.createElement('div');
             elementDiv.className = 'array-element';
-            elementDiv.innerHTML = `
-                ${element}
-                <div class="index">${index}</div>
-                <div class="window-indicator"></div>
-                <div class="window-connection"></div>
-            `;
+            // Create element content safely to prevent XSS
+            const elementContent = document.createElement('div');
+            elementContent.textContent = element;
+            elementContent.className = 'element-content';
+            
+            const indexDiv = document.createElement('div');
+            indexDiv.className = 'index';
+            indexDiv.textContent = index;
+            
+            const windowIndicator = document.createElement('div');
+            windowIndicator.className = 'window-indicator';
+            
+            const windowConnection = document.createElement('div');
+            windowConnection.className = 'window-connection';
+            
+            elementDiv.appendChild(elementContent);
+            elementDiv.appendChild(indexDiv);
+            elementDiv.appendChild(windowIndicator);
+            elementDiv.appendChild(windowConnection);
             elementDiv.setAttribute('data-index', index);
             
             // Add staggered animation delay for initial render
