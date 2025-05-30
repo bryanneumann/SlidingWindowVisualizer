@@ -285,6 +285,73 @@ public class SlidingWindowAverage {{
         List<Double> result = averageInWindows(arr, {window_size});
         System.out.println("Average of each window of size {window_size}: " + result);
     }}
+}}''',
+                    
+                    'longest_substring': '''import java.util.*;
+
+public class LongestSubstring {{
+    public static int lengthOfLongestSubstring(String s) {{
+        Map<Character, Integer> charMap = new HashMap<>();
+        int left = 0;
+        int maxLength = 0;
+        
+        for (int right = 0; right < s.length(); right++) {{
+            char currentChar = s.charAt(right);
+            
+            if (charMap.containsKey(currentChar) && charMap.get(currentChar) >= left) {{
+                left = charMap.get(currentChar) + 1;
+            }}
+            
+            charMap.put(currentChar, right);
+            maxLength = Math.max(maxLength, right - left + 1);
+        }}
+        
+        return maxLength;
+    }}
+    
+    public static void main(String[] args) {{
+        String s = "abcabcbb";
+        int result = lengthOfLongestSubstring(s);
+        System.out.println("Length of longest substring without repeating characters: " + result);
+    }}
+}}''',
+                    
+                    'permutation_in_string': '''import java.util.*;
+
+public class PermutationInString {{
+    public static boolean checkInclusion(String s1, String s2) {{
+        if (s1.length() > s2.length()) {{
+            return false;
+        }}
+        
+        Map<Character, Integer> s1Count = new HashMap<>();
+        for (char c : s1.toCharArray()) {{
+            s1Count.put(c, s1Count.getOrDefault(c, 0) + 1);
+        }}
+        
+        int windowSize = s1.length();
+        for (int i = 0; i <= s2.length() - windowSize; i++) {{
+            String window = s2.substring(i, i + windowSize);
+            Map<Character, Integer> windowCount = new HashMap<>();
+            
+            for (char c : window.toCharArray()) {{
+                windowCount.put(c, windowCount.getOrDefault(c, 0) + 1);
+            }}
+            
+            if (s1Count.equals(windowCount)) {{
+                return true;
+            }}
+        }}
+        
+        return false;
+    }}
+    
+    public static void main(String[] args) {{
+        String s1 = "ab";
+        String s2 = "eidbaooo";
+        boolean result = checkInclusion(s1, s2);
+        System.out.println("Permutation of '" + s1 + "' exists in '" + s2 + "': " + result);
+    }}
 }}'''
                 },
                 'variable': {
@@ -585,7 +652,66 @@ console.log(`Minimum in each window of size {window_size}: ${{result}}`);''',
 // Example usage:
 const arr = [1, 2, 3, 4, 5, 6, 7, 8];
 const result = slidingWindowAverage(arr, {window_size});
-console.log(`Average of each window of size {window_size}: ${{result}}`);'''
+console.log(`Average of each window of size {window_size}: ${{result}}`);''',
+                    
+                    'longest_substring': '''function lengthOfLongestSubstring(s) {
+    const charMap = new Map();
+    let left = 0;
+    let maxLength = 0;
+    
+    for (let right = 0; right < s.length; right++) {
+        const currentChar = s[right];
+        
+        if (charMap.has(currentChar) && charMap.get(currentChar) >= left) {
+            left = charMap.get(currentChar) + 1;
+        }
+        
+        charMap.set(currentChar, right);
+        maxLength = Math.max(maxLength, right - left + 1);
+    }
+    
+    return maxLength;
+}
+
+// Example usage:
+const s = "abcabcbb";
+const result = lengthOfLongestSubstring(s);
+console.log(`Length of longest substring without repeating characters: ${result}`);''',
+                    
+                    'permutation_in_string': '''function checkInclusion(s1, s2) {
+    if (s1.length > s2.length) {
+        return false;
+    }
+    
+    // Count characters in s1
+    const s1Count = {};
+    for (const char of s1) {
+        s1Count[char] = (s1Count[char] || 0) + 1;
+    }
+    
+    const windowSize = s1.length;
+    for (let i = 0; i <= s2.length - windowSize; i++) {
+        const window = s2.substring(i, i + windowSize);
+        const windowCount = {};
+        
+        for (const char of window) {
+            windowCount[char] = (windowCount[char] || 0) + 1;
+        }
+        
+        // Compare character counts
+        if (JSON.stringify(s1Count) === JSON.stringify(windowCount)) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+// Example usage:
+const s1 = "ab";
+const s2 = "eidbaooo";
+const result = checkInclusion(s1, s2);
+console.log(`Permutation of '${s1}' exists in '${s2}': ${result}`);'''
                 },
                 'variable': {
                     'sum': '''function variableWindowSum(arr, target) {
@@ -888,6 +1014,78 @@ int main() {{
     for (double x : result) cout << x << " ";
     cout << endl;
     return 0;
+}}''',
+                    
+                    'longest_substring': '''#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+using namespace std;
+
+int lengthOfLongestSubstring(string s) {{
+    unordered_map<char, int> charMap;
+    int left = 0;
+    int maxLength = 0;
+    
+    for (int right = 0; right < s.length(); right++) {{
+        char currentChar = s[right];
+        
+        if (charMap.count(currentChar) && charMap[currentChar] >= left) {{
+            left = charMap[currentChar] + 1;
+        }}
+        
+        charMap[currentChar] = right;
+        maxLength = max(maxLength, right - left + 1);
+    }}
+    
+    return maxLength;
+}}
+
+int main() {{
+    string s = "abcabcbb";
+    int result = lengthOfLongestSubstring(s);
+    cout << "Length of longest substring without repeating characters: " << result << endl;
+    return 0;
+}}''',
+                    
+                    'permutation_in_string': '''#include <iostream>
+#include <string>
+#include <unordered_map>
+using namespace std;
+
+bool checkInclusion(string s1, string s2) {{
+    if (s1.length() > s2.length()) {{
+        return false;
+    }}
+    
+    unordered_map<char, int> s1Count;
+    for (char c : s1) {{
+        s1Count[c]++;
+    }}
+    
+    int windowSize = s1.length();
+    for (int i = 0; i <= s2.length() - windowSize; i++) {{
+        string window = s2.substr(i, windowSize);
+        unordered_map<char, int> windowCount;
+        
+        for (char c : window) {{
+            windowCount[c]++;
+        }}
+        
+        if (s1Count == windowCount) {{
+            return true;
+        }}
+    }}
+    
+    return false;
+}}
+
+int main() {{
+    string s1 = "ab";
+    string s2 = "eidbaooo";
+    bool result = checkInclusion(s1, s2);
+    cout << "Permutation of '" << s1 << "' exists in '" << s2 << "': " << (result ? "true" : "false") << endl;
+    return 0;
 }}'''
                 },
                 'variable': {
@@ -1175,7 +1373,50 @@ print(f"Minimum in each window of size {window_size}: {{result}}")''',
 # Example usage:
 arr = [1, 2, 3, 4, 5, 6, 7, 8]
 result = sliding_window_average(arr, {window_size})
-print(f"Average of each window of size {window_size}: {{result}}")'''
+print(f"Average of each window of size {window_size}: {{result}}")''',
+                    
+                    'longest_substring': '''def longest_substring_without_repeating(s):
+    """Find length of longest substring without repeating characters"""
+    char_map = {}
+    left = 0
+    max_length = 0
+    
+    for right in range(len(s)):
+        if s[right] in char_map and char_map[s[right]] >= left:
+            left = char_map[s[right]] + 1
+        
+        char_map[s[right]] = right
+        max_length = max(max_length, right - left + 1)
+    
+    return max_length
+
+# Example usage:
+s = "abcabcbb"
+result = longest_substring_without_repeating(s)
+print(f"Length of longest substring without repeating characters: {result}")''',
+                    
+                    'permutation_in_string': '''def check_permutation_in_string(s1, s2):
+    """Check if any permutation of s1 exists as substring in s2"""
+    from collections import Counter
+    
+    if len(s1) > len(s2):
+        return False
+    
+    s1_count = Counter(s1)
+    window_size = len(s1)
+    
+    for i in range(len(s2) - window_size + 1):
+        window = s2[i:i + window_size]
+        if Counter(window) == s1_count:
+            return True
+    
+    return False
+
+# Example usage:
+s1 = "ab"
+s2 = "eidbaooo"
+result = check_permutation_in_string(s1, s2)
+print(f"Permutation of '{s1}' exists in '{s2}': {result}")'''
                 },
                 'variable': {
                     'sum': '''def variable_window_sum_target(arr, target):
