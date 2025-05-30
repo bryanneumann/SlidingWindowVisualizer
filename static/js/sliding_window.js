@@ -429,6 +429,9 @@ class SlidingWindowVisualizer {
         }
 
         this.displayWindowInfo(window, result, description);
+        
+        // Add to results summary
+        this.addToResultsSummary(0, window, result, description);
     }
 
     async updateLongestSubstringWindow() {
@@ -487,6 +490,9 @@ class SlidingWindowVisualizer {
             const description = `Current window: "${currentWindow}" (length: ${currentLength})\nLongest so far: "${maxWindow}" (length: ${state.maxLength})`;
             
             this.displayWindowInfo(this.elements.slice(state.left, state.right + 1), state.maxLength, description);
+            
+            // Add to results summary
+            this.addToResultsSummary(state.left, this.elements.slice(state.left, state.right + 1), currentLength, description);
             
             state.right++;
         }
