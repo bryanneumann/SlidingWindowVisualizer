@@ -200,30 +200,9 @@
     width: 0;
 }
 
-/* Sliding window connection line */
+/* Sliding window connection line - hidden to clean up visual */
 .window-connection {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, 
-        var(--bs-warning) 0%, 
-        var(--bs-primary) 50%, 
-        var(--bs-danger) 100%);
-    border-radius: 2px;
-    opacity: 0;
-    animation: connectionSlide 0.6s ease-out forwards;
-    z-index: -1;
-}
-
-@keyframes connectionSlide {
-    0% { opacity: 0; transform: scaleX(0); }
-    100% { opacity: 0.7; transform: scaleX(1); }
-}
-
-.array-element.in-window .window-connection {
-    opacity: 0.7;
+    display: none;
 }
 
 /* Enhanced hover effects */
@@ -239,19 +218,7 @@
 }
 
 .window-indicator {
-    position: absolute;
-    top: -10px;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background-color: var(--bs-warning);
-    border-radius: 2px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.array-element.in-window .window-indicator {
-    opacity: 1;
+    display: none;
 }
 
 .form-range::-webkit-slider-thumb {
