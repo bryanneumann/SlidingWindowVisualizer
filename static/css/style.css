@@ -142,7 +142,7 @@
     position: absolute;
     top: -12px;
     right: -12px;
-    background: linear-gradient(135deg, var(--bs-info) 0%, var(--bs-primary) 100%);
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
     color: var(--bs-white);
     font-size: 0.75rem;
     padding: 3px 8px;
@@ -152,8 +152,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid var(--bs-white);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: 2px solid #0d6efd;
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
     animation: indexFadeIn 0.5s ease-out;
 }
 
