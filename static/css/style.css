@@ -142,8 +142,8 @@
     position: absolute;
     top: -12px;
     right: -12px;
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-    color: var(--bs-white);
+    background: white;
+    color: #0d6efd;
     font-size: 0.75rem;
     padding: 3px 8px;
     border-radius: 50%;
@@ -155,6 +155,7 @@
     border: 2px solid #0d6efd;
     box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
     animation: indexFadeIn 0.5s ease-out;
+    font-weight: bold;
 }
 
 @keyframes indexFadeIn {
