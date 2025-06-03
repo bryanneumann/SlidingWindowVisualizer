@@ -1,8 +1,6 @@
 # Sliding Window Technique Visualizer
 
-**Made with AI**
-
-An advanced interactive learning platform for sliding window algorithms, providing comprehensive algorithmic exploration through dynamic visualizations and multi-language code generation.
+An interactive learning platform for sliding window algorithms, providing algorithmic exploration through dynamic visualizations and multi-language code generation.
 
 🌐 **Live Demo:** https://sliding-window-visualizer-bryanneumann.replit.app/
 
@@ -12,7 +10,7 @@ An advanced interactive learning platform for sliding window algorithms, providi
 - **Fixed Size Windows**: Visualize how a window of constant size slides across an array
 - **Variable Size Windows**: See how window size changes based on conditions
 - **Real-time Animation**: Watch the window move step-by-step with smooth transitions
-- **START/END Labels**: Clear indicators showing window boundaries
+- **START/END Labels**: Clear indicators showing window boundarieis
 
 ### 🔧 Algorithm Options
 - **Fixed Window Algorithms**:
@@ -41,12 +39,9 @@ An advanced interactive learning platform for sliding window algorithms, providi
 
 ### 🎮 Interactive Controls
 - Play/Pause animation with smooth transitions
-- Step forward/backward through the visualization
 - Adjustable animation speed
 - Custom array and string input modes
 - Variable window size settings
-- Demo examples for quick learning
-- Reset functionality
 
 ### 🧪 Testing & Quality
 - **37 Unit Tests**: Comprehensive test suite with 100% pass rate
@@ -118,3 +113,4 @@ Perfect for:
 - Visual learning of programming concepts
 
 ---
+
