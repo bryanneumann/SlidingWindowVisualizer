@@ -2,8 +2,17 @@ import os
 import logging
 from flask import Flask, render_template, request, jsonify
 
-# Set up logging for debugging
-logging.basicConfig(level=logging.DEBUG)
+def add_security_headers(response):
+    """Add security headers to all responses"""
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    return response
+
+# Set up logging - use INFO level for production
+log_level = logging.DEBUG if os.environ.get('FLASK_ENV') == 'development' else logging.INFO
+logging.basicConfig(level=log_level)
 
 # Create the Flask app
 app = Flask(__name__)
