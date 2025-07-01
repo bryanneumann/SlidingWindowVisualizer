@@ -60,8 +60,21 @@
 }
 
 /* Fix any purple badges or tags */
-.badge-primary {
+.badge-primary,
+.bg-primary {
     background-color: var(--teal-primary) !important;
+}
+
+.badge.bg-primary {
+    background-color: var(--teal-primary) !important;
+}
+
+.badge.bg-secondary {
+    background-color: var(--teal-secondary) !important;
+}
+
+.bg-secondary {
+    background-color: var(--teal-accent) !important;
 }
 
 .alert-info {
