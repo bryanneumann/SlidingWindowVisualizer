@@ -18,6 +18,9 @@ logging.basicConfig(level=log_level)
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET", "dev_secret_key_for_sliding_window")
 
+# Apply security headers to all responses
+app.after_request(add_security_headers)
+
 @app.route('/')
 def index():
     """Main page with sliding window visualization"""
