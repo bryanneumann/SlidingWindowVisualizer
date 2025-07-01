@@ -163,7 +163,7 @@
                         <!-- Progress -->
                         <div class="mb-3">
                             <div class="d-flex justify-content-between mb-1">
-                                <span>Progress</span>
+                                <span data-translate="progress">Progress</span>
                                 <span id="progressText">Step 0 of 0</span>
                             </div>
                             <div class="progress">
@@ -388,7 +388,13 @@
                 'sum-of-window': 'Sum of window:',
                 'max-in-window': 'Maximum in window:',
                 'min-in-window': 'Minimum in window:',
-                'avg-of-window': 'Average of window:'
+                'avg-of-window': 'Average of window:',
+                'progress': 'Progress',
+                'match-found': '✓ Match Found',
+                'no-match': '✗ No Match',
+                'valid': '✓ Valid',
+                'repeating': '✗ Repeating',
+                'result-label': 'Result'
             },
             es: {
                 'title': 'Visualizador de Técnica de Ventana Deslizante',
@@ -466,7 +472,13 @@
                 'sum-of-window': 'Suma de ventana:',
                 'max-in-window': 'Máximo en ventana:',
                 'min-in-window': 'Mínimo en ventana:',
-                'avg-of-window': 'Promedio de ventana:'
+                'avg-of-window': 'Promedio de ventana:',
+                'progress': 'Progreso',
+                'match-found': '✓ Coincidencia Encontrada',
+                'no-match': '✗ Sin Coincidencia',
+                'valid': '✓ Válido',
+                'repeating': '✗ Repetición',
+                'result-label': 'Resultado'
             }
         };
 
@@ -528,6 +540,11 @@
                 
                 // Reload examples with new language
                 window.visualizer.loadExamples();
+                
+                // Refresh results summary table if it has data
+                if (window.visualizer.windowResults && window.visualizer.windowResults.length > 0) {
+                    window.visualizer.updateResultsSummaryTable();
+                }
             }
             
             // Store language preference

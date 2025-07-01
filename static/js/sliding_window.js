@@ -521,22 +521,27 @@ class SlidingWindowVisualizer {
         
         if (this.algorithm === 'permutation_in_string') {
             if (result === 1) {
-                status = '✓ Match Found';
+                const matchFoundText = this.getTranslation('match-found') || '✓ Match Found';
+                status = matchFoundText;
                 statusClass = 'text-success';
             } else {
-                status = '✗ No Match';
+                const noMatchText = this.getTranslation('no-match') || '✗ No Match';
+                status = noMatchText;
                 statusClass = 'text-muted';
             }
         } else if (this.algorithm === 'longest_substring') {
             if (result > 0) {
-                status = '✓ Valid';
+                const validText = this.getTranslation('valid') || '✓ Valid';
+                status = validText;
                 statusClass = 'text-success';
             } else {
-                status = '✗ Repeating';
+                const repeatingText = this.getTranslation('repeating') || '✗ Repeating';
+                status = repeatingText;
                 statusClass = 'text-warning';
             }
         } else {
-            status = `Result: ${result}`;
+            const resultText = this.getTranslation('result-label') || 'Result';
+            status = `${resultText}: ${result}`;
             statusClass = 'text-info';
         }
         
