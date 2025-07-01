@@ -1,11 +1,13 @@
 /* Custom styles for sliding window visualizer with teal theme */
 
-/* Teal color theme override */
+/* Teal color theme override with improved contrast */
 :root {
-    --teal-primary: #5e9ca0;
-    --teal-secondary: #4a7c7f;
-    --teal-light: #f0f8f8;
-    --teal-accent: #7bb3b7;
+    --teal-primary: #2d6e73;
+    --teal-secondary: #1f4e52;
+    --teal-light: #e8f4f5;
+    --teal-accent: #4a9ca1;
+    --teal-bright: #5fb5bb;
+    --teal-text-on-gray: #ffffff;
 }
 
 /* Override Bootstrap primary color */
@@ -59,22 +61,68 @@
     box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem rgba(94, 156, 160, 0.25) !important;
 }
 
-/* Fix any purple badges or tags */
+/* Fix any purple badges or tags with improved contrast */
 .badge-primary,
 .bg-primary {
     background-color: var(--teal-primary) !important;
+    color: var(--teal-text-on-gray) !important;
 }
 
 .badge.bg-primary {
     background-color: var(--teal-primary) !important;
+    color: var(--teal-text-on-gray) !important;
 }
 
 .badge.bg-secondary {
     background-color: var(--teal-secondary) !important;
+    color: var(--teal-text-on-gray) !important;
 }
 
 .bg-secondary {
     background-color: var(--teal-accent) !important;
+}
+
+/* Improve text contrast on teal backgrounds */
+.btn-primary,
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+    color: var(--teal-text-on-gray) !important;
+}
+
+.btn-outline-primary {
+    color: var(--teal-bright) !important;
+    border-color: var(--teal-bright) !important;
+}
+
+/* Ensure good contrast for text on teal elements */
+.text-primary {
+    color: var(--teal-bright) !important;
+}
+
+/* Fix alert contrast */
+.alert-info {
+    background-color: var(--teal-light) !important;
+    border-color: var(--teal-accent) !important;
+    color: #1a1a1a !important;
+}
+
+/* Improve link contrast */
+a {
+    color: var(--teal-bright) !important;
+}
+
+a:hover,
+a:focus {
+    color: var(--teal-accent) !important;
+}
+
+/* Better contrast for active/focus states */
+.btn-outline-secondary.active,
+.btn-outline-secondary:focus {
+    background-color: var(--teal-primary) !important;
+    border-color: var(--teal-primary) !important;
+    color: var(--teal-text-on-gray) !important;
 }
 
 .alert-info {

@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <defs>
     <linearGradient id="tealGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#5e9ca0;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#7bb3b7;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#2d6e73;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4a9ca1;stop-opacity:1" />
     </linearGradient>
     <linearGradient id="windowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#7bb3b7;stop-opacity:0.8" />
-      <stop offset="100%" style="stop-color:#5e9ca0;stop-opacity:0.9" />
+      <stop offset="0%" style="stop-color:#4a9ca1;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#2d6e73;stop-opacity:0.9" />
     </linearGradient>
   </defs>
   
@@ -14,27 +14,27 @@
   <circle cx="50" cy="50" r="45" fill="#1a1a1a" stroke="url(#tealGradient)" stroke-width="3"/>
   
   <!-- Window frame - main structure -->
-  <rect x="20" y="25" width="60" height="50" rx="6" fill="none" stroke="#5e9ca0" stroke-width="2"/>
+  <rect x="20" y="25" width="60" height="50" rx="6" fill="none" stroke="#2d6e73" stroke-width="2"/>
   
   <!-- Window panes with teal theme -->
-  <rect x="25" y="30" width="22" height="18" rx="2" fill="url(#windowGradient)" stroke="#7bb3b7" stroke-width="1"/>
-  <rect x="53" y="30" width="22" height="18" rx="2" fill="url(#windowGradient)" stroke="#7bb3b7" stroke-width="1"/>
-  <rect x="25" y="52" width="22" height="18" rx="2" fill="url(#windowGradient)" stroke="#7bb3b7" stroke-width="1"/>
-  <rect x="53" y="52" width="22" height="18" rx="2" fill="url(#windowGradient)" stroke="#7bb3b7" stroke-width="1"/>
+  <rect x="25" y="30" width="22" height="18" rx="2" fill="url(#windowGradient)" stroke="#4a9ca1" stroke-width="1"/>
+  <rect x="53" y="30" width="22" height="18" rx="2" fill="url(#windowGradient)" stroke="#4a9ca1" stroke-width="1"/>
+  <rect x="25" y="52" width="22" height="18" rx="2" fill="url(#windowGradient)" stroke="#4a9ca1" stroke-width="1"/>
+  <rect x="53" y="52" width="22" height="18" rx="2" fill="url(#windowGradient)" stroke="#4a9ca1" stroke-width="1"/>
   
   <!-- Window dividers -->
-  <line x1="50" y1="30" x2="50" y2="70" stroke="#5e9ca0" stroke-width="2"/>
-  <line x1="25" y1="50" x2="75" y2="50" stroke="#5e9ca0" stroke-width="2"/>
+  <line x1="50" y1="30" x2="50" y2="70" stroke="#2d6e73" stroke-width="2"/>
+  <line x1="25" y1="50" x2="75" y2="50" stroke="#2d6e73" stroke-width="2"/>
   
   <!-- Sliding window highlight overlay -->
-  <rect x="51" y="28" width="26" height="22" rx="3" fill="rgba(94, 156, 160, 0.3)" stroke="#5e9ca0" stroke-width="3" stroke-dasharray="3,2"/>
+  <rect x="51" y="28" width="26" height="22" rx="3" fill="rgba(45, 110, 115, 0.3)" stroke="#2d6e73" stroke-width="3" stroke-dasharray="3,2"/>
   
   <!-- Window handle -->
-  <circle cx="70" cy="60" r="3" fill="#7bb3b7" stroke="#5e9ca0" stroke-width="1"/>
+  <circle cx="70" cy="60" r="3" fill="#4a9ca1" stroke="#2d6e73" stroke-width="1"/>
   
   <!-- Sliding motion indicator -->
-  <path d="M 30 80 L 45 80 M 42 78 L 45 80 L 42 82" stroke="#7bb3b7" stroke-width="2" fill="none"/>
-  <path d="M 55 80 L 70 80 M 67 78 L 70 80 L 67 82" stroke="#7bb3b7" stroke-width="2" fill="none"/>
+  <path d="M 30 80 L 45 80 M 42 78 L 45 80 L 42 82" stroke="#4a9ca1" stroke-width="2" fill="none"/>
+  <path d="M 55 80 L 70 80 M 67 78 L 70 80 L 67 82" stroke="#4a9ca1" stroke-width="2" fill="none"/>
   
   <!-- Small algorithmic elements -->
   <circle cx="35" cy="39" r="2" fill="#ffffff" opacity="0.8"/>
