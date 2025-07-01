@@ -15,17 +15,24 @@ def add_security_headers(response):
 def get_client_ip():
     """Get the client's real IP address"""
     # Check for IP from reverse proxy headers
-    if request.headers.get('X-Forwarded-For'):
-        return request.headers.get('X-Forwarded-For').split(',')[0].strip()
-    elif request.headers.get('X-Real-IP'):
-        return request.headers.get('X-Real-IP')
-    else:
-        return request.remote_addr
+    forwarded_for = request.headers.get('X-Forwarded-For')
+    if forwarded_for and isinstance(forwarded_for, str):
+        return forwarded_for.split(',')[0].strip()
+    
+    real_ip = request.headers.get('X-Real-IP')
+    if real_ip and isinstance(real_ip, str):
+        return real_ip
+    
+    return request.remote_addr or '127.0.0.1'
 
 def check_geo_blocking():
     """Check if the request is from Russia and redirect if necessary"""
     try:
         client_ip = get_client_ip()
+        
+        # Validate IP address exists and is a string
+        if not client_ip or not isinstance(client_ip, str):
+            return None
         
         # Skip geo-blocking for localhost/development
         if client_ip in ['127.0.0.1', 'localhost', '::1'] or client_ip.startswith('192.168.'):
@@ -38,6 +45,7 @@ def check_geo_blocking():
             
             # Redirect Russian traffic
             if country_code == 'RU':
+                logging.info(f"Redirecting Russian IP {client_ip} to Ukraine support page")
                 return redirect('https://linktr.ee/UkraineTheLatest')
                 
     except (geoip2.errors.AddressNotFoundError, geoip2.errors.GeoIP2Error, FileNotFoundError):
@@ -58,6 +66,14 @@ app.secret_key = os.environ.get("SESSION_SECRET", "dev_secret_key_for_sliding_wi
 
 # Apply security headers to all responses
 app.after_request(add_security_headers)
+
+# Apply geo-blocking check to all requests
+@app.before_request
+def before_request():
+    """Check geo-blocking before processing any request"""
+    redirect_response = check_geo_blocking()
+    if redirect_response:
+        return redirect_response
 
 @app.route('/')
 def index():
