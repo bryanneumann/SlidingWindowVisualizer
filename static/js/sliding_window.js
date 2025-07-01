@@ -16,6 +16,14 @@ class SlidingWindowVisualizer {
         this.animationSpeed = 1500; // milliseconds
         this.windowResults = []; // Track all window results for summary
         
+        // Translation helper function
+        this.getTranslation = (key) => {
+            const currentLang = window.currentLanguage || 'es';
+            return window.translations && window.translations[currentLang] && window.translations[currentLang][key] 
+                ? window.translations[currentLang][key] 
+                : key;
+        };
+        
         this.initializeEventListeners();
         this.loadExamples();
     }
@@ -585,9 +593,13 @@ class SlidingWindowVisualizer {
         const currentWindowEl = document.getElementById('currentWindow');
         const calculationEl = document.getElementById('calculation');
 
+        // Use translations for dynamic content
+        const windowLabel = this.getTranslation('window');
+        const resultLabel = this.getTranslation('result');
+
         currentWindowEl.innerHTML = `
-            <strong>Window:</strong> <span class="window-values">[${window.join(', ')}]</span><br>
-            <strong>Result:</strong> <span class="result-value">${result}</span>
+            <strong>${windowLabel}:</strong> <span class="window-values">[${window.join(', ')}]</span><br>
+            <strong>${resultLabel}:</strong> <span class="result-value">${result}</span>
         `;
 
         calculationEl.innerHTML = `
