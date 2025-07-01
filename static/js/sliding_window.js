@@ -466,9 +466,12 @@ class SlidingWindowVisualizer {
 
         const state = this.longestSubstringState;
         
-        // Clear all previous styling
+        // Clear all previous styling and labels
         document.querySelectorAll('.array-element').forEach(el => {
             el.classList.remove('in-window', 'window-start', 'window-end');
+            // Remove any existing window labels
+            const existingLabels = el.querySelectorAll('.window-label');
+            existingLabels.forEach(label => label.remove());
         });
 
         // Advance the algorithm one step
