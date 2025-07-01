@@ -20,14 +20,20 @@
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <h1 class="display-4 mb-0">
                         <i class="bi bi-window-stack"></i>
-                        Sliding Window Technique Visualizer
+                        <span data-translate="title">Sliding Window Technique Visualizer</span>
                     </h1>
-                    <a href="https://github.com/bryanneumann/SlidingWindowVisualizer" target="_blank" class="btn btn-outline-primary">
-                        <i class="bi bi-github"></i>
-                        Get the Code
-                    </a>
+                    <div class="d-flex gap-2">
+                        <div class="btn-group" role="group" aria-label="Language selection">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="lang-en" onclick="switchLanguage('en')">EN</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm active" id="lang-es" onclick="switchLanguage('es')">ES</button>
+                        </div>
+                        <a href="https://github.com/bryanneumann/SlidingWindowVisualizer" target="_blank" class="btn btn-outline-primary">
+                            <i class="bi bi-github"></i>
+                            <span data-translate="get-code">Get the Code</span>
+                        </a>
+                    </div>
                 </div>
-                <p class="lead">
+                <p class="lead" data-translate="description">
                     Learn and visualize sliding window techniques with interactive demonstrations for both fixed and variable size windows.
                 </p>
             </div>
@@ -40,27 +46,27 @@
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             <i class="bi bi-gear"></i>
-                            Configuration
+                            <span data-translate="configuration">Configuration</span>
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="windowType" class="form-label">Window Type</label>
+                                <label for="windowType" class="form-label" data-translate="window-type">Window Type</label>
                                 <select class="form-select" id="windowType">
-                                    <option value="fixed" selected>Fixed Size Window</option>
-                                    <option value="variable">Variable Size Window</option>
+                                    <option value="fixed" selected data-translate="fixed-window">Fixed Size Window</option>
+                                    <option value="variable" data-translate="variable-window">Variable Size Window</option>
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="algorithm" class="form-label">Technique</label>
+                                <label for="algorithm" class="form-label" data-translate="technique">Technique</label>
                                 <select class="form-select" id="algorithm">
-                                    <option value="sum" selected>Sum of Elements</option>
-                                    <option value="max">Maximum Element</option>
-                                    <option value="min">Minimum Element</option>
-                                    <option value="avg">Average of Elements</option>
-                                    <option value="longest_substring">Longest Substring Without Repeating Characters</option>
-                                    <option value="permutation_in_string">Permutation in String</option>
+                                    <option value="sum" selected data-translate="sum-elements">Sum of Elements</option>
+                                    <option value="max" data-translate="max-element">Maximum Element</option>
+                                    <option value="min" data-translate="min-element">Minimum Element</option>
+                                    <option value="avg" data-translate="avg-elements">Average of Elements</option>
+                                    <option value="longest_substring" data-translate="longest-substring">Longest Substring Without Repeating Characters</option>
+                                    <option value="permutation_in_string" data-translate="permutation-string">Permutation in String</option>
                                 </select>
                             </div>
                         </div>
