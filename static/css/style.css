@@ -125,6 +125,31 @@ a:focus {
     color: var(--teal-text-on-gray) !important;
 }
 
+/* Fix specific elements with poor contrast - Current Window section */
+#currentWindow .window-values,
+#currentWindow .result-value,
+#calculation .calculation-step {
+    color: #ffffff !important;
+}
+
+/* Fix card headers and titles with teal text */
+.card-header h5,
+.card-header .card-title,
+.modal-header h5,
+.modal-header .modal-title {
+    color: #ffffff !important;
+}
+
+/* Fix any remaining teal text on dark backgrounds */
+.text-muted {
+    color: #adb5bd !important;
+}
+
+/* Fix h6 headings in modals */
+h6 {
+    color: #ffffff !important;
+}
+
 .alert-info {
     background-color: rgba(240, 248, 248, 0.3) !important;
     border-color: var(--teal-accent) !important;
