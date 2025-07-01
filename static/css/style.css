@@ -139,6 +139,11 @@ a:focus {
     color: #ffffff !important;
 }
 
+/* Fix algorithm info text in modal */
+#algorithmInfo {
+    color: #ffffff !important;
+}
+
 .alert-info {
     background-color: rgba(240, 248, 248, 0.3) !important;
     border-color: var(--teal-accent) !important;
