@@ -84,7 +84,7 @@
                         
                         <div class="row" id="patternContainer" style="display: none;">
                             <div class="col-md-6 mb-3">
-                                <label for="patternInput" class="form-label">Pattern to Find</label>
+                                <label for="patternInput" class="form-label" data-translate="pattern-find">Pattern to Find</label>
                                 <input type="text" class="form-control" id="patternInput" placeholder="ab" value="ab">
                             </div>
                         </div>
@@ -112,16 +112,16 @@
                         <div class="d-flex gap-2 align-items-center">
                             <button class="btn btn-outline-primary btn-sm" id="showCodeBtn">
                                 <i class="bi bi-code-slash"></i>
-                                Show Code
+                                <span data-translate="show-code">Show Code</span>
                             </button>
-                            <label for="speedControl" class="form-label mb-0 me-2">Speed:</label>
+                            <label for="speedControl" class="form-label mb-0 me-2" data-translate="speed">Speed:</label>
                             <input type="range" class="form-range" id="speedControl" min="1" max="5" value="3" style="width: 100px;">
                         </div>
                     </div>
                     <div class="card-body">
                         <!-- Array Visualization -->
                         <div class="mb-4">
-                            <h6>Array Elements:</h6>
+                            <h6 data-translate="array-elements">Array Elements:</h6>
                             <div id="arrayVisualization" class="d-flex flex-wrap gap-2 mb-3" style="width: 100%; overflow-x: visible; overflow-y: visible; padding-bottom: 60px; min-height: 140px;"></div>
                         </div>
                         
@@ -182,37 +182,37 @@
                     <div class="card-header">
                         <h5 class="card-title mb-0">
                             <i class="bi bi-book"></i>
-                            Understanding Sliding Window
+                            <span data-translate="understanding-sliding-window">Understanding Sliding Window</span>
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <h6>Fixed Size Window</h6>
-                                <p class="text-muted">
+                                <h6 data-translate="fixed-window-title">Fixed Size Window</h6>
+                                <p class="text-muted" data-translate="fixed-window-desc">
                                     A fixed-size sliding window maintains a constant size as it moves through the data structure. 
                                     This is useful for problems like finding the maximum sum of a subarray of size k, or calculating 
                                     moving averages.
                                 </p>
-                                <h6>Common Applications:</h6>
+                                <h6 data-translate="common-applications">Common Applications:</h6>
                                 <ul class="text-muted">
-                                    <li>Maximum sum subarray of size k</li>
-                                    <li>Moving averages</li>
-                                    <li>Finding anagrams in a string</li>
+                                    <li data-translate="max-sum-subarray">Maximum sum subarray of size k</li>
+                                    <li data-translate="moving-averages">Moving averages</li>
+                                    <li data-translate="finding-anagrams">Finding anagrams in a string</li>
                                 </ul>
                             </div>
                             <div class="col-md-6">
-                                <h6>Variable Size Window</h6>
-                                <p class="text-muted">
+                                <h6 data-translate="variable-window-title">Variable Size Window</h6>
+                                <p class="text-muted" data-translate="variable-window-desc">
                                     A variable-size sliding window can expand or contract based on certain conditions. 
                                     This technique is often used when you need to find the optimal subarray that satisfies 
                                     specific criteria.
                                 </p>
-                                <h6>Common Applications:</h6>
+                                <h6 data-translate="common-applications">Common Applications:</h6>
                                 <ul class="text-muted">
-                                    <li>Longest substring with k distinct characters</li>
-                                    <li>Minimum window substring</li>
-                                    <li>Subarray with given sum</li>
+                                    <li data-translate="longest-substring-k">Longest substring with k distinct characters</li>
+                                    <li data-translate="min-window-substring">Minimum window substring</li>
+                                    <li data-translate="subarray-given-sum">Subarray with given sum</li>
                                 </ul>
                             </div>
                         </div>
@@ -358,7 +358,22 @@
                 'calculation': 'Calculation',
                 'window-position': 'Window Position',
                 'window-content': 'Window Content',
-                'status': 'Status'
+                'status': 'Status',
+                'understanding-sliding-window': 'Understanding Sliding Window',
+                'show-code': 'Show Code',
+                'array-elements': 'Array Elements',
+                'pattern-find': 'Pattern to Find',
+                'fixed-window-title': 'Fixed Size Window',
+                'variable-window-title': 'Variable Size Window',
+                'fixed-window-desc': 'A fixed-size sliding window maintains a constant size as it moves through the data structure. This is useful for problems like finding the maximum sum of a subarray of size k, or calculating moving averages.',
+                'variable-window-desc': 'A variable-size sliding window can expand or contract based on certain conditions. This technique is often used when you need to find the optimal subarray that satisfies specific criteria.',
+                'common-applications': 'Common Applications:',
+                'max-sum-subarray': 'Maximum sum subarray of size k',
+                'moving-averages': 'Moving averages',
+                'finding-anagrams': 'Finding anagrams in a string',
+                'longest-substring-k': 'Longest substring with k distinct characters',
+                'min-window-substring': 'Minimum window substring',
+                'subarray-given-sum': 'Subarray with given sum'
             },
             es: {
                 'title': 'Visualizador de Técnica de Ventana Deslizante',
@@ -406,7 +421,22 @@
                 'calculation': 'Cálculo',
                 'window-position': 'Posición de Ventana',
                 'window-content': 'Contenido de Ventana',
-                'status': 'Estado'
+                'status': 'Estado',
+                'understanding-sliding-window': 'Entendiendo Ventana Deslizante',
+                'show-code': 'Mostrar Código',
+                'array-elements': 'Elementos del Arreglo',
+                'pattern-find': 'Patrón a Encontrar',
+                'fixed-window-title': 'Ventana de Tamaño Fijo',
+                'variable-window-title': 'Ventana de Tamaño Variable',
+                'fixed-window-desc': 'Una ventana deslizante de tamaño fijo mantiene un tamaño constante mientras se mueve a través de la estructura de datos. Esto es útil para problemas como encontrar la suma máxima de un subarreglo de tamaño k, o calcular promedios móviles.',
+                'variable-window-desc': 'Una ventana deslizante de tamaño variable puede expandirse o contraerse según ciertas condiciones. Esta técnica se usa frecuentemente cuando necesitas encontrar el subarreglo óptimo que satisface criterios específicos.',
+                'common-applications': 'Aplicaciones Comunes:',
+                'max-sum-subarray': 'Suma máxima de subarreglo de tamaño k',
+                'moving-averages': 'Promedios móviles',
+                'finding-anagrams': 'Encontrar anagramas en una cadena',
+                'longest-substring-k': 'Subcadena más larga con k caracteres distintos',
+                'min-window-substring': 'Subcadena de ventana mínima',
+                'subarray-given-sum': 'Subarreglo con suma dada'
             }
         };
 
