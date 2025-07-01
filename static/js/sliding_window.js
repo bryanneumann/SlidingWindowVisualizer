@@ -25,7 +25,11 @@ class SlidingWindowVisualizer {
         };
         
         this.initializeEventListeners();
-        this.loadExamples();
+        
+        // Load examples after a short delay to ensure translations are ready
+        setTimeout(() => {
+            this.loadExamples();
+        }, 100);
     }
 
     initializeEventListeners() {
@@ -725,6 +729,11 @@ class SlidingWindowVisualizer {
                 alertDiv.remove();
             }
         }, 5000);
+    }
+
+    refreshExamples() {
+        // Reload examples with current language
+        this.loadExamples();
     }
 
     loadExamples() {
