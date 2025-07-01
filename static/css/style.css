@@ -129,13 +129,13 @@ a:focus {
     color: var(--teal-bright) !important;
 }
 
-/* Only fix specific modal headings that are hard to read */
-.modal-body h6 {
-    color: var(--teal-bright) !important;
-}
-
 /* Fix Current Window section labels for better readability */
 #currentWindow strong {
+    color: #ffffff !important;
+}
+
+/* Fix Algorithm Details heading in modal */
+.modal-body h6 {
     color: #ffffff !important;
 }
 
