@@ -325,9 +325,12 @@ class SlidingWindowVisualizer {
         const windowStart = this.currentStep;
         const windowEnd = windowStart + this.windowSize - 1;
 
-        // Clear all previous window styling
+        // Clear all previous window styling and labels
         document.querySelectorAll('.array-element').forEach(el => {
             el.classList.remove('in-window', 'window-start', 'window-end');
+            // Remove any existing window labels
+            const existingLabels = el.querySelectorAll('.window-label');
+            existingLabels.forEach(label => label.remove());
         });
 
         // Wait a brief moment to ensure DOM updates
@@ -347,9 +350,11 @@ class SlidingWindowVisualizer {
             element.classList.add('in-window');
             if (isStart) {
                 element.classList.add('window-start');
+                this.addWindowLabel(element, 'start');
             }
             if (isEnd) {
                 element.classList.add('window-end');
+                this.addWindowLabel(element, 'end');
             }
         });
 
@@ -626,8 +631,8 @@ class SlidingWindowVisualizer {
         }
     }
     
-    translateDescription(description, window, result) {
-        // Check current language
+    translateDescription(description, windowData, result) {
+        // Check current language - avoid naming conflict with window parameter
         const currentLang = window.currentLanguage || 'en';
         if (currentLang === 'en') {
             return description; // Return original if English
@@ -655,6 +660,20 @@ class SlidingWindowVisualizer {
         }
         
         return description; // Fallback to original
+    }
+    
+    addWindowLabel(element, type) {
+        // Create translatable window label
+        const label = document.createElement('div');
+        label.className = `window-label ${type}`;
+        
+        if (type === 'start') {
+            label.textContent = this.getTranslation('start-label') || 'START';
+        } else if (type === 'end') {
+            label.textContent = this.getTranslation('end-label') || 'END';
+        }
+        
+        element.appendChild(label);
     }
 
     updateProgress() {

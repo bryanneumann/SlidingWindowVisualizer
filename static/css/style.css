@@ -58,14 +58,12 @@
     display: none !important;
 }
 
-/* START and END labels for sliding window */
-.array-element.window-start::after {
-    content: "START";
+/* Translatable window labels - added by JavaScript */
+.window-label {
     position: absolute;
     bottom: -25px;
     left: 50%;
     transform: translateX(-50%);
-    background: #28a745;
     color: white;
     padding: 2px 8px;
     border-radius: 4px;
@@ -73,24 +71,14 @@
     font-weight: bold;
     white-space: nowrap;
     z-index: 10;
-    display: block !important;
 }
 
-.array-element.window-end::before {
-    content: "END";
-    position: absolute;
-    bottom: -25px;
-    left: 50%;
-    transform: translateX(-50%);
+.window-label.start {
+    background: #28a745;
+}
+
+.window-label.end {
     background: #dc3545;
-    color: white;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: bold;
-    white-space: nowrap;
-    z-index: 10;
-    display: block !important;
 }
 
 @keyframes windowPulseStrong {
@@ -108,35 +96,7 @@
 
 /* Clean window highlighting without conflicts */
 
-.array-element.window-start::before {
-    content: "START";
-    position: absolute;
-    bottom: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #28a745;
-    color: white;
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: bold;
-    white-space: nowrap;
-}
-
-.array-element.window-end::after {
-    content: "END";
-    position: absolute;
-    bottom: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #dc3545;
-    color: white;
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: bold;
-    white-space: nowrap;
-}
+/* Remove hardcoded START/END labels - will be handled by JavaScript */
 
 .array-element .index {
     position: absolute;
