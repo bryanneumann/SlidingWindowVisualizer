@@ -410,8 +410,18 @@
             }
         };
 
-        // Current language (default Spanish for Uruguay)
-        let currentLanguage = 'es';
+        // Detect browser language or default to English
+        function detectBrowserLanguage() {
+            const browserLang = navigator.language || navigator.userLanguage;
+            // Check if browser language starts with 'es' (Spanish variants)
+            if (browserLang.toLowerCase().startsWith('es')) {
+                return 'es';
+            }
+            // Default to English for all other languages
+            return 'en';
+        }
+        
+        let currentLanguage = detectBrowserLanguage();
         window.currentLanguage = currentLanguage;
         window.translations = translations;
 
@@ -463,9 +473,10 @@
 
         // Initialize language on page load
         document.addEventListener('DOMContentLoaded', function() {
-            // Check for stored language preference, default to Spanish
-            const storedLang = localStorage.getItem('preferredLanguage') || 'es';
-            switchLanguage(storedLang);
+            // Check for stored language preference, otherwise use browser locale
+            const storedLang = localStorage.getItem('preferredLanguage');
+            const initialLanguage = storedLang || detectBrowserLanguage();
+            switchLanguage(initialLanguage);
         });
     </script>
     

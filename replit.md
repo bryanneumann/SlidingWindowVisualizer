@@ -42,6 +42,7 @@ This is an interactive educational web application designed to teach sliding win
 - **Analysis Dashboard**: Comprehensive results table with step-by-step breakdown
 - **Code Generator**: Multi-language implementation with copy/download functionality
 - **Control Panel**: Play/pause controls with adjustable animation speed
+- **Language Support**: Automatic browser locale detection with English/Spanish support
 
 ### Backend Components
 - **Input Validator**: Robust validation for array and string inputs with error handling
@@ -96,7 +97,8 @@ This is an interactive educational web application designed to teach sliding win
 
 ```
 Changelog:
-- July 01, 2025. Initial setup
+- July 01, 2025: Initial setup
+- July 01, 2025: Added comprehensive Spanish language support with automatic browser locale detection
 ```
 
 ## User Preferences
