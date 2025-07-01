@@ -620,13 +620,16 @@ class SlidingWindowVisualizer {
         if (stepBackBtn) stepBackBtn.disabled = this.currentStep <= 0;
         if (stepForwardBtn) stepForwardBtn.disabled = this.currentStep >= this.maxSteps - 1;
 
-        // Update play/pause button
+        // Update play/pause button with translation support
         if (playPauseBtn) {
+            const playText = this.getTranslation ? this.getTranslation('play') : 'Play';
+            const pauseText = this.getTranslation ? this.getTranslation('pause') : 'Pause';
+            
             if (this.isPlaying) {
-                playPauseBtn.innerHTML = '<i class="bi bi-pause"></i> Pause';
+                playPauseBtn.innerHTML = `<i class="bi bi-pause"></i> ${pauseText}`;
                 playPauseBtn.className = 'btn btn-warning';
             } else {
-                playPauseBtn.innerHTML = '<i class="bi bi-play"></i> Play';
+                playPauseBtn.innerHTML = `<i class="bi bi-play"></i> ${playText}`;
                 playPauseBtn.className = 'btn btn-success';
             }
         }

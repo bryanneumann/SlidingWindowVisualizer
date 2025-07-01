@@ -73,11 +73,11 @@
                         
                         <div class="row">
                             <div class="col-md-8 mb-3">
-                                <label for="inputArray" class="form-label" id="inputLabel">Input Array (comma-separated numbers)</label>
-                                <input type="text" class="form-control" id="inputArray" placeholder="1, 2, 3, 4, 5, 6, 7, 8" value="1, 2, 3, 4, 5, 6, 7, 8">
+                                <label for="inputArray" class="form-label" id="inputLabel" data-translate="input-array">Input Array (comma-separated numbers)</label>
+                                <input type="text" class="form-control" id="inputArray" data-translate-placeholder="input-placeholder" placeholder="1, 2, 3, 4, 5, 6, 7, 8" value="1, 2, 3, 4, 5, 6, 7, 8">
                             </div>
                             <div class="col-md-4 mb-3" id="windowSizeContainer">
-                                <label for="windowSize" class="form-label">Window Size</label>
+                                <label for="windowSize" class="form-label" data-translate="window-size">Window Size</label>
                                 <input type="number" class="form-control" id="windowSize" min="1" max="10" value="3">
                             </div>
                         </div>
@@ -92,7 +92,7 @@
                         <div class="d-flex gap-2">
                             <button class="btn btn-primary" id="startVisualization">
                                 <i class="bi bi-play-circle-fill"></i>
-                                Start
+                                <span data-translate="start">Start</span>
                             </button>
                         </div>
                     </div>
@@ -107,7 +107,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="card-title mb-0">
                             <i class="bi bi-eye"></i>
-                            Visualization
+                            <span data-translate="visualization">Visualization</span>
                         </h5>
                         <div class="d-flex gap-2 align-items-center">
                             <button class="btn btn-outline-primary btn-sm" id="showCodeBtn">
@@ -307,6 +307,145 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Translation System -->
+    <script>
+        // Translation dictionary
+        const translations = {
+            en: {
+                'title': 'Sliding Window Technique Visualizer',
+                'get-code': 'Get the Code',
+                'description': 'Learn and visualize sliding window techniques with interactive demonstrations for both fixed and variable size windows.',
+                'configuration': 'Configuration',
+                'window-type': 'Window Type',
+                'fixed-window': 'Fixed Size Window',
+                'variable-window': 'Variable Size Window',
+                'technique': 'Technique',
+                'sum-elements': 'Sum of Elements',
+                'max-element': 'Maximum Element',
+                'min-element': 'Minimum Element',
+                'avg-elements': 'Average of Elements',
+                'longest-substring': 'Longest Substring Without Repeating Characters',
+                'permutation-string': 'Permutation in String',
+                'input-array': 'Input Array (comma-separated numbers)',
+                'input-placeholder': '1, 2, 3, 4, 5, 6, 7, 8',
+                'window-size': 'Window Size',
+                'start': 'Start',
+                'visualization': 'Visualization',
+                'play': 'Play',
+                'pause': 'Pause',
+                'step-forward': 'Step Forward',
+                'step-backward': 'Step Backward',
+                'reset': 'Reset',
+                'speed': 'Speed',
+                'slow': 'Slow',
+                'normal': 'Normal',
+                'fast': 'Fast',
+                'analysis': 'Window Analysis Summary',
+                'step': 'Step',
+                'window': 'Window',
+                'result': 'Result',
+                'description-col': 'Description',
+                'current-window': 'Current Window',
+                'algorithm-info': 'Algorithm Information',
+                'time-complexity': 'Time Complexity',
+                'space-complexity': 'Space Complexity',
+                'generate-code': 'Generate Code',
+                'copy-code': 'Copy Code',
+                'download': 'Download',
+                'examples': 'Examples',
+                'load-example': 'Load Example'
+            },
+            es: {
+                'title': 'Visualizador de Técnica de Ventana Deslizante',
+                'get-code': 'Obtener el Código',
+                'description': 'Aprende y visualiza técnicas de ventana deslizante con demostraciones interactivas para ventanas de tamaño fijo y variable.',
+                'configuration': 'Configuración',
+                'window-type': 'Tipo de Ventana',
+                'fixed-window': 'Ventana de Tamaño Fijo',
+                'variable-window': 'Ventana de Tamaño Variable',
+                'technique': 'Técnica',
+                'sum-elements': 'Suma de Elementos',
+                'max-element': 'Elemento Máximo',
+                'min-element': 'Elemento Mínimo',
+                'avg-elements': 'Promedio de Elementos',
+                'longest-substring': 'Subcadena Más Larga Sin Caracteres Repetidos',
+                'permutation-string': 'Permutación en Cadena',
+                'input-array': 'Arreglo de Entrada (números separados por comas)',
+                'input-placeholder': '1, 2, 3, 4, 5, 6, 7, 8',
+                'window-size': 'Tamaño de Ventana',
+                'start': 'Iniciar',
+                'visualization': 'Visualización',
+                'play': 'Reproducir',
+                'pause': 'Pausar',
+                'step-forward': 'Paso Adelante',
+                'step-backward': 'Paso Atrás',
+                'reset': 'Reiniciar',
+                'speed': 'Velocidad',
+                'slow': 'Lento',
+                'normal': 'Normal',
+                'fast': 'Rápido',
+                'analysis': 'Resumen de Análisis de Ventana',
+                'step': 'Paso',
+                'window': 'Ventana',
+                'result': 'Resultado',
+                'description-col': 'Descripción',
+                'current-window': 'Ventana Actual',
+                'algorithm-info': 'Información del Algoritmo',
+                'time-complexity': 'Complejidad Temporal',
+                'space-complexity': 'Complejidad Espacial',
+                'generate-code': 'Generar Código',
+                'copy-code': 'Copiar Código',
+                'download': 'Descargar',
+                'examples': 'Ejemplos',
+                'load-example': 'Cargar Ejemplo'
+            }
+        };
+
+        // Current language (default Spanish for Uruguay)
+        let currentLanguage = 'es';
+
+        // Language switching function
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Update button states
+            document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+            document.getElementById('lang-es').classList.toggle('active', lang === 'es');
+            
+            // Update document lang attribute
+            document.documentElement.lang = lang;
+            
+            // Translate all elements with data-translate attribute
+            const elementsToTranslate = document.querySelectorAll('[data-translate]');
+            elementsToTranslate.forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+            
+            // Translate placeholders
+            const placeholderElements = document.querySelectorAll('[data-translate-placeholder]');
+            placeholderElements.forEach(element => {
+                const key = element.getAttribute('data-translate-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    element.placeholder = translations[lang][key];
+                }
+            });
+            
+            // Store language preference
+            localStorage.setItem('preferredLanguage', lang);
+        }
+
+        // Initialize language on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for stored language preference, default to Spanish
+            const storedLang = localStorage.getItem('preferredLanguage') || 'es';
+            switchLanguage(storedLang);
+        });
+    </script>
+    
     <!-- Custom JavaScript -->
     <script src="{{ url_for('static', filename='js/sliding_window.js') }}"></script>
 </body>
