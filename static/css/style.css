@@ -134,6 +134,11 @@ a:focus {
     color: var(--teal-bright) !important;
 }
 
+/* Fix Current Window section labels for better readability */
+#currentWindow strong {
+    color: #ffffff !important;
+}
+
 .alert-info {
     background-color: rgba(240, 248, 248, 0.3) !important;
     border-color: var(--teal-accent) !important;
