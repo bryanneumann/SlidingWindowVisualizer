@@ -412,10 +412,13 @@
 
         // Current language (default Spanish for Uruguay)
         let currentLanguage = 'es';
+        window.currentLanguage = currentLanguage;
+        window.translations = translations;
 
         // Language switching function
         function switchLanguage(lang) {
             currentLanguage = lang;
+            window.currentLanguage = lang; // Make it globally accessible
             
             // Update button states
             document.getElementById('lang-en').classList.toggle('active', lang === 'en');
@@ -441,6 +444,18 @@
                     element.placeholder = translations[lang][key];
                 }
             });
+            
+            // Update dynamic content if visualizer exists
+            if (window.visualizer && window.visualizer.getTranslation) {
+                // Refresh current visualization display if active
+                const currentWindowEl = document.getElementById('currentWindow');
+                const calculationEl = document.getElementById('calculation');
+                
+                if (currentWindowEl && currentWindowEl.innerHTML.trim()) {
+                    // Re-render current window info with new language
+                    window.visualizer.updateVisualization();
+                }
+            }
             
             // Store language preference
             localStorage.setItem('preferredLanguage', lang);

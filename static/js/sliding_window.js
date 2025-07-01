@@ -1014,5 +1014,5 @@ class SlidingWindowVisualizer {
 
 // Initialize the visualizer when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-    window.slidingWindowVisualizer = new SlidingWindowVisualizer();
+    window.visualizer = new SlidingWindowVisualizer();
 });
