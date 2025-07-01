@@ -730,6 +730,8 @@ class SlidingWindowVisualizer {
     loadExamples() {
         const examples = [
             {
+                titleKey: "example-max-sum-title",
+                descKey: "example-max-sum-desc",
                 title: "Maximum Sum Subarray",
                 description: "Find the maximum sum of a subarray of size 3",
                 array: "2, 1, 3, 9, 4, 1, 7",
@@ -738,6 +740,8 @@ class SlidingWindowVisualizer {
                 type: "fixed"
             },
             {
+                titleKey: "example-moving-avg-title",
+                descKey: "example-moving-avg-desc",
                 title: "Moving Average",
                 description: "Calculate moving average with window size 4",
                 array: "10, 20, 30, 40, 50, 60",
@@ -746,6 +750,8 @@ class SlidingWindowVisualizer {
                 type: "fixed"
             },
             {
+                titleKey: "example-max-window-title",
+                descKey: "example-max-window-desc",
                 title: "Maximum in Window",
                 description: "Find maximum element in each window of size 3",
                 array: "1, 3, 2, 5, 8, 3, 6, 7",
@@ -754,6 +760,8 @@ class SlidingWindowVisualizer {
                 type: "fixed"
             },
             {
+                titleKey: "example-expanding-title",
+                descKey: "example-expanding-desc",
                 title: "Expanding Window Sum",
                 description: "Calculate cumulative sum with expanding window",
                 array: "1, 2, 3, 4, 5",
@@ -769,11 +777,16 @@ class SlidingWindowVisualizer {
         examples.forEach((example, index) => {
             const exampleCard = document.createElement('div');
             exampleCard.className = 'col-md-6 col-lg-3 mb-3';
+            
+            // Use translations if available, otherwise fallback to default text
+            const title = this.getTranslation(example.titleKey) || example.title;
+            const description = this.getTranslation(example.descKey) || example.description;
+            
             exampleCard.innerHTML = `
                 <div class="card example-card h-100" data-example="${index}">
                     <div class="card-body">
-                        <h6 class="card-title">${example.title}</h6>
-                        <p class="card-text text-muted small">${example.description}</p>
+                        <h6 class="card-title">${title}</h6>
+                        <p class="card-text text-muted small">${description}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="badge bg-secondary">${example.type}</span>
                             <span class="badge bg-primary">${example.algorithm}</span>
