@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Background circle -->
+  <circle cx="32" cy="32" r="30" fill="#5e9ca0" stroke="#4a7c7f" stroke-width="2"/>
+  
+  <!-- Array elements -->
+  <rect x="8" y="24" width="8" height="8" rx="1" fill="#f0f0f0" stroke="#333" stroke-width="0.5"/>
+  <rect x="18" y="24" width="8" height="8" rx="1" fill="#f0f0f0" stroke="#333" stroke-width="0.5"/>
+  <rect x="28" y="24" width="8" height="8" rx="1" fill="#4a90e2" stroke="#2c5aa0" stroke-width="1"/>
+  <rect x="38" y="24" width="8" height="8" rx="1" fill="#4a90e2" stroke="#2c5aa0" stroke-width="1"/>
+  <rect x="48" y="24" width="8" height="8" rx="1" fill="#f0f0f0" stroke="#333" stroke-width="0.5"/>
+  
+  <!-- Numbers in array elements -->
+  <text x="12" y="30" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="#333" text-anchor="middle">6</text>
+  <text x="22" y="30" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="#333" text-anchor="middle">2</text>
+  <text x="32" y="30" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="#fff" text-anchor="middle">4</text>
+  <text x="42" y="30" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="#fff" text-anchor="middle">3</text>
+  <text x="52" y="30" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="#333" text-anchor="middle">5</text>
+  
+  <!-- Window indicator -->
+  <rect x="27" y="22" width="20" height="12" rx="2" fill="none" stroke="#2c5aa0" stroke-width="2" stroke-dasharray="1,1"/>
+  
+  <!-- Arrow -->
+  <path d="M44 42 L50 45 L44 48 Z" fill="#f0f0f0"/>
+  <line x1="40" y1="45" x2="44" y2="45" stroke="#f0f0f0" stroke-width="2" stroke-linecap="round"/>
+</svg>
