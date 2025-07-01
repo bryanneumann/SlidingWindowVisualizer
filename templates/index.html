@@ -31,6 +31,29 @@
                             <i class="bi bi-github"></i>
                             <span data-translate="get-code">Get the Code</span>
                         </a>
+                        
+                        <!-- Social Share Buttons -->
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-share"></i>
+                                <span data-translate="share">Share</span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="shareOnTwitter()">
+                                    <i class="bi bi-twitter"></i> Twitter
+                                </a></li>
+                                <li><a class="dropdown-item" href="#" onclick="shareOnLinkedIn()">
+                                    <i class="bi bi-linkedin"></i> LinkedIn
+                                </a></li>
+                                <li><a class="dropdown-item" href="#" onclick="shareOnFacebook()">
+                                    <i class="bi bi-facebook"></i> Facebook
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" onclick="copyShareLink()">
+                                    <i class="bi bi-link-45deg"></i> <span data-translate="copy-link">Copy Link</span>
+                                </a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <p class="lead" data-translate="description">
@@ -400,7 +423,12 @@
                 'sum-of-window': 'Sum of window:',
                 'max-in-window': 'Maximum in window:',
                 'min-in-window': 'Minimum in window:',
-                'avg-of-window': 'Average of window:'
+                'avg-of-window': 'Average of window:',
+                'share': 'Share',
+                'copy-link': 'Copy Link',
+                'link-copied': 'Link copied to clipboard!',
+                'share-twitter-text': 'Check out this interactive sliding window algorithm visualizer! Learn algorithms with real-time animations and multi-language code generation 🚀',
+                'share-linkedin-text': 'Interactive educational tool for learning sliding window algorithms with visual demonstrations and code generation in multiple languages.'
             },
             es: {
                 'title': 'Visualizador de Técnica de Ventana Deslizante',
@@ -490,7 +518,12 @@
                 'sum-of-window': 'Suma de ventana:',
                 'max-in-window': 'Máximo en ventana:',
                 'min-in-window': 'Mínimo en ventana:',
-                'avg-of-window': 'Promedio de ventana:'
+                'avg-of-window': 'Promedio de ventana:',
+                'share': 'Compartir',
+                'copy-link': 'Copiar Enlace',
+                'link-copied': '¡Enlace copiado al portapapeles!',
+                'share-twitter-text': '¡Mira este visualizador interactivo de algoritmos de ventana deslizante! Aprende algoritmos con animaciones en tiempo real y generación de código en múltiples lenguajes 🚀',
+                'share-linkedin-text': 'Herramienta educativa interactiva para aprender algoritmos de ventana deslizante con demostraciones visuales y generación de código en múltiples lenguajes.'
             }
         };
 
@@ -570,6 +603,60 @@
             const initialLanguage = storedLang || detectBrowserLanguage();
             switchLanguage(initialLanguage);
         });
+
+        // Social sharing functions
+        function shareOnTwitter() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(getCurrentTranslation('share-twitter-text') || 'Check out this interactive sliding window algorithm visualizer! Learn algorithms with real-time animations and multi-language code generation 🚀');
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+        }
+
+        function shareOnLinkedIn() {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(getCurrentTranslation('title') || 'Sliding Window Technique Visualizer');
+            const summary = encodeURIComponent(getCurrentTranslation('share-linkedin-text') || 'Interactive educational tool for learning sliding window algorithms with visual demonstrations and code generation in multiple languages.');
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&title=${title}&summary=${summary}`, '_blank');
+        }
+
+        function shareOnFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+        }
+
+        function copyShareLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                // Show success message
+                const alert = document.createElement('div');
+                alert.className = 'alert alert-success alert-dismissible fade show position-fixed';
+                alert.style.cssText = 'top: 20px; right: 20px; z-index: 9999;';
+                alert.innerHTML = `
+                    <i class="bi bi-check-circle"></i> ${getCurrentTranslation('link-copied') || 'Link copied to clipboard!'}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                document.body.appendChild(alert);
+                
+                // Auto-remove after 3 seconds
+                setTimeout(() => {
+                    if (alert.parentNode) {
+                        alert.parentNode.removeChild(alert);
+                    }
+                }, 3000);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = window.location.href;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                alert(getCurrentTranslation('link-copied') || 'Link copied to clipboard!');
+            });
+        }
+
+        function getCurrentTranslation(key) {
+            return window.visualizer ? window.visualizer.getTranslation(key) : null;
+        }
     </script>
     
     <!-- Custom JavaScript -->
