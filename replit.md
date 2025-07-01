@@ -116,6 +116,11 @@ Changelog:
   * Environment-based logging configuration (DEBUG for dev, INFO for production)
   * CDN crossorigin attributes for external resources
   * Input validation and secure session management maintained
+- July 01, 2025: Added custom favicon and branding:
+  * Created custom favicon design matching teal color scheme
+  * Shows sliding window visualization with array elements and highlighted window
+  * Multiple format support (SVG, PNG, ICO, Apple Touch Icon)
+  * Cross-browser and mobile device compatibility
 ```
 
 ## User Preferences
