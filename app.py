@@ -1,8 +1,45 @@
 import os
 import logging
+import time
+import hashlib
+from collections import defaultdict, deque
 import geoip2.database
 import geoip2.errors
 from flask import Flask, render_template, request, jsonify, redirect
+
+# Rate limiting for geo-blocking to prevent spam
+class RateLimiter:
+    def __init__(self):
+        self.requests = defaultdict(deque)
+        self.redirected_ips = defaultdict(float)
+    
+    def is_rate_limited(self, ip, max_requests=5, window_minutes=60):
+        """Check if IP is rate limited for geo-blocking"""
+        now = time.time()
+        window_seconds = window_minutes * 60
+        
+        # Clean old entries
+        while self.requests[ip] and self.requests[ip][0] < now - window_seconds:
+            self.requests[ip].popleft()
+        
+        # Check if already redirected recently (24 hour cooldown)
+        if ip in self.redirected_ips and now - self.redirected_ips[ip] < 86400:  # 24 hours
+            return True
+        
+        # Check rate limit
+        if len(self.requests[ip]) >= max_requests:
+            return True
+        
+        # Add current request
+        self.requests[ip].append(now)
+        return False
+    
+    def mark_redirected(self, ip):
+        """Mark an IP as redirected to prevent repeated redirects"""
+        self.redirected_ips[ip] = time.time()
+
+# Global rate limiter instance
+rate_limiter = RateLimiter()
 
 def add_security_headers(response):
     """Add security headers to all responses"""
@@ -37,16 +74,29 @@ def check_geo_blocking():
         # Skip geo-blocking for localhost/development
         if client_ip in ['127.0.0.1', 'localhost', '::1'] or client_ip.startswith('192.168.'):
             return None
+        
+        # Check rate limiting to prevent spam
+        if rate_limiter.is_rate_limited(client_ip):
+            # If rate limited, serve normal content instead of redirecting
+            return None
             
         # Load GeoIP database
         with geoip2.database.Reader('geoip/GeoLite2-Country.mmdb') as reader:
             response = reader.country(client_ip)
             country_code = response.country.iso_code
             
-            # Redirect Russian traffic
+            # Redirect Russian traffic with anti-spam protection
             if country_code == 'RU':
-                logging.info(f"Redirecting Russian IP {client_ip} to Ukraine support page")
-                return redirect('https://linktr.ee/UkraineTheLatest')
+                # Mark IP as redirected to prevent repeated redirects
+                rate_limiter.mark_redirected(client_ip)
+                
+                # Log the redirect with rate limiting info
+                logging.info(f"Redirecting Russian IP {client_ip} to Ukraine support (rate limited for 24h)")
+                
+                # Add cache headers to prevent excessive requests
+                response = redirect('https://linktr.ee/UkraineTheLatest')
+                response.headers['Cache-Control'] = 'public, max-age=86400'  # 24 hour cache
+                return response
                 
     except (geoip2.errors.AddressNotFoundError, geoip2.errors.GeoIP2Error, FileNotFoundError):
         # If geo-blocking fails, continue normally
