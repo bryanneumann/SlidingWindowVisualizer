@@ -606,8 +606,10 @@ class SlidingWindowVisualizer {
             <strong>${resultLabel}:</strong> <span class="result-value">${result}</span>
         `;
 
+        // Translate calculation descriptions
+        const translatedDescription = this.translateDescription(description, window, result);
         calculationEl.innerHTML = `
-            <div class="calculation-step">${description}</div>
+            <div class="calculation-step">${translatedDescription}</div>
         `;
 
         // Add a subtle celebration effect for results
@@ -618,6 +620,37 @@ class SlidingWindowVisualizer {
             });
         }
     }
+    
+    translateDescription(description, window, result) {
+        // Check current language
+        const currentLang = window.currentLanguage || 'en';
+        if (currentLang === 'en') {
+            return description; // Return original if English
+        }
+        
+        // Translate descriptions for Spanish
+        if (description.includes('Sum of window:')) {
+            const sumOfText = this.getTranslation('sum-of-window') || 'Suma de ventana:';
+            return description.replace('Sum of window:', sumOfText);
+        }
+        
+        if (description.includes('Maximum in window:')) {
+            const maxText = this.getTranslation('max-in-window') || 'Máximo en ventana:';
+            return description.replace('Maximum in window:', maxText);
+        }
+        
+        if (description.includes('Minimum in window:')) {
+            const minText = this.getTranslation('min-in-window') || 'Mínimo en ventana:';
+            return description.replace('Minimum in window:', minText);
+        }
+        
+        if (description.includes('Average of window:')) {
+            const avgText = this.getTranslation('avg-of-window') || 'Promedio de ventana:';
+            return description.replace('Average of window:', avgText);
+        }
+        
+        return description; // Fallback to original
+    }
 
     updateProgress() {
         const progressBar = document.getElementById('progressBar');
@@ -625,7 +658,9 @@ class SlidingWindowVisualizer {
         
         const progress = this.maxSteps > 0 ? (this.currentStep / this.maxSteps) * 100 : 0;
         progressBar.style.width = `${progress}%`;
-        progressText.textContent = `Step ${this.currentStep + 1} of ${this.maxSteps}`;
+        const stepText = this.getTranslation('step-progress') || 'Step';
+        const ofText = this.getTranslation('of') || 'of';
+        progressText.textContent = `${stepText} ${this.currentStep + 1} ${ofText} ${this.maxSteps}`;
     }
 
     updateControls() {
