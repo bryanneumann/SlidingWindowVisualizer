@@ -1,6 +1,8 @@
 import os
 import logging
-from flask import Flask, render_template, request, jsonify
+import geoip2.database
+import geoip2.errors
+from flask import Flask, render_template, request, jsonify, redirect
 
 def add_security_headers(response):
     """Add security headers to all responses"""
@@ -9,6 +11,42 @@ def add_security_headers(response):
     response.headers['X-XSS-Protection'] = '1; mode=block'
     response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
     return response
+
+def get_client_ip():
+    """Get the client's real IP address"""
+    # Check for IP from reverse proxy headers
+    if request.headers.get('X-Forwarded-For'):
+        return request.headers.get('X-Forwarded-For').split(',')[0].strip()
+    elif request.headers.get('X-Real-IP'):
+        return request.headers.get('X-Real-IP')
+    else:
+        return request.remote_addr
+
+def check_geo_blocking():
+    """Check if the request is from Russia and redirect if necessary"""
+    try:
+        client_ip = get_client_ip()
+        
+        # Skip geo-blocking for localhost/development
+        if client_ip in ['127.0.0.1', 'localhost', '::1'] or client_ip.startswith('192.168.'):
+            return None
+            
+        # Load GeoIP database
+        with geoip2.database.Reader('geoip/GeoLite2-Country.mmdb') as reader:
+            response = reader.country(client_ip)
+            country_code = response.country.iso_code
+            
+            # Redirect Russian traffic
+            if country_code == 'RU':
+                return redirect('https://linktr.ee/UkraineTheLatest')
+                
+    except (geoip2.errors.AddressNotFoundError, geoip2.errors.GeoIP2Error, FileNotFoundError):
+        # If geo-blocking fails, continue normally
+        pass
+    except Exception as e:
+        logging.warning(f"Geo-blocking error: {e}")
+    
+    return None
 
 # Set up logging - use INFO level for production
 log_level = logging.DEBUG if os.environ.get('FLASK_ENV') == 'development' else logging.INFO
