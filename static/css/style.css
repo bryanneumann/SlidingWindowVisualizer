@@ -1,4 +1,41 @@
-/* Custom styles for sliding window visualizer */
+/* Custom styles for sliding window visualizer with teal theme */
+
+/* Teal color theme override */
+:root {
+    --teal-primary: #5e9ca0;
+    --teal-secondary: #4a7c7f;
+    --teal-light: #f0f8f8;
+    --teal-accent: #7bb3b7;
+}
+
+/* Override Bootstrap primary color */
+.btn-primary {
+    background-color: var(--teal-primary) !important;
+    border-color: var(--teal-secondary) !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--teal-secondary) !important;
+    border-color: var(--teal-secondary) !important;
+}
+
+.btn-outline-primary {
+    color: var(--teal-primary) !important;
+    border-color: var(--teal-primary) !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+    background-color: var(--teal-primary) !important;
+    border-color: var(--teal-primary) !important;
+    color: white !important;
+}
+
+/* Progress bar styling */
+.progress-bar {
+    background-color: var(--teal-primary) !important;
+}
 
 /* Force flat styling to eliminate gradient lines */
 .array-element,
@@ -14,9 +51,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid var(--bs-border-color);
-    border-radius: 4px;
-    background: var(--bs-body-bg) !important;
+    border: 3px solid #4a7c7f;
+    border-radius: 8px;
+    background: #f0f8f8 !important;
     background-image: none !important;
     background-gradient: none !important;
     background-attachment: initial !important;
@@ -26,7 +63,7 @@
     background-position: initial !important;
     background-repeat: initial !important;
     background-size: initial !important;
-    color: var(--bs-body-color);
+    color: #2c5454;
     font-weight: bold;
     font-size: 1.5rem;
     font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
@@ -34,15 +71,15 @@
     position: relative;
     cursor: pointer;
     box-sizing: border-box;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(94, 156, 160, 0.2);
 }
 
 .array-element.in-window {
-    background: #007bff !important;
+    background: #5e9ca0 !important;
     background-image: none !important;
     color: white !important;
-    border: 4px solid #ffc107 !important;
-    box-shadow: 0 0 20px rgba(255, 193, 7, 0.8) !important;
+    border: 4px solid #4a7c7f !important;
+    box-shadow: 0 0 20px rgba(94, 156, 160, 0.8) !important;
     position: relative;
     z-index: 5;
     transform: scale(1.05);
@@ -74,11 +111,11 @@
 }
 
 .window-label.start {
-    background: #28a745;
+    background: #5e9ca0;
 }
 
 .window-label.end {
-    background: #dc3545;
+    background: #4a7c7f;
 }
 
 @keyframes windowPulseStrong {
@@ -103,7 +140,7 @@
     top: -12px;
     right: -12px;
     background: white;
-    color: #0d6efd;
+    color: #5e9ca0;
     font-size: 0.75rem;
     padding: 3px 8px;
     border-radius: 50%;
@@ -112,8 +149,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #0d6efd;
-    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
+    border: 2px solid #5e9ca0;
+    box-shadow: 0 2px 8px rgba(94, 156, 160, 0.3);
     animation: indexFadeIn 0.5s ease-out;
     font-weight: bold;
 }
@@ -124,8 +161,8 @@
 }
 
 .algorithm-explanation {
-    background-color: var(--bs-light);
-    border-left: 4px solid var(--bs-info);
+    background-color: rgba(240, 248, 248, 0.3);
+    border-left: 4px solid #5e9ca0;
     padding: 1rem;
     margin: 1rem 0;
     border-radius: 4px;
