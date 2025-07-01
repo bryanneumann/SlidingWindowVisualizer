@@ -121,6 +121,12 @@ Changelog:
   * Shows sliding window visualization with array elements and highlighted window
   * Multiple format support (SVG, PNG, ICO, Apple Touch Icon)
   * Cross-browser and mobile device compatibility
+- July 01, 2025: Resolved contrast and accessibility issues:
+  * Fixed Bootstrap JavaScript integration for proper modal functionality
+  * Created window-themed favicon using 🪟 design with teal color palette
+  * Improved text contrast for "Current Window" labels and modal headings
+  * Targeted specific elements (#currentWindow strong, #algorithmInfo) for white text
+  * Maintained consistent teal theme while ensuring readability compliance
 ```
 
 ## User Preferences
