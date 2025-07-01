@@ -37,6 +37,81 @@
     background-color: var(--teal-primary) !important;
 }
 
+/* Range slider styling */
+.form-range::-webkit-slider-thumb {
+    background-color: var(--teal-primary) !important;
+}
+
+.form-range::-moz-range-thumb {
+    background-color: var(--teal-primary) !important;
+    border-color: var(--teal-primary) !important;
+}
+
+.form-range::-webkit-slider-track {
+    background-color: var(--teal-light) !important;
+}
+
+.form-range::-moz-range-track {
+    background-color: var(--teal-light) !important;
+}
+
+.form-range:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem rgba(94, 156, 160, 0.25) !important;
+}
+
+/* Fix any purple badges or tags */
+.badge-primary {
+    background-color: var(--teal-primary) !important;
+}
+
+.alert-info {
+    background-color: rgba(240, 248, 248, 0.3) !important;
+    border-color: var(--teal-accent) !important;
+    color: var(--teal-secondary) !important;
+}
+
+.alert-success {
+    background-color: rgba(240, 248, 248, 0.3) !important;
+    border-color: var(--teal-primary) !important;
+    color: var(--teal-secondary) !important;
+}
+
+/* Form controls focus styling */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--teal-primary) !important;
+    box-shadow: 0 0 0 0.25rem rgba(94, 156, 160, 0.25) !important;
+}
+
+/* Link colors */
+a {
+    color: var(--teal-primary) !important;
+}
+
+a:hover {
+    color: var(--teal-secondary) !important;
+}
+
+/* Override any remaining Bootstrap info/primary colors */
+.text-info {
+    color: var(--teal-primary) !important;
+}
+
+.bg-info {
+    background-color: var(--teal-light) !important;
+}
+
+.border-info {
+    border-color: var(--teal-primary) !important;
+}
+
+/* Language toggle button active state */
+.btn-outline-secondary.active {
+    background-color: var(--teal-primary) !important;
+    border-color: var(--teal-primary) !important;
+    color: white !important;
+}
+
 /* Force flat styling to eliminate gradient lines */
 .array-element,
 .array-element * {
