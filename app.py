@@ -2,9 +2,9 @@ import os
 import logging
 import time
 import hashlib
+import ipaddress
+import requests
 from collections import defaultdict, deque
-import geoip2.database
-import geoip2.errors
 from flask import Flask, render_template, request, jsonify, redirect
 
 # Rate limiting for geo-blocking to prevent spam
@@ -62,6 +62,52 @@ def get_client_ip():
     
     return request.remote_addr or '127.0.0.1'
 
+def is_russian_ip(ip_address):
+    """Check if IP address is from Russian IP ranges using known allocations"""
+    try:
+        ip = ipaddress.ip_address(ip_address)
+        
+        # Major Russian IP ranges (CIDR blocks allocated to Russia)
+        russian_ranges = [
+            '5.8.0.0/13',          # Rostelecom
+            '5.16.0.0/13',         # Rostelecom
+            '31.173.0.0/16',       # MTS
+            '37.139.0.0/16',       # Beeline
+            '46.17.0.0/16',        # Corbina Telecom
+            '46.32.0.0/19',        # Petersburg Internet Network
+            '77.88.0.0/18',        # Yandex
+            '78.25.0.0/16',        # Rostelecom
+            '78.108.0.0/16',       # TTK
+            '81.176.0.0/13',       # Rostelecom
+            '82.138.0.0/16',       # Corbina Telecom
+            '85.21.0.0/16',        # Rostelecom
+            '87.226.0.0/16',       # TTK
+            '89.175.0.0/16',       # Petersburg Internet Network
+            '91.103.0.0/16',       # Petersburg Internet Network
+            '91.185.0.0/16',       # MTS
+            '91.186.0.0/16',       # MTS
+            '94.19.0.0/16',        # Petersburg Internet Network
+            '95.24.0.0/16',        # Petersburg Internet Network
+            '95.162.0.0/16',       # Petersburg Internet Network
+            '176.59.0.0/16',       # Rostelecom
+            '178.20.0.0/14',       # Rostelecom
+            '178.176.0.0/12',      # Rostelecom
+            '185.4.0.0/16',        # Selectel
+            '188.113.0.0/16',      # Rostelecom
+            '188.170.0.0/16',      # Rostelecom
+            '212.1.0.0/16',        # Rostelecom
+            '213.59.0.0/16'        # Rostelecom
+        ]
+        
+        for cidr in russian_ranges:
+            if ip in ipaddress.ip_network(cidr):
+                return True
+                
+    except (ValueError, ipaddress.AddressValueError):
+        pass
+    
+    return False
+
 def check_geo_blocking():
     """Check if the request is from Russia and redirect if necessary"""
     try:
@@ -80,27 +126,19 @@ def check_geo_blocking():
             # If rate limited, serve normal content instead of redirecting
             return None
             
-        # Load GeoIP database
-        with geoip2.database.Reader('geoip/GeoLite2-Country.mmdb') as reader:
-            response = reader.country(client_ip)
-            country_code = response.country.iso_code
+        # Check if IP is from Russian ranges
+        if is_russian_ip(client_ip):
+            # Mark IP as redirected to prevent repeated redirects
+            rate_limiter.mark_redirected(client_ip)
             
-            # Redirect Russian traffic with anti-spam protection
-            if country_code == 'RU':
-                # Mark IP as redirected to prevent repeated redirects
-                rate_limiter.mark_redirected(client_ip)
+            # Log the redirect with rate limiting info
+            logging.info(f"Redirecting Russian IP {client_ip} to Ukraine support (rate limited for 24h)")
+            
+            # Add cache headers to prevent excessive requests
+            response = redirect('https://linktr.ee/UkraineTheLatest')
+            response.headers['Cache-Control'] = 'public, max-age=86400'  # 24 hour cache
+            return response
                 
-                # Log the redirect with rate limiting info
-                logging.info(f"Redirecting Russian IP {client_ip} to Ukraine support (rate limited for 24h)")
-                
-                # Add cache headers to prevent excessive requests
-                response = redirect('https://linktr.ee/UkraineTheLatest')
-                response.headers['Cache-Control'] = 'public, max-age=86400'  # 24 hour cache
-                return response
-                
-    except (geoip2.errors.AddressNotFoundError, geoip2.errors.GeoIP2Error, FileNotFoundError):
-        # If geo-blocking fails, continue normally
-        pass
     except Exception as e:
         logging.warning(f"Geo-blocking error: {e}")
     

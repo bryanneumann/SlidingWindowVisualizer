@@ -133,6 +133,11 @@ Changelog:
   * Added cache headers to reduce server load
   * Prevents spam while maintaining educational access for legitimate users
   * Includes comprehensive error handling and logging
+- July 02, 2025: Fixed GeoIP database issues:
+  * Replaced corrupted MaxMind database with reliable IP range detection
+  * Implemented Russian IP range checking using CIDR blocks
+  * Removed external database dependency for better reliability
+  * Eliminated console warnings and improved system stability
 ```
 
 ## User Preferences
