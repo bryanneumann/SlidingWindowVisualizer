@@ -42,7 +42,7 @@
                         </a>
                         
                         <!-- Social Share Buttons -->
-                        <div class="btn-group" role="group">
+                        <div class="btn-group share-buttons" role="group">
                             <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-share"></i>
                                 <span data-translate="share">Share</span>
@@ -702,6 +702,12 @@
             }
             
             init() {
+                // Wait for Bootstrap to be fully loaded
+                if (typeof bootstrap === 'undefined') {
+                    setTimeout(() => this.init(), 100);
+                    return;
+                }
+                
                 this.createReviewModal();
                 this.loadReviewStats();
                 this.setupEventListeners();
@@ -885,8 +891,25 @@
             }
             
             showReviewModal() {
-                const modal = new bootstrap.Modal(document.getElementById('reviewModal'));
-                modal.show();
+                console.log('showReviewModal called');
+                try {
+                    const modalElement = document.getElementById('reviewModal');
+                    if (!modalElement) {
+                        console.error('Review modal element not found');
+                        return;
+                    }
+                    
+                    if (typeof bootstrap === 'undefined') {
+                        console.error('Bootstrap not loaded');
+                        return;
+                    }
+                    
+                    const modal = new bootstrap.Modal(modalElement);
+                    modal.show();
+                    console.log('Modal shown successfully');
+                } catch (error) {
+                    console.error('Error showing modal:', error);
+                }
             }
         }
         
@@ -894,18 +917,36 @@
         document.addEventListener('DOMContentLoaded', () => {
             window.reviewSystem = new ReviewSystem();
             
-            // Add review button to the page
-            const reviewButtonHTML = `
-                <button type="button" class="btn btn-outline-primary btn-sm ms-2" onclick="window.reviewSystem.showReviewModal()">
-                    <i class="bi bi-star"></i> <span data-translate="rate-app">Rate This App</span>
-                </button>
-            `;
-            
-            // Add to share buttons area
-            const shareSection = document.querySelector('.share-buttons');
-            if (shareSection) {
-                shareSection.insertAdjacentHTML('beforeend', reviewButtonHTML);
-            }
+            // Add review button to the page after a small delay to ensure DOM is ready
+            setTimeout(() => {
+                const reviewButtonHTML = `
+                    <button type="button" class="btn btn-outline-primary btn-sm ms-2" onclick="window.reviewSystem.showReviewModal()">
+                        <i class="bi bi-star"></i> <span data-translate="rate-app">Rate This App</span>
+                    </button>
+                `;
+                
+                // Add to share buttons area
+                const shareSection = document.querySelector('.share-buttons');
+                if (shareSection) {
+                    shareSection.insertAdjacentHTML('beforeend', reviewButtonHTML);
+                    console.log('Review button added successfully');
+                } else {
+                    // Fallback: add to header controls
+                    const headerControls = document.querySelector('.d-flex.align-items-center.mb-3');
+                    if (headerControls) {
+                        headerControls.insertAdjacentHTML('beforeend', reviewButtonHTML);
+                        console.log('Review button added to header controls');
+                    }
+                }
+                
+                // Apply translations to the newly added button
+                if (window.currentLanguage && window.translations) {
+                    const newButton = document.querySelector('[data-translate="rate-app"]');
+                    if (newButton && window.translations[window.currentLanguage] && window.translations[window.currentLanguage]['rate-app']) {
+                        newButton.textContent = window.translations[window.currentLanguage]['rate-app'];
+                    }
+                }
+            }, 100);
         });
     </script>
 </body>
