@@ -891,22 +891,18 @@
             }
             
             showReviewModal() {
-                console.log('showReviewModal called');
                 try {
                     const modalElement = document.getElementById('reviewModal');
                     if (!modalElement) {
-                        console.error('Review modal element not found');
                         return;
                     }
                     
                     if (typeof bootstrap === 'undefined') {
-                        console.error('Bootstrap not loaded');
                         return;
                     }
                     
                     const modal = new bootstrap.Modal(modalElement);
                     modal.show();
-                    console.log('Modal shown successfully');
                 } catch (error) {
                     console.error('Error showing modal:', error);
                 }
@@ -929,13 +925,11 @@
                 const shareSection = document.querySelector('.share-buttons');
                 if (shareSection) {
                     shareSection.insertAdjacentHTML('beforeend', reviewButtonHTML);
-                    console.log('Review button added successfully');
                 } else {
                     // Fallback: add to header controls
                     const headerControls = document.querySelector('.d-flex.align-items-center.mb-3');
                     if (headerControls) {
                         headerControls.insertAdjacentHTML('beforeend', reviewButtonHTML);
-                        console.log('Review button added to header controls');
                     }
                 }
                 
@@ -943,15 +937,10 @@
                 const reviewButton = document.getElementById('review-button');
                 if (reviewButton) {
                     reviewButton.addEventListener('click', function() {
-                        console.log('Review button clicked!');
                         if (window.reviewSystem) {
-                            console.log('ReviewSystem found, showing modal');
                             window.reviewSystem.showReviewModal();
-                        } else {
-                            console.error('ReviewSystem not found on window object');
                         }
                     });
-                    console.log('Event listener added to review button');
                 }
                 
                 // Apply translations to the newly added button
