@@ -6,6 +6,15 @@ import ipaddress
 import requests
 from collections import defaultdict, deque
 from flask import Flask, render_template, request, jsonify, redirect
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import DeclarativeBase
+
+
+class Base(DeclarativeBase):
+    pass
+
+
+db = SQLAlchemy(model_class=Base)
 
 # Rate limiting for geo-blocking to prevent spam
 class RateLimiter:
@@ -40,6 +49,26 @@ class RateLimiter:
 
 # Global rate limiter instance
 rate_limiter = RateLimiter()
+
+# Initialize Flask app
+app = Flask(__name__)
+
+# Configuration
+app.secret_key = os.environ.get("SESSION_SECRET", "dev-secret-key")
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    "pool_recycle": 300,
+    "pool_pre_ping": True,
+}
+
+# Initialize database
+db.init_app(app)
+
+# Create all tables
+with app.app_context():
+    # Import models here to ensure they are registered
+    from models import Review
+    db.create_all()
 
 def add_security_headers(response):
     """Add security headers to all responses"""
@@ -147,10 +176,6 @@ def check_geo_blocking():
 # Set up logging - use INFO level for production
 log_level = logging.DEBUG if os.environ.get('FLASK_ENV') == 'development' else logging.INFO
 logging.basicConfig(level=log_level)
-
-# Create the Flask app
-app = Flask(__name__)
-app.secret_key = os.environ.get("SESSION_SECRET", "dev_secret_key_for_sliding_window")
 
 # Apply security headers to all responses
 app.after_request(add_security_headers)
@@ -1722,6 +1747,96 @@ print(f"Longest subarray with avg >= {threshold}: {result} (length: {length})")'
     except Exception as e:
         app.logger.error(f"Error generating code: {str(e)}")
         return jsonify({'error': 'An error occurred while generating code'})
+
+@app.route('/api/submit_review', methods=['POST'])
+def submit_review():
+    """Submit a star rating and optional feedback"""
+    try:
+        data = request.get_json()
+        
+        # Validate rating (0-5 stars)
+        rating = data.get('rating')
+        if rating is None or not isinstance(rating, int) or rating < 0 or rating > 5:
+            return jsonify({'error': 'Rating must be an integer between 0 and 5'}), 400
+        
+        # Optional feedback text
+        feedback = data.get('feedback', '').strip()
+        if feedback and len(feedback) > 1000:  # Limit feedback length
+            return jsonify({'error': 'Feedback must be less than 1000 characters'}), 400
+        
+        # Get user info for basic analytics (anonymous)
+        user_ip = get_client_ip()
+        user_agent = request.headers.get('User-Agent', '')[:500]  # Limit length
+        
+        # Check if user has already submitted a review recently (prevent spam)
+        from models import Review
+        from datetime import datetime, timedelta
+        recent_review = Review.query.filter_by(user_ip=user_ip).filter(
+            Review.created_at > datetime.utcnow() - timedelta(hours=24)
+        ).first()
+        
+        if recent_review:
+            return jsonify({'error': 'You have already submitted a review in the last 24 hours'}), 429
+        
+        # Create new review
+        review = Review(
+            rating=rating,
+            feedback=feedback if feedback else None,
+            user_ip=user_ip,
+            user_agent=user_agent
+        )
+        
+        db.session.add(review)
+        db.session.commit()
+        
+        logging.info(f"New review submitted: {rating} stars from {user_ip}")
+        
+        return jsonify({
+            'success': True,
+            'message': 'Thank you for your feedback!'
+        })
+        
+    except Exception as e:
+        logging.error(f"Review submission error: {str(e)}")
+        return jsonify({'error': 'Failed to submit review'}), 500
+
+@app.route('/api/reviews/stats', methods=['GET'])
+def get_review_stats():
+    """Get review statistics for display"""
+    try:
+        from models import Review
+        
+        # Get basic stats
+        total_reviews = Review.query.count()
+        
+        if total_reviews == 0:
+            return jsonify({
+                'total_reviews': 0,
+                'average_rating': 0,
+                'rating_distribution': {str(i): 0 for i in range(6)}
+            })
+        
+        # Calculate average rating
+        avg_rating = db.session.query(db.func.avg(Review.rating)).scalar() or 0
+        
+        # Get rating distribution
+        rating_counts = db.session.query(
+            Review.rating, db.func.count(Review.rating)
+        ).group_by(Review.rating).all()
+        
+        rating_distribution = {str(i): 0 for i in range(6)}
+        for rating, count in rating_counts:
+            rating_distribution[str(rating)] = count
+        
+        return jsonify({
+            'total_reviews': total_reviews,
+            'average_rating': round(avg_rating, 1),
+            'rating_distribution': rating_distribution
+        })
+        
+    except Exception as e:
+        logging.error(f"Review stats error: {str(e)}")
+        return jsonify({'error': 'Failed to get review statistics'}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

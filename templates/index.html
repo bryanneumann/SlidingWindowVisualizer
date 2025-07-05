@@ -437,7 +437,15 @@
                 'copy-link': 'Copy Link',
                 'link-copied': 'Link copied to clipboard!',
                 'share-twitter-text': 'Check out this interactive sliding window algorithm visualizer! Learn algorithms with real-time animations and multi-language code generation 🚀',
-                'share-linkedin-text': 'Interactive educational tool for learning sliding window algorithms with visual demonstrations and code generation in multiple languages.'
+                'share-linkedin-text': 'Interactive educational tool for learning sliding window algorithms with visual demonstrations and code generation in multiple languages.',
+                'rate-experience': 'Rate Your Experience',
+                'rating-prompt': 'How would you rate this sliding window visualizer?',
+                'feedback-optional': 'Feedback (Optional)',
+                'feedback-placeholder': 'Tell us what you think or suggest improvements...',
+                'anonymous-note': 'Your feedback is anonymous and helps improve the tool.',
+                'cancel': 'Cancel',
+                'submit-review': 'Submit Review',
+                'rate-app': 'Rate This App'
             },
             es: {
                 'title': 'Visualizador de Técnica de Ventana Deslizante',
@@ -532,7 +540,15 @@
                 'copy-link': 'Copiar Enlace',
                 'link-copied': '¡Enlace copiado al portapapeles!',
                 'share-twitter-text': '¡Mira este visualizador interactivo de algoritmos de ventana deslizante! Aprende algoritmos con animaciones en tiempo real y generación de código en múltiples lenguajes 🚀',
-                'share-linkedin-text': 'Herramienta educativa interactiva para aprender algoritmos de ventana deslizante con demostraciones visuales y generación de código en múltiples lenguajes.'
+                'share-linkedin-text': 'Herramienta educativa interactiva para aprender algoritmos de ventana deslizante con demostraciones visuales y generación de código en múltiples lenguajes.',
+                'rate-experience': 'Califica tu Experiencia',
+                'rating-prompt': '¿Cómo calificarías este visualizador de ventana deslizante?',
+                'feedback-optional': 'Comentarios (Opcional)',
+                'feedback-placeholder': 'Cuéntanos qué piensas o sugiere mejoras...',
+                'anonymous-note': 'Tus comentarios son anónimos y ayudan a mejorar la herramienta.',
+                'cancel': 'Cancelar',
+                'submit-review': 'Enviar Calificación',
+                'rate-app': 'Calificar App'
             }
         };
 
@@ -673,5 +689,224 @@
     
     <!-- Custom JavaScript -->
     <script src="{{ url_for('static', filename='js/sliding_window.js') }}"></script>
+    
+    <!-- Review System JavaScript -->
+    <script>
+        // Review System
+        class ReviewSystem {
+            constructor() {
+                this.rating = 0;
+                this.feedbackText = '';
+                this.hasSubmitted = false;
+                this.init();
+            }
+            
+            init() {
+                this.createReviewModal();
+                this.loadReviewStats();
+                this.setupEventListeners();
+            }
+            
+            createReviewModal() {
+                const modalHTML = `
+                    <div class="modal fade" id="reviewModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" data-translate="rate-experience">Rate Your Experience</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="text-center mb-3">
+                                        <p data-translate="rating-prompt">How would you rate this sliding window visualizer?</p>
+                                        <div class="rating-stars mb-3">
+                                            ${[1,2,3,4,5].map(i => `<i class="bi bi-star rating-star" data-rating="${i}" style="font-size: 2rem; color: #ffc107; cursor: pointer; margin: 0 2px;"></i>`).join('')}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="feedback" class="form-label" data-translate="feedback-optional">Feedback (Optional)</label>
+                                        <textarea class="form-control" id="feedback" rows="3" maxlength="1000" 
+                                                  data-translate-placeholder="feedback-placeholder"></textarea>
+                                        <div class="form-text" data-translate="anonymous-note">Your feedback is anonymous and helps improve the tool.</div>
+                                    </div>
+                                    
+                                    <div id="review-error" class="alert alert-danger d-none"></div>
+                                    <div id="review-success" class="alert alert-success d-none"></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-translate="cancel">Cancel</button>
+                                    <button type="button" class="btn btn-primary" id="submitReview" data-translate="submit-review">Submit Review</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+            }
+            
+            setupEventListeners() {
+                // Star rating
+                document.querySelectorAll('.rating-star').forEach(star => {
+                    star.addEventListener('click', (e) => {
+                        this.rating = parseInt(e.target.dataset.rating);
+                        this.updateStarDisplay();
+                    });
+                    
+                    star.addEventListener('mouseenter', (e) => {
+                        const rating = parseInt(e.target.dataset.rating);
+                        this.highlightStars(rating);
+                    });
+                });
+                
+                // Rating container hover out
+                document.querySelector('.rating-stars').addEventListener('mouseleave', () => {
+                    this.updateStarDisplay();
+                });
+                
+                // Submit review
+                document.getElementById('submitReview').addEventListener('click', () => {
+                    this.submitReview();
+                });
+                
+                // Feedback textarea
+                document.getElementById('feedback').addEventListener('input', (e) => {
+                    this.feedbackText = e.target.value;
+                });
+            }
+            
+            highlightStars(rating) {
+                document.querySelectorAll('.rating-star').forEach((star, index) => {
+                    if (index < rating) {
+                        star.classList.add('bi-star-fill');
+                        star.classList.remove('bi-star');
+                    } else {
+                        star.classList.add('bi-star');
+                        star.classList.remove('bi-star-fill');
+                    }
+                });
+            }
+            
+            updateStarDisplay() {
+                this.highlightStars(this.rating);
+            }
+            
+            async submitReview() {
+                if (this.rating === 0) {
+                    this.showError('Please select a rating before submitting.');
+                    return;
+                }
+                
+                try {
+                    const response = await fetch('/api/submit_review', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            rating: this.rating,
+                            feedback: this.feedbackText
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (response.ok) {
+                        this.showSuccess(result.message);
+                        this.hasSubmitted = true;
+                        setTimeout(() => {
+                            const modal = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
+                            modal.hide();
+                        }, 1500);
+                    } else {
+                        this.showError(result.error || 'Failed to submit review');
+                    }
+                } catch (error) {
+                    this.showError('Failed to submit review. Please try again.');
+                }
+            }
+            
+            showError(message) {
+                const errorEl = document.getElementById('review-error');
+                const successEl = document.getElementById('review-success');
+                errorEl.textContent = message;
+                errorEl.classList.remove('d-none');
+                successEl.classList.add('d-none');
+            }
+            
+            showSuccess(message) {
+                const errorEl = document.getElementById('review-error');
+                const successEl = document.getElementById('review-success');
+                successEl.textContent = message;
+                successEl.classList.remove('d-none');
+                errorEl.classList.add('d-none');
+            }
+            
+            async loadReviewStats() {
+                try {
+                    const response = await fetch('/api/reviews/stats');
+                    const stats = await response.json();
+                    
+                    if (response.ok) {
+                        this.displayReviewStats(stats);
+                    }
+                } catch (error) {
+                    console.log('Failed to load review stats');
+                }
+            }
+            
+            displayReviewStats(stats) {
+                if (stats.total_reviews > 0) {
+                    const statsHTML = `
+                        <div class="review-stats text-center mt-4 mb-3">
+                            <h6 class="mb-2">Community Feedback</h6>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <div class="me-3">
+                                    <span class="fw-bold">${stats.average_rating}</span>
+                                    <div class="rating-display">
+                                        ${[1,2,3,4,5].map(i => 
+                                            `<i class="bi bi-star${i <= Math.round(stats.average_rating) ? '-fill' : ''}" style="color: #ffc107;"></i>`
+                                        ).join('')}
+                                    </div>
+                                </div>
+                                <div class="text-muted">
+                                    <small>(${stats.total_reviews} reviews)</small>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Add to the page header or controls section
+                    const controlsSection = document.querySelector('.card-body');
+                    if (controlsSection) {
+                        controlsSection.insertAdjacentHTML('beforeend', statsHTML);
+                    }
+                }
+            }
+            
+            showReviewModal() {
+                const modal = new bootstrap.Modal(document.getElementById('reviewModal'));
+                modal.show();
+            }
+        }
+        
+        // Initialize review system when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.reviewSystem = new ReviewSystem();
+            
+            // Add review button to the page
+            const reviewButtonHTML = `
+                <button type="button" class="btn btn-outline-primary btn-sm ms-2" onclick="window.reviewSystem.showReviewModal()">
+                    <i class="bi bi-star"></i> <span data-translate="rate-app">Rate This App</span>
+                </button>
+            `;
+            
+            // Add to share buttons area
+            const shareSection = document.querySelector('.share-buttons');
+            if (shareSection) {
+                shareSection.insertAdjacentHTML('beforeend', reviewButtonHTML);
+            }
+        });
+    </script>
 </body>
 </html>
