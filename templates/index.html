@@ -920,7 +920,7 @@
             // Add review button to the page after a small delay to ensure DOM is ready
             setTimeout(() => {
                 const reviewButtonHTML = `
-                    <button type="button" class="btn btn-outline-primary btn-sm ms-2" onclick="window.reviewSystem.showReviewModal()">
+                    <button type="button" class="btn btn-outline-primary btn-sm ms-2" id="review-button">
                         <i class="bi bi-star"></i> <span data-translate="rate-app">Rate This App</span>
                     </button>
                 `;
@@ -937,6 +937,21 @@
                         headerControls.insertAdjacentHTML('beforeend', reviewButtonHTML);
                         console.log('Review button added to header controls');
                     }
+                }
+                
+                // Add event listener to the button
+                const reviewButton = document.getElementById('review-button');
+                if (reviewButton) {
+                    reviewButton.addEventListener('click', function() {
+                        console.log('Review button clicked!');
+                        if (window.reviewSystem) {
+                            console.log('ReviewSystem found, showing modal');
+                            window.reviewSystem.showReviewModal();
+                        } else {
+                            console.error('ReviewSystem not found on window object');
+                        }
+                    });
+                    console.log('Event listener added to review button');
                 }
                 
                 // Apply translations to the newly added button
