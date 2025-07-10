@@ -59,6 +59,13 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_recycle": 300,
     "pool_pre_ping": True,
+    "pool_timeout": 20,
+    "pool_size": 10,
+    "max_overflow": 20,
+    "connect_args": {
+        "connect_timeout": 10,
+        "application_name": "sliding_window_app"
+    }
 }
 
 # Initialize database
@@ -150,6 +157,10 @@ def check_geo_blocking():
         if client_ip in ['127.0.0.1', 'localhost', '::1'] or client_ip.startswith('192.168.'):
             return None
         
+        # Skip for API endpoints to prevent context cancellation
+        if request.path.startswith('/api/'):
+            return None
+        
         # Check rate limiting to prevent spam
         if rate_limiter.is_rate_limited(client_ip):
             # If rate limited, serve normal content instead of redirecting
@@ -164,8 +175,9 @@ def check_geo_blocking():
             logging.info(f"Redirecting Russian IP {client_ip} to Ukraine support (rate limited for 24h)")
             
             # Add cache headers to prevent excessive requests
-            response = redirect('https://linktr.ee/UkraineTheLatest')
+            response = redirect('https://linktr.ee/UkraineTheLatest', code=301)  # Permanent redirect
             response.headers['Cache-Control'] = 'public, max-age=86400'  # 24 hour cache
+            response.headers['Connection'] = 'close'  # Close connection cleanly
             return response
                 
     except Exception as e:
