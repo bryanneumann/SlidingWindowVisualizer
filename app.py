@@ -790,10 +790,165 @@ public class SlidingWindowSum {{
 const arr = [1, 2, 3, 4, 5, 6, 7, 8];
 const result = slidingWindowSum(arr, {window_size});
 console.log(`Maximum sum of subarray of size {window_size}: ${{result}}`);'''
+                elif algorithm == 'max':
+                    code = f'''function slidingWindowMaximum(arr, k = {window_size}) {{
+    if (arr.length < k) {{
+        return [];
+    }}
+    
+    const deque = [];
+    const result = [];
+    
+    for (let i = 0; i < arr.length; i++) {{
+        // Remove elements outside current window
+        while (deque.length > 0 && deque[0] <= i - k) {{
+            deque.shift();
+        }}
+        
+        // Remove smaller elements from rear
+        while (deque.length > 0 && arr[deque[deque.length - 1]] <= arr[i]) {{
+            deque.pop();
+        }}
+        
+        deque.push(i);
+        
+        // Add maximum of current window to result
+        if (i >= k - 1) {{
+            result.push(arr[deque[0]]);
+        }}
+    }}
+    
+    return result;
+}}
+
+// Example usage:
+const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+const result = slidingWindowMaximum(arr, {window_size});
+console.log(`Maximum in each window of size {window_size}: ${{result}}`);'''
+                elif algorithm == 'min':
+                    code = f'''function slidingWindowMinimum(arr, k = {window_size}) {{
+    if (arr.length < k) {{
+        return [];
+    }}
+    
+    const deque = [];
+    const result = [];
+    
+    for (let i = 0; i < arr.length; i++) {{
+        // Remove elements outside current window
+        while (deque.length > 0 && deque[0] <= i - k) {{
+            deque.shift();
+        }}
+        
+        // Remove larger elements from rear
+        while (deque.length > 0 && arr[deque[deque.length - 1]] >= arr[i]) {{
+            deque.pop();
+        }}
+        
+        deque.push(i);
+        
+        // Add minimum of current window to result
+        if (i >= k - 1) {{
+            result.push(arr[deque[0]]);
+        }}
+    }}
+    
+    return result;
+}}
+
+// Example usage:
+const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+const result = slidingWindowMinimum(arr, {window_size});
+console.log(`Minimum in each window of size {window_size}: ${{result}}`);'''
+                elif algorithm == 'avg':
+                    code = f'''function slidingWindowAverage(arr, k = {window_size}) {{
+    if (arr.length < k) {{
+        return [];
+    }}
+    
+    const result = [];
+    let windowSum = 0;
+    
+    // Calculate sum of first window
+    for (let i = 0; i < k; i++) {{
+        windowSum += arr[i];
+    }}
+    result.push(windowSum / k);
+    
+    // Slide the window
+    for (let i = k; i < arr.length; i++) {{
+        windowSum = windowSum - arr[i - k] + arr[i];
+        result.push(windowSum / k);
+    }}
+    
+    return result;
+}}
+
+// Example usage:
+const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+const result = slidingWindowAverage(arr, {window_size});
+console.log(`Average of each window of size {window_size}: ${{result}}`);'''
                 else:
-                    code = "// JavaScript implementation for other algorithms not shown for brevity"
-            else:
-                code = "// JavaScript implementation for variable window algorithms not shown for brevity"
+                    code = "// Algorithm not found"
+            else:  # variable window
+                if algorithm == 'longest_substring':
+                    code = '''function longestSubstringWithoutRepeating(s) {
+    const charMap = new Map();
+    let left = 0;
+    let maxLength = 0;
+    
+    for (let right = 0; right < s.length; right++) {
+        if (charMap.has(s[right]) && charMap.get(s[right]) >= left) {
+            left = charMap.get(s[right]) + 1;
+        }
+        
+        charMap.set(s[right], right);
+        maxLength = Math.max(maxLength, right - left + 1);
+    }
+    
+    return maxLength;
+}
+
+// Example usage:
+const s = "abcabcbb";
+const result = longestSubstringWithoutRepeating(s);
+console.log(`Length of longest substring without repeating characters: ${result}`);'''
+                elif algorithm == 'permutation_in_string':
+                    code = '''function checkInclusion(s1, s2) {
+    if (s1.length > s2.length) {
+        return false;
+    }
+    
+    // Count characters in s1
+    const s1Count = {};
+    for (let char of s1) {
+        s1Count[char] = (s1Count[char] || 0) + 1;
+    }
+    
+    const windowSize = s1.length;
+    for (let i = 0; i <= s2.length - windowSize; i++) {
+        const window = s2.substring(i, i + windowSize);
+        const windowCount = {};
+        
+        for (let char of window) {
+            windowCount[char] = (windowCount[char] || 0) + 1;
+        }
+        
+        if (JSON.stringify(s1Count) === JSON.stringify(windowCount)) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+// Example usage:
+const s1 = "ab";
+const s2 = "eidbaooo";
+const result = checkInclusion(s1, s2);
+console.log(`Permutation of '${s1}' exists in '${s2}': ${result}`);'''
+                else:
+                    code = "// Algorithm not found"
         
         elif language == 'cpp':
             if window_type == 'fixed':

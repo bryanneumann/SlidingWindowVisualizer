@@ -990,7 +990,7 @@ class SlidingWindowVisualizer {
             
             const result = await response.json();
             
-            if (result.success) {
+            if (result.code) {
                 // Display the generated code
                 codeElement.textContent = result.code;
                 
