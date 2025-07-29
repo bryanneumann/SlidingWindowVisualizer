@@ -1031,7 +1031,9 @@ class SlidingWindowVisualizer {
                 'sum': 'Time: O(n) - Two pointers technique | Space: O(1) - Constant extra space',
                 'max': 'Time: O(n²) - Nested loops for all subarrays | Space: O(1) - Constant extra space',
                 'min': 'Time: O(n + m) - Linear in string lengths | Space: O(n + m) - Hash maps for character counts',
-                'avg': 'Time: O(n²) - Nested loops for all subarrays | Space: O(1) - Constant extra space'
+                'avg': 'Time: O(n²) - Nested loops for all subarrays | Space: O(1) - Constant extra space',
+                'longest_substring': 'Time: O(n) - Single pass with sliding window | Space: O(min(m,n)) - Hash map for character positions',
+                'permutation_in_string': 'Time: O(n) - Sliding window with frequency matching | Space: O(m) - Character frequency maps'
             }
         };
         

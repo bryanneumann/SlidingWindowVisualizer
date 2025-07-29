@@ -273,7 +273,7 @@ def calculate_step():
             description = f"Average of window: ({' + '.join(map(str, window))}) / {len(window)} = {result:.2f}"
         elif algorithm == 'longest_substring':
             # For longest substring, we need to track the current window and check for duplicates
-            window_str = ''.join(window)
+            window_str = ''.join(str(x) for x in window)
             unique_chars = set(window)
             if len(unique_chars) == len(window):
                 result = len(window)
@@ -289,7 +289,7 @@ def calculate_step():
                 description = f"Window '{window_str}' has repeating characters: {', '.join(set(duplicates))}"
         elif algorithm == 'permutation_in_string':
             # For permutation in string, check if current window is a permutation of the pattern
-            window_str = ''.join(window)
+            window_str = ''.join(str(x) for x in window)
             pattern = data.get('pattern', '')
             
             if len(window_str) == len(pattern):
