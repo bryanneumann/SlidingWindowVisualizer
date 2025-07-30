@@ -960,7 +960,18 @@ class SlidingWindowVisualizer {
         };
         
         const description = descriptions[windowType]?.[algorithm] || 'Algorithm description not available.';
-        algorithmInfo.innerHTML = `<strong>${windowType.charAt(0).toUpperCase() + windowType.slice(1)} Window - ${algorithm.toUpperCase()}:</strong> ${description}`;
+        // Format algorithm name for display
+        const algorithmDisplayNames = {
+            'sum': 'Sum',
+            'max': 'Maximum',
+            'min': 'Minimum', 
+            'avg': 'Average',
+            'longest_substring': 'Longest Substring',
+            'permutation_in_string': 'Permutation in String'
+        };
+        
+        const algorithmDisplay = algorithmDisplayNames[algorithm] || algorithm.toUpperCase();
+        algorithmInfo.innerHTML = `<strong>${windowType.charAt(0).toUpperCase() + windowType.slice(1)} Window - ${algorithmDisplay}:</strong> ${description}`;
     }
 
     async generateCode() {
