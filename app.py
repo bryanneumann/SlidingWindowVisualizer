@@ -759,8 +759,74 @@ public class SlidingWindowSum {{
 }}'''
                 else:
                     code = "// Java implementation for other algorithms not shown for brevity"
-            else:
-                code = "// Java implementation for variable window algorithms not shown for brevity"
+            else:  # variable window
+                if algorithm == 'longest_substring':
+                    code = '''import java.util.*;
+
+public class LongestSubstring {
+    public static int lengthOfLongestSubstring(String s) {
+        Map<Character, Integer> charMap = new HashMap<>();
+        int left = 0;
+        int maxLength = 0;
+        
+        for (int right = 0; right < s.length(); right++) {
+            if (charMap.containsKey(s.charAt(right)) && charMap.get(s.charAt(right)) >= left) {
+                left = charMap.get(s.charAt(right)) + 1;
+            }
+            
+            charMap.put(s.charAt(right), right);
+            maxLength = Math.max(maxLength, right - left + 1);
+        }
+        
+        return maxLength;
+    }
+    
+    public static void main(String[] args) {
+        String s = "abcabcbb";
+        int result = lengthOfLongestSubstring(s);
+        System.out.println("Length of longest substring without repeating characters: " + result);
+    }
+}'''
+                elif algorithm == 'permutation_in_string':
+                    code = '''import java.util.*;
+
+public class PermutationInString {
+    public static boolean checkInclusion(String s1, String s2) {
+        if (s1.length() > s2.length()) {
+            return false;
+        }
+        
+        Map<Character, Integer> s1Count = new HashMap<>();
+        for (char c : s1.toCharArray()) {
+            s1Count.put(c, s1Count.getOrDefault(c, 0) + 1);
+        }
+        
+        int windowSize = s1.length();
+        for (int i = 0; i <= s2.length() - windowSize; i++) {
+            String window = s2.substring(i, i + windowSize);
+            Map<Character, Integer> windowCount = new HashMap<>();
+            
+            for (char c : window.toCharArray()) {
+                windowCount.put(c, windowCount.getOrDefault(c, 0) + 1);
+            }
+            
+            if (s1Count.equals(windowCount)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    public static void main(String[] args) {
+        String s1 = "ab";
+        String s2 = "eidbaooo";
+        boolean result = checkInclusion(s1, s2);
+        System.out.println("Permutation of '" + s1 + "' exists in '" + s2 + "': " + result);
+    }
+}'''
+                else:
+                    code = "// Java implementation for other variable window algorithms not shown for brevity"
         
         elif language == 'javascript':
             if window_type == 'fixed':
