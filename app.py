@@ -955,7 +955,7 @@ const arr = [1, 2, 3, 4, 5, 6, 7, 8];
 const result = slidingWindowAverage(arr, {window_size});
 console.log(`Average of each window of size {window_size}: ${{result}}`);'''
                 else:
-                    code = "// Algorithm not found"
+                    code = "// JavaScript implementation for other fixed window algorithms not shown for brevity"
             else:  # variable window
                 if algorithm == 'longest_substring':
                     code = '''function longestSubstringWithoutRepeating(s) {
@@ -1014,7 +1014,7 @@ const s2 = "eidbaooo";
 const result = checkInclusion(s1, s2);
 console.log(`Permutation of '${s1}' exists in '${s2}': ${result}`);'''
                 else:
-                    code = "// Algorithm not found"
+                    code = "// JavaScript implementation for other variable window algorithms not shown for brevity"
         
         elif language == 'cpp':
             if window_type == 'fixed':
