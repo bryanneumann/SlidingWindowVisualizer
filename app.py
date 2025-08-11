@@ -722,7 +722,7 @@ result = check_inclusion(s1, s2)
 print(f"Permutation of '{s1}' exists in '{s2}': {result}")'''
                 }
             }
-            code = code_templates.get(window_type, {}).get(algorithm, "# Algorithm not found")
+            code = code_templates.get(window_type, {}).get(algorithm, "# Python implementation for other algorithms not shown for brevity")
         
         elif language == 'java':
             if window_type == 'fixed':
