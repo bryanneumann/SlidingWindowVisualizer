@@ -722,11 +722,82 @@ result = check_inclusion(s1, s2)
 print(f"Permutation of '{s1}' exists in '{s2}': {result}")'''
                 }
             }
-            code = code_templates.get(window_type, {}).get(algorithm, "# Python implementation for other algorithms not shown for brevity")
+            
+            # Handle variable window algorithms requested as fixed window
+            if algorithm in ['longest_substring', 'permutation_in_string'] and window_type == 'fixed':
+                code = code_templates.get('variable', {}).get(algorithm, "# Python implementation not available for this combination")
+            else:
+                code = code_templates.get(window_type, {}).get(algorithm, "# Python implementation for other algorithms not shown for brevity")
         
         elif language == 'java':
             if window_type == 'fixed':
-                if algorithm == 'sum':
+                # Handle variable window algorithms requested as fixed window first
+                if algorithm == 'longest_substring':
+                    code = '''import java.util.*;
+
+public class LongestSubstring {
+    public static int lengthOfLongestSubstring(String s) {
+        Map<Character, Integer> charMap = new HashMap<>();
+        int left = 0;
+        int maxLength = 0;
+        
+        for (int right = 0; right < s.length(); right++) {
+            if (charMap.containsKey(s.charAt(right)) && charMap.get(s.charAt(right)) >= left) {
+                left = charMap.get(s.charAt(right)) + 1;
+            }
+            
+            charMap.put(s.charAt(right), right);
+            maxLength = Math.max(maxLength, right - left + 1);
+        }
+        
+        return maxLength;
+    }
+    
+    public static void main(String[] args) {
+        String s = "abcabcbb";
+        int result = lengthOfLongestSubstring(s);
+        System.out.println("Length of longest substring without repeating characters: " + result);
+    }
+}'''
+                elif algorithm == 'permutation_in_string':
+                    code = '''import java.util.*;
+
+public class PermutationInString {
+    public static boolean checkInclusion(String s1, String s2) {
+        if (s1.length() > s2.length()) {
+            return false;
+        }
+        
+        Map<Character, Integer> s1Count = new HashMap<>();
+        for (char c : s1.toCharArray()) {
+            s1Count.put(c, s1Count.getOrDefault(c, 0) + 1);
+        }
+        
+        int windowSize = s1.length();
+        for (int i = 0; i <= s2.length() - windowSize; i++) {
+            String window = s2.substring(i, i + windowSize);
+            Map<Character, Integer> windowCount = new HashMap<>();
+            
+            for (char c : window.toCharArray()) {
+                windowCount.put(c, windowCount.getOrDefault(c, 0) + 1);
+            }
+            
+            if (s1Count.equals(windowCount)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    public static void main(String[] args) {
+        String s1 = "ab";
+        String s2 = "eidbaooo";
+        boolean result = checkInclusion(s1, s2);
+        System.out.println("Permutation of '" + s1 + "' exists in '" + s2 + "': " + result);
+    }
+}'''
+                elif algorithm == 'sum':
                     code = f'''import java.util.*;
 
 public class SlidingWindowSum {{
@@ -955,7 +1026,65 @@ const arr = [1, 2, 3, 4, 5, 6, 7, 8];
 const result = slidingWindowAverage(arr, {window_size});
 console.log(`Average of each window of size {window_size}: ${{result}}`);'''
                 else:
-                    code = "// JavaScript implementation for other fixed window algorithms not shown for brevity"
+                    # Handle variable window algorithms requested as fixed window
+                    if algorithm == 'longest_substring':
+                        code = '''function longestSubstringWithoutRepeating(s) {
+    const charMap = new Map();
+    let left = 0;
+    let maxLength = 0;
+    
+    for (let right = 0; right < s.length; right++) {
+        if (charMap.has(s[right]) && charMap.get(s[right]) >= left) {
+            left = charMap.get(s[right]) + 1;
+        }
+        
+        charMap.set(s[right], right);
+        maxLength = Math.max(maxLength, right - left + 1);
+    }
+    
+    return maxLength;
+}
+
+// Example usage:
+const s = "abcabcbb";
+const result = longestSubstringWithoutRepeating(s);
+console.log(`Length of longest substring without repeating characters: ${result}`);'''
+                    elif algorithm == 'permutation_in_string':
+                        code = '''function checkInclusion(s1, s2) {
+    if (s1.length > s2.length) {
+        return false;
+    }
+    
+    // Count characters in s1
+    const s1Count = {};
+    for (let char of s1) {
+        s1Count[char] = (s1Count[char] || 0) + 1;
+    }
+    
+    const windowSize = s1.length;
+    for (let i = 0; i <= s2.length - windowSize; i++) {
+        const window = s2.substring(i, i + windowSize);
+        const windowCount = {};
+        
+        for (let char of window) {
+            windowCount[char] = (windowCount[char] || 0) + 1;
+        }
+        
+        if (JSON.stringify(s1Count) === JSON.stringify(windowCount)) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+// Example usage:
+const s1 = "ab";
+const s2 = "eidbaooo";
+const result = checkInclusion(s1, s2);
+console.log(`Permutation of '${s1}' exists in '${s2}': ${result}`);'''
+                    else:
+                        code = "// JavaScript implementation for other fixed window algorithms not shown for brevity"
             else:  # variable window
                 if algorithm == 'longest_substring':
                     code = '''function longestSubstringWithoutRepeating(s) {

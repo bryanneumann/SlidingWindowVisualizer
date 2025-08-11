@@ -153,6 +153,9 @@ Changelog:
   * Ensured graceful handling of unknown algorithms with appropriate fallback messages
   * Comprehensive testing confirmed all languages now provide meaningful code or informative messages
   * Code generation system now fully robust and user-friendly across all supported languages
+  * CRITICAL FIX: Variable window algorithms (longest_substring, permutation_in_string) now provide proper implementations even when incorrectly requested as fixed window algorithms
+  * All 6 frontend algorithms (sum, max, min, avg, longest_substring, permutation_in_string) now work correctly in Python, Java, and JavaScript
+  * C++ provides full implementation for sum algorithm, informative messages for others
 ```
 
 ## User Preferences
