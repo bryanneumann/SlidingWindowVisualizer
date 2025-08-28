@@ -1017,7 +1017,17 @@ class SlidingWindowVisualizer {
         };
         
         const algorithmDisplay = algorithmDisplayNames[algorithm] || algorithm.toUpperCase();
-        algorithmInfo.innerHTML = `<strong>${windowType.charAt(0).toUpperCase() + windowType.slice(1)} Window - ${algorithmDisplay}:</strong> ${description}`;
+        
+        // Safe DOM manipulation to prevent XSS
+        algorithmInfo.innerHTML = '';
+        
+        const strongEl = document.createElement('strong');
+        strongEl.textContent = `${windowType.charAt(0).toUpperCase() + windowType.slice(1)} Window - ${algorithmDisplay}:`;
+        
+        const descriptionText = document.createTextNode(` ${description}`);
+        
+        algorithmInfo.appendChild(strongEl);
+        algorithmInfo.appendChild(descriptionText);
     }
 
     async generateCode() {
