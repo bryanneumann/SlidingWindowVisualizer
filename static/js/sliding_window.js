@@ -749,11 +749,22 @@ class SlidingWindowVisualizer {
             const playText = this.getTranslation ? this.getTranslation('play') : 'Play';
             const pauseText = this.getTranslation ? this.getTranslation('pause') : 'Pause';
             
+            // Clear existing content safely
+            playPauseBtn.textContent = '';
+            
             if (this.isPlaying) {
-                playPauseBtn.innerHTML = `<i class="bi bi-pause"></i> ${pauseText}`;
+                // Create icon element safely
+                const pauseIcon = document.createElement('i');
+                pauseIcon.className = 'bi bi-pause';
+                playPauseBtn.appendChild(pauseIcon);
+                playPauseBtn.appendChild(document.createTextNode(` ${pauseText}`));
                 playPauseBtn.className = 'btn btn-warning';
             } else {
-                playPauseBtn.innerHTML = `<i class="bi bi-play"></i> ${playText}`;
+                // Create icon element safely
+                const playIcon = document.createElement('i');
+                playIcon.className = 'bi bi-play';
+                playPauseBtn.appendChild(playIcon);
+                playPauseBtn.appendChild(document.createTextNode(` ${playText}`));
                 playPauseBtn.className = 'btn btn-success';
             }
         }
