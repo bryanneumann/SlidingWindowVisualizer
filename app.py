@@ -727,7 +727,26 @@ print(f"Permutation of '{s1}' exists in '{s2}': {result}")'''
             if algorithm in ['longest_substring', 'permutation_in_string'] and window_type == 'fixed':
                 code = code_templates.get('variable', {}).get(algorithm, "# Python implementation not available for this combination")
             else:
-                code = code_templates.get(window_type, {}).get(algorithm, "# Python implementation for other algorithms not shown for brevity")
+                code = code_templates.get(window_type, {}).get(algorithm, f'''# Algorithm '{algorithm}' not implemented in this demo
+# Available algorithms: sum, max, min, avg, longest_substring, permutation_in_string
+# This visualizer supports the most common sliding window patterns
+# For custom algorithms, adapt the pattern from the implemented examples
+
+def sliding_window_template(arr, k=3):
+    """Template for implementing sliding window algorithms"""
+    if len(arr) < k:
+        return None
+    
+    # Initialize window
+    # Process each window position
+    # Return result
+    
+    return "Implement your algorithm logic here"
+
+# Example usage:
+arr = [1, 2, 3, 4, 5, 6, 7, 8]
+result = sliding_window_template(arr, 3)
+print(f"Result: {{result}}")''')
         
         elif language == 'java':
             if window_type == 'fixed':
@@ -1084,7 +1103,27 @@ const s2 = "eidbaooo";
 const result = checkInclusion(s1, s2);
 console.log(`Permutation of '${s1}' exists in '${s2}': ${result}`);'''
                     else:
-                        code = "// JavaScript implementation for other fixed window algorithms not shown for brevity"
+                        code = f'''// Algorithm '{algorithm}' not implemented in this demo
+// Available algorithms: sum, max, min, avg, longest_substring, permutation_in_string
+// This visualizer supports the most common sliding window patterns
+// For custom algorithms, adapt the pattern from the implemented examples
+
+function slidingWindowTemplate(arr, k = 3) {{
+    if (arr.length < k) {{
+        return null;
+    }}
+    
+    // Initialize window
+    // Process each window position
+    // Return result
+    
+    return "Implement your algorithm logic here";
+}}
+
+// Example usage:
+const arr = [1, 2, 3, 4, 5, 6, 7, 8];
+const result = slidingWindowTemplate(arr, 3);
+console.log(`Result: ${{result}}`);'''
             else:  # variable window
                 if algorithm == 'longest_substring':
                     code = '''function longestSubstringWithoutRepeating(s) {
@@ -1143,7 +1182,34 @@ const s2 = "eidbaooo";
 const result = checkInclusion(s1, s2);
 console.log(`Permutation of '${s1}' exists in '${s2}': ${result}`);'''
                 else:
-                    code = "// JavaScript implementation for other variable window algorithms not shown for brevity"
+                    code = f'''// Variable window algorithm '{algorithm}' not implemented in this demo
+// Available variable algorithms: longest_substring, permutation_in_string
+// This visualizer supports the most common variable sliding window patterns
+
+function variableWindowTemplate(s) {{
+    let left = 0;
+    let result = 0;
+    
+    for (let right = 0; right < s.length; right++) {{
+        // Expand window by including s[right]
+        
+        // Contract window if needed
+        while (/* condition */) {{
+            // Remove s[left] from window
+            left++;
+        }}
+        
+        // Update result
+        result = Math.max(result, right - left + 1);
+    }}
+    
+    return result;
+}}
+
+// Example usage:
+const s = "example";
+const result = variableWindowTemplate(s);
+console.log(`Result: ${{result}}`);'''
         
         elif language == 'cpp':
             if window_type == 'fixed':
