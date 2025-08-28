@@ -1053,7 +1053,7 @@ class SlidingWindowVisualizer {
                 
                 // Update complexity information
                 const complexityInfo = this.getComplexityInfo(algorithm, windowType);
-                complexityElement.innerHTML = complexityInfo;
+                complexityElement.textContent = complexityInfo;
                 
                 // Enable copy and download buttons
                 if (copyBtn) copyBtn.disabled = false;
