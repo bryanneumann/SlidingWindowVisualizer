@@ -1108,13 +1108,18 @@ class SlidingWindowVisualizer {
             
             // Show temporary success message
             const copyBtn = document.getElementById('copyCodeBtn');
-            const originalText = copyBtn.innerHTML;
+            // Store original content safely
+            const originalIcon = copyBtn.querySelector('i');
+            const originalText = 'Copy Code';
+            
+            // Update to success state
             copyBtn.innerHTML = '<i class="bi bi-check"></i> Copied!';
             copyBtn.classList.remove('btn-outline-secondary');
             copyBtn.classList.add('btn-success');
             
             setTimeout(() => {
-                copyBtn.innerHTML = originalText;
+                // Restore original state safely
+                copyBtn.innerHTML = '<i class="bi bi-clipboard"></i> ' + originalText;
                 copyBtn.classList.remove('btn-success');
                 copyBtn.classList.add('btn-outline-secondary');
             }, 2000);
