@@ -582,13 +582,34 @@ class SlidingWindowVisualizer {
         // Add rows for each result
         this.windowResults.forEach(result => {
             const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${result.step}</td>
-                <td><code>${result.position}</code></td>
-                <td><code>${result.content}</code></td>
-                <td>${result.result}</td>
-                <td class="${result.statusClass}">${result.status}</td>
-            `;
+            
+            // Create cells safely using createElement and textContent
+            const stepCell = document.createElement('td');
+            stepCell.textContent = result.step;
+            
+            const positionCell = document.createElement('td');
+            const positionCode = document.createElement('code');
+            positionCode.textContent = result.position;
+            positionCell.appendChild(positionCode);
+            
+            const contentCell = document.createElement('td');
+            const contentCode = document.createElement('code');
+            contentCode.textContent = result.content;
+            contentCell.appendChild(contentCode);
+            
+            const resultCell = document.createElement('td');
+            resultCell.textContent = result.result;
+            
+            const statusCell = document.createElement('td');
+            statusCell.className = result.statusClass;
+            statusCell.textContent = result.status;
+            
+            row.appendChild(stepCell);
+            row.appendChild(positionCell);
+            row.appendChild(contentCell);
+            row.appendChild(resultCell);
+            row.appendChild(statusCell);
+            
             tableBody.appendChild(row);
         });
     }
