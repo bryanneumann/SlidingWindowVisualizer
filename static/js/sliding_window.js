@@ -823,10 +823,16 @@ class SlidingWindowVisualizer {
         // Create a temporary alert
         const alertDiv = document.createElement('div');
         alertDiv.className = 'alert alert-danger alert-dismissible fade show';
-        alertDiv.innerHTML = `
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        `;
+        
+        // Create message element safely to prevent XSS
+        const messageText = document.createTextNode(message);
+        const closeButton = document.createElement('button');
+        closeButton.type = 'button';
+        closeButton.className = 'btn-close';
+        closeButton.setAttribute('data-bs-dismiss', 'alert');
+        
+        alertDiv.appendChild(messageText);
+        alertDiv.appendChild(closeButton);
         
         const container = document.querySelector('.container');
         container.insertBefore(alertDiv, container.firstChild);
@@ -899,18 +905,42 @@ class SlidingWindowVisualizer {
             const title = this.getTranslation(example.titleKey) || example.title;
             const description = this.getTranslation(example.descKey) || example.description;
             
-            exampleCard.innerHTML = `
-                <div class="card example-card h-100" data-example="${index}">
-                    <div class="card-body">
-                        <h6 class="card-title">${title}</h6>
-                        <p class="card-text text-muted small">${description}</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-secondary">${example.type}</span>
-                            <span class="badge bg-primary">${example.algorithm}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
+            // Create elements safely to prevent XSS
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'card example-card h-100';
+            cardDiv.setAttribute('data-example', index);
+            
+            const cardBody = document.createElement('div');
+            cardBody.className = 'card-body';
+            
+            const cardTitle = document.createElement('h6');
+            cardTitle.className = 'card-title';
+            cardTitle.textContent = title;
+            
+            const cardText = document.createElement('p');
+            cardText.className = 'card-text text-muted small';
+            cardText.textContent = description;
+            
+            const badgeContainer = document.createElement('div');
+            badgeContainer.className = 'd-flex justify-content-between align-items-center';
+            
+            const typeBadge = document.createElement('span');
+            typeBadge.className = 'badge bg-secondary';
+            typeBadge.textContent = example.type;
+            
+            const algorithmBadge = document.createElement('span');
+            algorithmBadge.className = 'badge bg-primary';
+            algorithmBadge.textContent = example.algorithm;
+            
+            badgeContainer.appendChild(typeBadge);
+            badgeContainer.appendChild(algorithmBadge);
+            
+            cardBody.appendChild(cardTitle);
+            cardBody.appendChild(cardText);
+            cardBody.appendChild(badgeContainer);
+            
+            cardDiv.appendChild(cardBody);
+            exampleCard.appendChild(cardDiv);
 
             exampleCard.addEventListener('click', () => {
                 this.loadExample(example);
