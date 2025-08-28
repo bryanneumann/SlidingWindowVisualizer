@@ -635,16 +635,41 @@ class SlidingWindowVisualizer {
         const windowLabel = this.getTranslation('window');
         const resultLabel = this.getTranslation('result');
 
-        currentWindowEl.innerHTML = `
-            <strong>${windowLabel}:</strong> <span class="window-values">[${window.join(', ')}]</span><br>
-            <strong>${resultLabel}:</strong> <span class="result-value">${result}</span>
-        `;
+        // Safe DOM manipulation to prevent XSS
+        currentWindowEl.innerHTML = '';
+        
+        const windowLabelEl = document.createElement('strong');
+        windowLabelEl.textContent = windowLabel + ':';
+        
+        const windowValuesEl = document.createElement('span');
+        windowValuesEl.className = 'window-values';
+        windowValuesEl.textContent = '[' + window.join(', ') + ']';
+        
+        const brEl = document.createElement('br');
+        
+        const resultLabelEl = document.createElement('strong');
+        resultLabelEl.textContent = resultLabel + ':';
+        
+        const resultValueEl = document.createElement('span');
+        resultValueEl.className = 'result-value';
+        resultValueEl.textContent = result;
+        
+        currentWindowEl.appendChild(windowLabelEl);
+        currentWindowEl.appendChild(document.createTextNode(' '));
+        currentWindowEl.appendChild(windowValuesEl);
+        currentWindowEl.appendChild(brEl);
+        currentWindowEl.appendChild(resultLabelEl);
+        currentWindowEl.appendChild(document.createTextNode(' '));
+        currentWindowEl.appendChild(resultValueEl);
 
         // Translate calculation descriptions
         const translatedDescription = this.translateDescription(description, window, result);
-        calculationEl.innerHTML = `
-            <div class="calculation-step">${translatedDescription}</div>
-        `;
+        // Safe DOM manipulation to prevent XSS
+        calculationEl.innerHTML = '';
+        const calculationStepEl = document.createElement('div');
+        calculationStepEl.className = 'calculation-step';
+        calculationStepEl.textContent = translatedDescription;
+        calculationEl.appendChild(calculationStepEl);
 
         // Add a subtle celebration effect for results
         const resultElement = currentWindowEl.querySelector('.result-value');
